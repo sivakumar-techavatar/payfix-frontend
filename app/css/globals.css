@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --navy: #001328;
+  --blue: #0057b3;
+  --blue2: #0f6fd5;
+  --red: #ee3234;
+  --gray: #f1f7fc;
+  --border: #ccd7e0;
+  --text: #798593;
+  --white: #fff;
+  --r: 8px;
+  --pill: 30px;
+  --sh: 0 8px 30px rgba(0, 19, 40, 0.1);
+  --sh-red: 0 10px 30px rgba(238, 50, 52, 0.28);
+  --sh-blue: 0 10px 30px rgba(15, 111, 213, 0.28);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --font-sans: var(--font-nunito);
+  --font-accent: var(--font-grace);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Nunito", sans-serif;
+  font-size: 15px;
+  line-height: 1.7;
+  color: #4a5568;
+  /* background: #fff; */
+  overflow-x: hidden;
+}
+
+.script-font {
+  font-family: var(--font-grace);
+}
