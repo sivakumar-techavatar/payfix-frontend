@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import { Nunito, Covered_By_Your_Grace } from "next/font/google";
 
 import "./css/globals.css";
@@ -7,6 +8,43 @@ import "./css/payroll.css";
 
 import Providers from "./providers";
 import FloatingWidgets from "@/components/home/FloatingWidgets";
+
+const ORG_SCHEMA = {
+  "@context": "https://schema.org",
+  "@type": "AccountingService",
+  name: "Payfix Advisors",
+  url: "https://payfixadvisors.in",
+  logo: "https://payfixadvisors.in/payfix-logo.svg",
+  image: "https://payfixadvisors.in/og.png",
+  telephone: "+91-8680939401",
+  email: "info@payfixadvisors.in",
+  priceRange: "₹₹",
+  areaServed: { "@type": "Country", name: "India" },
+  address: [
+    {
+      "@type": "PostalAddress",
+      streetAddress:
+        "Centre Point, 2/4, Mount Poonamallee High Road, Manapakkam, Porur",
+      addressLocality: "Chennai",
+      addressRegion: "Tamil Nadu",
+      postalCode: "600089",
+      addressCountry: "IN",
+    },
+    {
+      "@type": "PostalAddress",
+      streetAddress: "AR Plaza, 4th Floor, Brindavanam",
+      addressLocality: "Puducherry",
+      postalCode: "605011",
+      addressCountry: "IN",
+    },
+  ],
+  sameAs: [
+    "https://www.linkedin.com/company/payfix-advisors",
+    "https://www.instagram.com/payfix_advisors",
+    "https://www.facebook.com/payfixadvisors",
+    "https://wa.me/918680939401",
+  ],
+};
 
 const nunito = Nunito({
   subsets: ["latin"],
@@ -124,42 +162,12 @@ export default function RootLayout({
           <FloatingWidgets />
         </Providers>
 
-        
-
-        {/* <Script
+        <Script
           id="schema-local-business"
           type="application/ld+json"
           strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "AccountingService",
-              name: "Payfix Advisors",
-              url: "https://payfixadvisors.in",
-              logo: "/payfix-logo.svg",
-              telephone: "+91-8680939401",
-              email: "info@payfixadvisors.in",
-              areaServed: "India",
-              address: [
-                {
-                  "@type": "PostalAddress",
-                  streetAddress: "AR Plaza, Brindavanam",
-                  addressLocality: "Puducherry",
-                  postalCode: "605011",
-                  addressCountry: "IN",
-                },
-                {
-                  "@type": "PostalAddress",
-                  streetAddress: "Mount Poonamallee High Road, Manapakkam",
-                  addressLocality: "Chennai",
-                  postalCode: "600089",
-                  addressCountry: "IN",
-                },
-              ],
-              sameAs: ["https://wa.me/918680939401"],
-            }),
-          }}
-        /> */}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(ORG_SCHEMA) }}
+        />
       </body>
     </html>
   );
