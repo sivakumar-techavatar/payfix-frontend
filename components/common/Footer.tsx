@@ -40,9 +40,7 @@ const socials = [
 ];
 
 export default function Footer() {
-  const openAdmin = () => {
-    console.log("Admin portal open");
-  };
+  const hrPortalUrl = process.env.NEXT_PUBLIC_HR_PORTAL_URL;
 
   return (
     <footer id="footer">
@@ -101,20 +99,13 @@ export default function Footer() {
                   </li>
                 ))}
 
-                <li>
-                  <button
-                    onClick={openAdmin}
-                    style={{
-                      background: "none",
-                      border: "none",
-                      padding: 0,
-                      cursor: "pointer",
-                      color: "inherit",
-                    }}
-                  >
-                    HR Portal
-                  </button>
-                </li>
+                {hrPortalUrl && (
+                  <li>
+                    <a href={hrPortalUrl} target="_blank" rel="noopener noreferrer">
+                      HR Portal
+                    </a>
+                  </li>
+                )}
               </ul>
             </div>
 
@@ -179,7 +170,7 @@ export default function Footer() {
       {/* FOOTER BOTTOM */}
       <div className="container">
         <div className="footer-bottom">
-          <p>© 2025 Payfix Advisors. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Payfix Advisors. All rights reserved.</p>
           <p>Payroll · HR · Tax & Auditing · Pan India</p>
         </div>
       </div>

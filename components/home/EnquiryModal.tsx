@@ -15,6 +15,7 @@ export default function EnquiryModal({
 }: EnquiryModalProps) {
   const [sending, setSending] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const [form, setForm] = useState({
     name: "",
@@ -38,12 +39,52 @@ export default function EnquiryModal({
     setForm((p) => ({ ...p, [key]: value }));
 
   const submit = async () => {
+    setError(null);
+
+    if (!form.name.trim() || !form.company.trim() || !form.phone.trim() || !form.email.trim()) {
+      setError("Please fill in name, company, phone and email.");
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
     setSending(true);
 
-    await new Promise((r) => setTimeout(r, 1200));
+    try {
+      const res = await fetch("/api/send-mail", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          phone: form.phone,
+          company: form.company,
+          service: form.service,
+          employees: form.employees ? Number(form.employees) : undefined,
+          message: [
+            form.designation ? `Designation: ${form.designation}` : "",
+            form.location ? `Location: ${form.location}` : "",
+            form.message,
+          ]
+            .filter(Boolean)
+            .join("\n"),
+        }),
+      });
 
-    setSending(false);
-    setSuccess(true);
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data?.error || "Submission failed");
+      }
+
+      setSuccess(true);
+    } catch (e) {
+      setError((e as Error).message || "Something went wrong. Please try again.");
+    } finally {
+      setSending(false);
+    }
   };
 
   if (!open) return null;
@@ -61,10 +102,15 @@ export default function EnquiryModal({
         <div className="enq-head">
           <div>
             <h3>Request a Quote</h3>
-            <p>We'll get back to you within one business day.</p>
+            <p>We&apos;ll get back to you within one business day.</p>
           </div>
 
-          <button className="enq-close" onClick={onClose}>
+          <button
+            type="button"
+            className="enq-close"
+            onClick={onClose}
+            aria-label="Close enquiry form"
+          >
             <i className="fa fa-times" />
           </button>
         </div>
@@ -130,10 +176,10 @@ export default function EnquiryModal({
                 value={form.service}
                 onChange={(e) => update("service", e.target.value)}
               >
-                <option>Payroll & Compliance</option>
+                <option>Payroll &amp; Compliance</option>
                 <option>HR Services</option>
-                <option>Tax & Auditing</option>
-                <option>Business Registration & Licensing</option>
+                <option>Tax &amp; Auditing</option>
+                <option>Business Registration &amp; Licensing</option>
                 <option>Multiple Services</option>
               </select>
             </Field>
@@ -160,7 +206,20 @@ export default function EnquiryModal({
               />
             </Field>
 
-            <button className="btn btn-red enq-submit" onClick={submit}>
+            {error && (
+              <p
+                role="alert"
+                style={{ color: "#dc2626", fontSize: 13, marginTop: -4 }}
+              >
+                {error}
+              </p>
+            )}
+
+            <button
+              type="button"
+              className="btn btn-red enq-submit"
+              onClick={submit}
+            >
               Submit Requirement →
             </button>
 
@@ -192,7 +251,7 @@ export default function EnquiryModal({
               you shortly.
             </p>
 
-            <button className="btn btn-red" onClick={onClose}>
+            <button type="button" className="btn btn-red" onClick={onClose}>
               Close
             </button>
           </div>
