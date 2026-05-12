@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { BRAND } from "@/constants/brand";
 
 const features = [
   {
@@ -30,8 +31,8 @@ const features = [
   },
   {
     icon: "fa-lock",
-    title: "100% Confidential",
-    text: "Payroll and financial data secured with enterprise-grade confidentiality protocols.",
+    title: "Bank-Grade Confidentiality",
+    text: "Payroll and financial data handled with strict access controls, India DPDP aligned.",
   },
 ];
 
@@ -58,12 +59,7 @@ const industries = [
   { icon: "fa-institution", name: "Govt Sectors" },
 ];
 
-const stats = [
-  { num: "500+", label: "Active Clients" },
-  { num: "10+", label: "Years in Practice" },
-  { num: "PAN", label: "India Reach" },
-  { num: "100%", label: "Confidential" },
-];
+const stats = BRAND.heroStats.map((s) => ({ num: s.value, label: s.label }));
 
 const WhyChoose = () => {
   return (
@@ -102,9 +98,11 @@ const WhyChoose = () => {
           <div className="why-visual">
 
             <div className="stat-big">
-              <div className="stat-big-num">0</div>
+              <div className="stat-big-num" style={{ fontSize: 32 }}>
+                {BRAND.whyBigStat.value}
+              </div>
               <div className="stat-big-label">
-                Missed Compliance Deadlines — Ever
+                {BRAND.whyBigStat.label}
               </div>
             </div>
 

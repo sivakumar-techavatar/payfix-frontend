@@ -3,12 +3,12 @@
 import React from "react";
 
 const aboutPoints = [
-  "500+ Clients Served",
-  "PAN India Reach",
+  "Pan India Service Reach",
   "3 Core Verticals",
-  "0 Missed Deadlines",
-  "100% Confidential",
+  "Structured Deadline Monitoring",
+  "DPDP-Aligned Confidentiality",
   "Dedicated Account Manager",
+  "One Business Day Response",
 ];
 
 const About = () => {
@@ -35,7 +35,7 @@ const About = () => {
 
               <div className="about-badge-box">
                 <div className="about-badge-num">10+</div>
-                <div className="about-badge-label">Years of Trust</div>
+                <div className="about-badge-label">Years Founder Experience</div>
               </div>
             </div>
           </div>
@@ -51,16 +51,18 @@ const About = () => {
             <p className="about-text">
               Payfix Advisors was founded to remove the burden of payroll, HR,
               and tax compliance from business owners — freeing them to focus on
-              growth, not paperwork.
+              growth, not paperwork. Our founders bring over a decade of
+              hands-on practice in Indian payroll, statutory filings, and HR
+              governance.
             </p>
 
             <p className="about-text">
-              With onsite presence in Tamil Nadu, Puducherry, Bangalore, and
-              Hyderabad — and a remote-capable team — we serve businesses across
-              India from startups to enterprises across manufacturing, IT,
-              retail, healthcare, and more. Our combination of deep statutory
-              knowledge and a client-first approach has earned us long-standing
-              partnerships built entirely on trust and accuracy.
+              With onsite presence in Tamil Nadu and Puducherry — and a
+              remote-capable team serving clients across India — we work with
+              startups and growing businesses across manufacturing, IT, retail,
+              healthcare and more. Our combination of deep statutory knowledge
+              and a client-first approach is built around accuracy, structured
+              deadline tracking, and direct access to a dedicated manager.
             </p>
 
             {/* FEATURES */}

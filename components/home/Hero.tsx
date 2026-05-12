@@ -1,5 +1,6 @@
 "use client";
 import { sendWAMessage } from "@/helpers";
+import { BRAND } from "@/constants/brand";
 import Button from "@mui/material/Button";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
@@ -59,7 +60,7 @@ const Hero = () => {
           <div className="hero-left">
             <div className="hero-eyebrow">
               <div className="dot"></div>
-              Trusted by 500+ Businesses Across India
+              {BRAND.socialProof}
             </div>
 
             <h1>
@@ -109,31 +110,12 @@ const Hero = () => {
             </Link>
 
             <div className="hero-stats">
-              <div className="hero-stat">
-                <div className="hero-stat-num">
-                  500<em>+</em>
+              {BRAND.heroStats.map((s) => (
+                <div className="hero-stat" key={s.label}>
+                  <div className="hero-stat-num">{s.value}</div>
+                  <div className="hero-stat-label">{s.label}</div>
                 </div>
-                <div className="hero-stat-label">Clients Served</div>
-              </div>
-
-              <div className="hero-stat">
-                <div className="hero-stat-num">
-                  10<em>+</em>
-                </div>
-                <div className="hero-stat-label">Years Experience</div>
-              </div>
-
-              <div className="hero-stat">
-                <div className="hero-stat-num">
-                  100<em>%</em>
-                </div>
-                <div className="hero-stat-label">Compliance Rate</div>
-              </div>
-
-              <div className="hero-stat">
-                <div className="hero-stat-num">0</div>
-                <div className="hero-stat-label">Missed Deadlines</div>
-              </div>
+              ))}
             </div>
           </div>
 

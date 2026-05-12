@@ -1,15 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import FaqSection from "../common/FaqSection";
 import { HomePageMobileFAQs } from "@/constants";
+import { BRAND } from "@/constants/brand";
 
-const stats = [
-  { value: "500+", label: "Clients" },
-  { value: "10+", label: "Years" },
-  { value: "100%", label: "Compliance" },
-  { value: "0", label: "Missed" },
-];
+const stats = BRAND.heroStats.map((s) => ({ value: s.value, label: s.label }));
 
 const services = [
   {
@@ -102,8 +98,8 @@ const services = [
 
 const why = [
   {
-    title: "Zero Penalties",
-    text: "Never miss a deadline or filing",
+    title: "Deadline Tracking",
+    text: "Structured monitoring of every filing",
     icon: (
       <svg
         width="22"
@@ -118,8 +114,8 @@ const why = [
     ),
   },
   {
-    title: "Save 100+ Hours",
-    text: "We handle all compliance work",
+    title: "Cut Admin Time",
+    text: "We handle the compliance workload",
     icon: (
       <svg
         width="22"
@@ -152,8 +148,8 @@ const why = [
     ),
   },
   {
-    title: "100% Secure",
-    text: "Your data is always protected",
+    title: "Confidential",
+    text: "DPDP-aligned data handling",
     icon: (
       <svg
         width="22"
@@ -218,7 +214,7 @@ export default function MobilePage() {
 
       {/* WHY */}
       <div className="mob-sec">
-        <h2>Why 500+ Businesses Trust Us</h2>
+        <h2>Why Businesses Choose Payfix</h2>
 
         <div className="mob-why-grid">
           {why.map((w, i) => (
