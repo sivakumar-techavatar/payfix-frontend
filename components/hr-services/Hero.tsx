@@ -10,7 +10,7 @@ export default function Hero() {
         <div className="svc-hero-breadcrumb">
           <a href="/">Home</a>
           <i className="fa fa-angle-right"></i>
-          <a href="/">Services</a>
+          <a href="/#services">Services</a>
           <i className="fa fa-angle-right"></i>
           <span className="current">HR Services</span>
         </div>

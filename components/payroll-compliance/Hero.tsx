@@ -1,9 +1,10 @@
+import Link from "next/link";
 import React from "react";
 
 const stats = [
-  { value: "500+", label: "Businesses Served" },
-  { value: "100%", label: "On-Time Filing" },
-  { value: "Zero", label: "Penalty Track Record" },
+  { value: "Monthly", label: "PF · ESI · TDS Filing" },
+  { value: "Structured", label: "Deadline Monitoring" },
+  { value: "Dedicated", label: "Account Manager" },
   { value: "Pan India", label: "Coverage" },
 ];
 
@@ -13,10 +14,10 @@ export default function Hero() {
       <div className="container">
         {/* Breadcrumb */}
         <div className="svc-hero-breadcrumb">
-          <a href="../index.html">Home</a>
+          <Link href="/">Home</Link>
           <i className="fa fa-angle-right"></i>
 
-          <a href="index.html">Services</a>
+          <Link href="/#services">Services</Link>
           <i className="fa fa-angle-right"></i>
 
           <span className="current">Payroll Compliance</span>

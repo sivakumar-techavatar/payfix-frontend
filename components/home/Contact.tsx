@@ -27,7 +27,7 @@ const contactItems = [
     icon: "fa-map-marker",
     title: "Chennai (Head Office)",
     value:
-      "Centre Point, 2/4, Mount Pollamallee High Road, Manapakkam, Porur – 600 089",
+      "Centre Point, 2/4, Mount Poonamallee High Road, Manapakkam, Porur – 600 089",
   },
   {
     icon: "fa-map-marker",

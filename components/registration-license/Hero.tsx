@@ -10,9 +10,9 @@ export default function Hero() {
         <div className="svc-hero-breadcrumb">
           <a href="/">Home</a>
           <i className="fa fa-angle-right"></i>
-          <a href="/">Services</a>
+          <a href="/#services">Services</a>
           <i className="fa fa-angle-right"></i>
-          <span className="current">Registration & License</span>
+          <span className="current">Registration &amp; License</span>
         </div>
 
         <div className="svc-hero-eyebrow">
@@ -46,8 +46,8 @@ export default function Hero() {
           <div className="svc-hero-stat-div"></div>
 
           <div className="svc-hero-stat">
-            <strong>Zero</strong>
-            <span>Back-and-Forth for You</span>
+            <strong>Single-Point</strong>
+            <span>Liaison Contact</span>
           </div>
 
           <div className="svc-hero-stat-div"></div>

@@ -10,9 +10,9 @@ export default function Hero() {
         <div className="svc-hero-breadcrumb">
           <a href="/">Home</a>
           <i className="fa fa-angle-right"></i>
-          <a href="/">Services</a>
+          <a href="/#services">Services</a>
           <i className="fa fa-angle-right"></i>
-          <span className="current">Tax & Auditing</span>
+          <span className="current">Tax &amp; Auditing</span>
         </div>
 
         <div className="svc-hero-eyebrow">
@@ -36,8 +36,8 @@ export default function Hero() {
 
         <p className="svc-hero-sub">
           GST, Income Tax, and Audit — <strong>filed accurately, on time</strong>,
-          with proactive alerts before every due date. No surprises. No
-          penalties.
+          with proactive alerts before every due date. Structured calendar.
+          Direct notice support.
         </p>
 
         <div className="svc-hero-stat-row">
@@ -56,8 +56,8 @@ export default function Hero() {
           <div className="svc-hero-stat-div"></div>
 
           <div className="svc-hero-stat">
-            <strong>Zero</strong>
-            <span>Missed Deadlines</span>
+            <strong>Structured</strong>
+            <span>Deadline Monitoring</span>
           </div>
 
           <div className="svc-hero-stat-div"></div>
