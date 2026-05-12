@@ -1,8 +1,13 @@
 import { rateLimit } from "@/lib/rate-limit";
+import { escapeHtml } from "@/lib/escape-html";
 import { headers } from "next/headers";
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.MAIL_SEND_API_KEY);
+
+const FROM_ADDRESS =
+  process.env.MAIL_FROM_ADDRESS || "Payfix Advisors <reports@payfixadvisors.in>";
+const CC_ADDRESS = process.env.MAIL_TO_ADDRESS || "info@payfixadvisors.in";
 
 function getRisk(s: number) {
   if (s >= 80) return { lv: "Low Risk", cl: "#10b981", gr: "A" };
@@ -13,90 +18,83 @@ function getRisk(s: number) {
 
 export async function POST(req: Request) {
   const ip =
-    (await headers()).get("x-forwarded-for")?.split(",")[0] || "unknown";
+    (await headers()).get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
 
-  const allowed = rateLimit(ip, 5, 60000);
-
-  if (!allowed) {
+  if (!rateLimit(ip, 5, 60000)) {
     return Response.json({ error: "Too many requests" }, { status: 429 });
   }
 
-  const body = await req.json();
+  let body: any;
+  try {
+    body = await req.json();
+  } catch {
+    return Response.json({ error: "Invalid JSON" }, { status: 400 });
+  }
 
-  const { info, scoreData, flags, bm } = body;
+  const { info, scoreData, flags, bm } = body || {};
 
-  const risk = getRisk(scoreData.score);
+  if (!info?.email || !info?.companyName || !scoreData?.score) {
+    return Response.json({ error: "Missing report data" }, { status: 400 });
+  }
 
-  /* =========================
-     BUILD EMAIL HTML (SIMPLIFIED REPORT)
-  ========================= */
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(info.email))) {
+    return Response.json({ error: "Invalid email" }, { status: 400 });
+  }
+
+  const risk = getRisk(Number(scoreData.score));
 
   const html = `
 <div style="font-family:Arial;max-width:700px">
-
   <h2>Compliance Report</h2>
-
-  <p><strong>${info.companyName}</strong></p>
-  <p>${info.industry} • ${info.employeeRange}</p>
-
+  <p><strong>${escapeHtml(info.companyName)}</strong></p>
+  <p>${escapeHtml(info.industry || "")} • ${escapeHtml(info.employeeRange || "")}</p>
   <div style="padding:20px;border:1px solid #eee;border-radius:10px">
-    <h1 style="color:${risk.cl}">${scoreData.score}%</h1>
+    <h1 style="color:${risk.cl}">${escapeHtml(scoreData.score)}%</h1>
     <p>${risk.lv} (Grade ${risk.gr})</p>
   </div>
-
   <h3>Category Scores</h3>
-  ${Object.keys(scoreData.bd)
+  ${Object.keys(scoreData.bd || {})
     .map(
-      (c) => `
-      <div style="margin-bottom:8px">
-        <b>${c}</b>: ${scoreData.bd[c]}%
-      </div>
-    `,
+      (c) =>
+        `<div style="margin-bottom:8px"><b>${escapeHtml(c)}</b>: ${escapeHtml(scoreData.bd[c])}%</div>`,
     )
     .join("")}
-
-  <h3>Business Maturity: ${bm.score}%</h3>
-  ${bm.items
+  <h3>Business Maturity: ${escapeHtml(bm?.score ?? "-")}%</h3>
+  ${(bm?.items || [])
     .map(
-      (i: any) => `
-      <div>${i.n}: ${i.v ? "Yes" : "No"}</div>
-    `,
+      (i: any) =>
+        `<div>${escapeHtml(i.n)}: ${i.v ? "Yes" : "No"}</div>`,
     )
     .join("")}
-
   <h3>Top Risks</h3>
-  ${flags
+  ${(flags || [])
     .map(
-      (f: any) => `
-      <div style="color:#ef4444">• ${f.t}</div>
-    `,
+      (f: any) =>
+        `<div style="color:#ef4444">• ${escapeHtml(f.t)}</div>`,
     )
     .join("")}
-
   <hr/>
-
-  <p style="font-size:12px;color:#666">
-    Need help? Contact Payfix Advisors
-  </p>
-
+  <p style="font-size:12px;color:#666">Need help? Contact Payfix Advisors at ${escapeHtml(CC_ADDRESS)}</p>
 </div>
 `;
 
   try {
     const { data, error } = await resend.emails.send({
-      from: "Payfix Advisors <onboarding@resend.dev>",
-      to: info.email,
-      cc: process.env.NEXT_PUBLIC_MAIL_ID!,
-      subject: `Compliance Report - ${info.companyName}`,
+      from: FROM_ADDRESS,
+      to: String(info.email),
+      cc: CC_ADDRESS,
+      subject: `Compliance Report — ${info.companyName}`,
       html,
     });
 
     if (error) {
-      return Response.json(error, { status: 400 });
+      console.error("[send-report] resend error:", error);
+      return Response.json({ error: "Send failed" }, { status: 500 });
     }
 
     return Response.json({ success: true, id: data?.id });
-  } catch {
-    return Response.json({ success: false }, { status: 400 });
+  } catch (err) {
+    console.error("[send-report] exception:", (err as Error).message);
+    return Response.json({ error: "Send failed" }, { status: 500 });
   }
 }
