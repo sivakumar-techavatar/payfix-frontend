@@ -4,11 +4,20 @@ import { forwardLead } from "@/lib/forward-lead";
 import { headers } from "next/headers";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.MAIL_SEND_API_KEY);
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
-const TO_ADDRESS = process.env.MAIL_TO_ADDRESS || "info@payfixadvisors.in";
-const FROM_ADDRESS =
-  process.env.MAIL_FROM_ADDRESS || "Payfix Advisors <leads@payfixadvisors.in>";
+function getResend() {
+  const key = process.env.MAIL_SEND_API_KEY;
+  if (!key) throw new Error("MAIL_SEND_API_KEY is not configured");
+  return new Resend(key);
+}
+
+const TO_ADDRESS = () =>
+  process.env.MAIL_TO_ADDRESS || "info@payfixadvisors.in";
+const FROM_ADDRESS = () =>
+  process.env.MAIL_FROM_ADDRESS ||
+  "Payfix Advisors <leads@payfixadvisors.in>";
 
 export async function POST(req: Request) {
   const hdrs = await headers();
@@ -81,9 +90,9 @@ export async function POST(req: Request) {
 `;
 
   try {
-    const { data, error } = await resend.emails.send({
-      from: FROM_ADDRESS,
-      to: TO_ADDRESS,
+    const { data, error } = await getResend().emails.send({
+      from: FROM_ADDRESS(),
+      to: TO_ADDRESS(),
       replyTo: email,
       subject: `New Inquiry — ${service || "Website Lead"} — ${name}`,
       html,

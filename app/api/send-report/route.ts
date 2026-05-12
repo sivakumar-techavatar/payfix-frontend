@@ -3,11 +3,20 @@ import { escapeHtml } from "@/lib/escape-html";
 import { headers } from "next/headers";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.MAIL_SEND_API_KEY);
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
-const FROM_ADDRESS =
-  process.env.MAIL_FROM_ADDRESS || "Payfix Advisors <reports@payfixadvisors.in>";
-const CC_ADDRESS = process.env.MAIL_TO_ADDRESS || "info@payfixadvisors.in";
+function getResend() {
+  const key = process.env.MAIL_SEND_API_KEY;
+  if (!key) throw new Error("MAIL_SEND_API_KEY is not configured");
+  return new Resend(key);
+}
+
+const FROM_ADDRESS = () =>
+  process.env.MAIL_FROM_ADDRESS ||
+  "Payfix Advisors <reports@payfixadvisors.in>";
+const CC_ADDRESS = () =>
+  process.env.MAIL_TO_ADDRESS || "info@payfixadvisors.in";
 
 function getRisk(s: number) {
   if (s >= 80) return { lv: "Low Risk", cl: "#10b981", gr: "A" };
@@ -74,15 +83,15 @@ export async function POST(req: Request) {
     )
     .join("")}
   <hr/>
-  <p style="font-size:12px;color:#666">Need help? Contact Payfix Advisors at ${escapeHtml(CC_ADDRESS)}</p>
+  <p style="font-size:12px;color:#666">Need help? Contact Payfix Advisors at ${escapeHtml(CC_ADDRESS())}</p>
 </div>
 `;
 
   try {
-    const { data, error } = await resend.emails.send({
-      from: FROM_ADDRESS,
+    const { data, error } = await getResend().emails.send({
+      from: FROM_ADDRESS(),
       to: String(info.email),
-      cc: CC_ADDRESS,
+      cc: CC_ADDRESS(),
       subject: `Compliance Report — ${info.companyName}`,
       html,
     });

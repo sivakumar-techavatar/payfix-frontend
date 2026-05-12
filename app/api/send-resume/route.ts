@@ -3,11 +3,20 @@ import { Resend } from "resend";
 import { rateLimit } from "@/lib/rate-limit";
 import { escapeHtml } from "@/lib/escape-html";
 
-const resend = new Resend(process.env.MAIL_SEND_API_KEY);
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
-const TO_ADDRESS = process.env.MAIL_TO_ADDRESS || "info@payfixadvisors.in";
-const FROM_ADDRESS =
-  process.env.MAIL_FROM_ADDRESS || "Payfix Advisors <careers@payfixadvisors.in>";
+function getResend() {
+  const key = process.env.MAIL_SEND_API_KEY;
+  if (!key) throw new Error("MAIL_SEND_API_KEY is not configured");
+  return new Resend(key);
+}
+
+const TO_ADDRESS = () =>
+  process.env.MAIL_TO_ADDRESS || "info@payfixadvisors.in";
+const FROM_ADDRESS = () =>
+  process.env.MAIL_FROM_ADDRESS ||
+  "Payfix Advisors <careers@payfixadvisors.in>";
 
 const MAX_SIZE = 5 * 1024 * 1024;
 const ALLOWED_MIME = new Set([
@@ -106,9 +115,9 @@ export async function POST(req: Request) {
 </div>
 `;
 
-    const { error } = await resend.emails.send({
-      from: FROM_ADDRESS,
-      to: TO_ADDRESS,
+    const { error } = await getResend().emails.send({
+      from: FROM_ADDRESS(),
+      to: TO_ADDRESS(),
       replyTo: email,
       subject: `New Application — ${role || "Unspecified"} — ${name}`,
       html,
