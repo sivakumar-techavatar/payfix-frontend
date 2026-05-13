@@ -76,17 +76,32 @@ const Header = ({
 }: IHeader) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const [desktopServicesOpen, setDesktopServicesOpen] = useState(false);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const pathname = usePathname();
 
-  // Close the mobile drawer + accordion when the route changes.
-  // (Desktop dropdown is pure-CSS hover, no JS state needed.)
+  // Reset all menu state when route changes (not on click — that causes
+  // a Link-unmount race that cancels navigation).
   useEffect(() => {
     setMobileOpen(false);
     setMobileServicesOpen(false);
+    setDesktopServicesOpen(false);
   }, [pathname]);
+
+  // Close desktop dropdown when clicking outside it.
+  useEffect(() => {
+    if (!desktopServicesOpen) return;
+    const onDocClick = (e: globalThis.MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest(".nav-dropdown")) {
+        setDesktopServicesOpen(false);
+      }
+    };
+    document.addEventListener("click", onDocClick);
+    return () => document.removeEventListener("click", onDocClick);
+  }, [desktopServicesOpen]);
 
   const toggleMobileDrawer = () => {
     setMobileOpen((prev) => !prev);
@@ -151,8 +166,20 @@ const Header = ({
               <nav className="nav-links">
                 <a href="/">Home</a>
 
-                <div className="nav-dropdown" tabIndex={0}>
-                  <Link href="/#services" className="nav-dropdown-trigger">
+                <div
+                  className={`nav-dropdown${desktopServicesOpen ? " open" : ""}`}
+                  tabIndex={0}
+                >
+                  <button
+                    type="button"
+                    className="nav-dropdown-trigger"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setDesktopServicesOpen((p) => !p);
+                    }}
+                    aria-haspopup="true"
+                    aria-expanded={desktopServicesOpen}
+                  >
                     Services
                     <svg
                       className="nav-chevron"
@@ -166,7 +193,7 @@ const Header = ({
                     >
                       <polyline points="6 9 12 15 18 9" />
                     </svg>
-                  </Link>
+                  </button>
 
                   <div className="nav-dropdown-menu" role="menu">
                     <Link href="/payroll-compliance" className="ndm-item" role="menuitem">
