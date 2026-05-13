@@ -7,10 +7,8 @@ import "./css/home.css";
 import "./css/payroll.css";
 
 import Providers from "./providers";
-import FloatingWidgets from "@/components/home/FloatingWidgets";
 import Analytics, { AnalyticsNoscript } from "@/components/common/Analytics";
-import CookieBanner from "@/components/common/CookieBanner";
-import MobileStickyCTA from "@/components/common/MobileStickyCTA";
+import LayoutShell from "@/components/common/LayoutShell";
 
 const ORG_SCHEMA = {
   "@context": "https://schema.org",
@@ -167,9 +165,7 @@ export default function RootLayout({
         <AnalyticsNoscript />
         <Providers>
           {children}
-          <FloatingWidgets />
-          <MobileStickyCTA />
-          <CookieBanner />
+          <LayoutShell />
         </Providers>
 
         <Script
