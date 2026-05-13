@@ -215,5 +215,4 @@ function BusinessIdentifiers() {
       {parts.join(" · ")}
     </p>
   );
-  );
 }
