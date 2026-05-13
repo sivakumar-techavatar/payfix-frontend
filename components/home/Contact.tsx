@@ -2,12 +2,14 @@
 
 import { getMailId, getPhNo, openWA } from "@/helpers";
 import toast from "react-hot-toast";
+import { useState } from "react";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { contactSchema } from "@/schemas/leadSchema";
 import { z } from "zod";
 import { trackLead } from "@/lib/analytics";
+import TurnstileWidget from "@/components/common/TurnstileWidget";
 import { Icon } from "@/components/common/Icon";
 
 type FormData = z.infer<typeof contactSchema>;
@@ -70,6 +72,11 @@ const services = [
 ];
 
 const Contact = () => {
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const turnstileEnabled = Boolean(
+    process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY,
+  );
+
   const {
     register,
     handleSubmit,
@@ -80,13 +87,17 @@ const Contact = () => {
   });
 
   const onSubmit = async (data: FormData) => {
+    if (turnstileEnabled && !turnstileToken) {
+      toast.error("Please complete the captcha.");
+      return;
+    }
     try {
       const res = await fetch("/api/send-mail", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ ...data, turnstileToken }),
       });
 
       if (!res.ok) throw new Error();
@@ -94,6 +105,7 @@ const Contact = () => {
       trackLead({ service: data.service || "Unknown", source: "contact-form" });
       toast.success("Inquiry sent successfully");
       reset();
+      setTurnstileToken(null);
     } catch {
       toast.error("Failed to send inquiry");
     }
@@ -257,6 +269,12 @@ const Contact = () => {
                 />
               </div>
 
+              {turnstileEnabled && (
+                <div className="form-group" style={{ marginTop: 4 }}>
+                  <TurnstileWidget onToken={setTurnstileToken} />
+                </div>
+              )}
+
               <button
                 type="submit"
                 className="btn btn-red"
@@ -266,7 +284,9 @@ const Contact = () => {
                   borderRadius: 40,
                   justifyContent: "center",
                 }}
-                disabled={isSubmitting}
+                disabled={
+                  isSubmitting || (turnstileEnabled && !turnstileToken)
+                }
               >
                 {isSubmitting ? "Sending..." : "Send Message →"}
               </button>

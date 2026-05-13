@@ -2,6 +2,7 @@ import { headers } from "next/headers";
 import { Resend } from "resend";
 import { rateLimit } from "@/lib/rate-limit";
 import { escapeHtml } from "@/lib/escape-html";
+import { verifyTurnstile } from "@/lib/verify-turnstile";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -90,6 +91,15 @@ export async function POST(req: Request) {
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return Response.json({ error: "Invalid email" }, { status: 400 });
+    }
+
+    const turnstileToken =
+      formData.get("turnstileToken")?.toString() || undefined;
+    if (!(await verifyTurnstile(turnstileToken, ip))) {
+      return Response.json(
+        { error: "Captcha verification failed. Please retry." },
+        { status: 400 },
+      );
     }
 
     const safeName = file.name.replace(/[^\w.\- ]+/g, "_").slice(0, 80) ||

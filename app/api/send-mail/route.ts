@@ -1,6 +1,7 @@
 import { rateLimit } from "@/lib/rate-limit";
 import { escapeHtml } from "@/lib/escape-html";
 import { forwardLead } from "@/lib/forward-lead";
+import { verifyTurnstile } from "@/lib/verify-turnstile";
 import { headers } from "next/headers";
 import { Resend } from "resend";
 
@@ -57,6 +58,17 @@ export async function POST(req: Request) {
 
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return Response.json({ error: "Invalid email" }, { status: 400 });
+  }
+
+  const turnstileOk = await verifyTurnstile(
+    typeof body?.turnstileToken === "string" ? body.turnstileToken : undefined,
+    ip,
+  );
+  if (!turnstileOk) {
+    return Response.json(
+      { error: "Captcha verification failed. Please retry." },
+      { status: 400 },
+    );
   }
 
   const html = `
