@@ -177,7 +177,13 @@ export default function Footer() {
       <div className="container">
         <div className="footer-bottom">
           <p>© {new Date().getFullYear()} Payfix Advisors. All rights reserved.</p>
-          <p>Payroll · HR · Tax & Auditing · Pan India</p>
+          <p className="footer-legal-links">
+            <a href="/privacy">Privacy Policy</a>
+            <span aria-hidden="true"> · </span>
+            <a href="/terms">Terms of Service</a>
+            <span aria-hidden="true"> · </span>
+            <a href="/refund">Refund Policy</a>
+          </p>
         </div>
       </div>
     </footer>
