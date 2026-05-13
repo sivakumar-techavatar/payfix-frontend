@@ -1,4 +1,5 @@
 import { sendWAMessage } from "@/helpers";
+import { Icon } from "@/components/common/Icon";
 
 const actions = [
   {
