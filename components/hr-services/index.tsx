@@ -10,14 +10,14 @@ import SolutionSection from "./SolutionSection";
 import BenefitsSection from "./BenefitsSection";
 import WhySection from "./WhySection";
 import FaqSection from "../common/FaqSection";
-import ConversionSection from "./ConversationSection";
+import ConversionSection from "./ConversionSection";
 import ProcessSection from "./ProcessSection";
 import IndustriesSection from "./IndustriesSection";
-import TrustBar from "./TrustBar";
-import LateralServices from "./LateralServices";
+import TrustBar from "../services-shared/TrustBar";
+import LateralServices from "../services-shared/LateralServices";
 import Footer from "../common/Footer";
 
-const HRSevices = () => {
+const HRServices = () => {
   useReveal();
   return (
     <>
@@ -29,17 +29,17 @@ const HRSevices = () => {
       <WhySection />
       <Box py={10}>
         <Container>
-          <FaqSection title="HR Services - FAQs" faqs={HRFAQs} />
+          <FaqSection title="HR Services — FAQs" faqs={HRFAQs} />
         </Container>
       </Box>
       <ConversionSection />
       <ProcessSection />
       <IndustriesSection />
       <TrustBar />
-      <LateralServices />
+      <LateralServices exclude="hr-services" />
       <Footer />
     </>
   );
 };
 
-export default HRSevices;
+export default HRServices;
