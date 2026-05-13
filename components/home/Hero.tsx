@@ -44,7 +44,7 @@ const Hero = () => {
       index = (index + 1) % slides.length;
       track.style.transform = `translateX(-${index * 100}%)`;
       slides[index].classList.add("active");
-    }, 8000);
+    }, 4000);
 
     return () => clearInterval(interval);
   }, []);
