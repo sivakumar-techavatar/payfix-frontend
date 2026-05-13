@@ -21,7 +21,7 @@ export const HomePageMobileFAQs = [
   },
   {
     q: "Why choose Payfix over other compliance firms?",
-    a: "Over a decade of founder experience in Indian payroll and compliance, a dedicated manager for every account, structured deadline tracking across PF/ESI/TDS/GST, and transparent pricing with no hidden charges. We treat your business like our own.",
+    a: "Over 15 years of founder experience in Indian payroll and compliance, a dedicated manager for every account, structured deadline tracking across PF/ESI/TDS/GST, and transparent pricing with no hidden charges. We treat your business like our own.",
   },
 ];
 

@@ -14,11 +14,11 @@
 
 export const BRAND = {
   socialProof: "Trusted by growing businesses across India",
-  founderExperienceYears: "10+",
+  founderExperienceYears: "15+",
   founderExperienceLabel: "Years Founder Experience",
 
   heroStats: [
-    { value: "10+", label: "Years Founder Experience" },
+    { value: "15+", label: "Years Founder Experience" },
     { value: "Pan India", label: "Service Coverage" },
     { value: "Dedicated", label: "Account Manager" },
     { value: "Structured", label: "Compliance Tracking" },

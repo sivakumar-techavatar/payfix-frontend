@@ -34,7 +34,7 @@ const About = () => {
               </div>
 
               <div className="about-badge-box">
-                <div className="about-badge-num">10+</div>
+                <div className="about-badge-num">15+</div>
                 <div className="about-badge-label">Years Founder Experience</div>
               </div>
             </div>
@@ -51,7 +51,7 @@ const About = () => {
             <p className="about-text">
               Payfix Advisors was founded to remove the burden of payroll, HR,
               and tax compliance from business owners — freeing them to focus on
-              growth, not paperwork. Our founders bring over a decade of
+              growth, not paperwork. Our founders bring over 15 years of
               hands-on practice in Indian payroll, statutory filings, and HR
               governance.
             </p>
@@ -84,7 +84,7 @@ const About = () => {
                 flexWrap: "wrap",
               }}
             >
-              <a href="#health-check" className="btn btn-red">
+              <a href="#pricing" className="btn btn-red">
                 View Pricing Plans
               </a>
 

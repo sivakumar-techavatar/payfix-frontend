@@ -17,10 +17,18 @@ import useReveal from "@/hooks/useReveal";
 import HealthCheckSection from "./HealthCheck";
 import Careers from "./careers";
 import Footer from "../common/Footer";
-import ComplianceHealthCheckIntro from "./ComplianceHealthCheckIntro";
+import EnquiryModal from "./EnquiryModal";
 
 const HomePage = () => {
   useReveal();
+
+  const [leadOpen, setLeadOpen] = useState(false);
+  const [leadService, setLeadService] = useState("");
+
+  const openLead = (service: string) => {
+    setLeadService(service);
+    setLeadOpen(true);
+  };
 
   return (
     <>
@@ -35,16 +43,16 @@ const HomePage = () => {
       <Testimonials />
       <Contact />
       <MobilePage />
-      <Pricing openLead={() => {}} />
+      <Pricing openLead={openLead} />
       <HealthCheckSection />
       <Careers />
       <Footer />
-      
-      {/* <EnquiryModal
+
+      <EnquiryModal
         open={leadOpen}
         service={leadService}
         onClose={() => setLeadOpen(false)}
-      /> */}
+      />
     </>
   );
 };
