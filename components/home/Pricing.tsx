@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Icon } from "@/components/common/Icon";
 
 export default function PricingSection({
   openLead,
@@ -102,47 +103,47 @@ export default function PricingSection({
                   <div className="ppanel-body">
                     <div className="svc-tag-grid">
                       <span className="svc-tag">
-                        <i className="fa fa-calendar-check-o"></i>
+                        <Icon name="calendar-check-o" />
                         Attendance & Leave Management
                       </span>
 
                       <span className="svc-tag">
-                        <i className="fa fa-money"></i>
+                        <Icon name="money" />
                         Payroll Processing
                       </span>
 
                       <span className="svc-tag">
-                        <i className="fa fa-shield"></i>
+                        <Icon name="shield" />
                         PF, ESI, PT Filing
                       </span>
 
                       <span className="svc-tag">
-                        <i className="fa fa-file-text-o"></i>
+                        <Icon name="file-text-o" />
                         TDS & Form 16
                       </span>
 
                       <span className="svc-tag">
-                        <i className="fa fa-gavel"></i>
+                        <Icon name="gavel" />
                         Labour Law Compliance
                       </span>
 
                       <span className="svc-tag">
-                        <i className="fa fa-desktop"></i>
+                        <Icon name="desktop" />
                         HRMS & Automation
                       </span>
 
                       <span className="svc-tag">
-                        <i className="fa fa-bell-o"></i>
+                        <Icon name="bell-o" />
                         Compliance Calendar
                       </span>
 
                       <span className="svc-tag">
-                        <i className="fa fa-envelope-o"></i>
+                        <Icon name="envelope-o" />
                         Notice Handling
                       </span>
 
                       <span className="svc-tag">
-                        <i className="fa fa-book"></i>
+                        <Icon name="book" />
                         Labour Registers
                       </span>
                     </div>
@@ -152,7 +153,7 @@ export default function PricingSection({
                         className="lead-modal-btn"
                         onClick={(e) => openLead("Payroll Compliance")}
                       >
-                        <i className="fa fa-whatsapp"></i>
+                        <Icon name="whatsapp" />
                         TALK OUR PAYROLL EXPERT
                       </button>
                     </div>
@@ -190,34 +191,34 @@ export default function PricingSection({
                   <div className="ppanel-body">
                     <div className="svc-tag-grid">
                       <span className="svc-tag">
-                        <i className="fa fa-search"></i>Talent Acquisition
+                        <Icon name="search" />Talent Acquisition
                       </span>
                       <span className="svc-tag">
-                        <i className="fa fa-id-card-o"></i>Temp / Contract
+                        <Icon name="id-card-o" />Temp / Contract
                         Staffing
                       </span>
                       <span className="svc-tag">
-                        <i className="fa fa-cogs"></i>HR Governance & Policy
+                        <Icon name="cogs" />HR Governance & Policy
                       </span>
                       <span className="svc-tag">
-                        <i className="fa fa-line-chart"></i>Compensation &
+                        <Icon name="line-chart" />Compensation &
                         Performance
                       </span>
                       <span className="svc-tag">
-                        <i className="fa fa-refresh"></i>Employee Lifecycle
+                        <Icon name="refresh" />Employee Lifecycle
                       </span>
                       <span className="svc-tag">
-                        <i className="fa fa-desktop"></i>HRMS Setup
+                        <Icon name="desktop" />HRMS Setup
                       </span>
                       <span className="svc-tag">
-                        <i className="fa fa-check-square-o"></i>Background
+                        <Icon name="check-square-o" />Background
                         Verification
                       </span>
                       <span className="svc-tag">
-                        <i className="fa fa-users"></i>Grievance Management
+                        <Icon name="users" />Grievance Management
                       </span>
                       <span className="svc-tag">
-                        <i className="fa fa-file-text-o"></i>Employee Handbook
+                        <Icon name="file-text-o" />Employee Handbook
                       </span>
                     </div>
 
@@ -226,7 +227,7 @@ export default function PricingSection({
                         className="lead-modal-btn"
                         onClick={(e) => openLead("HR Services")}
                       >
-                        <i className="fa fa-whatsapp"></i>
+                        <Icon name="whatsapp" />
                         TALK OUR HR EXPERT
                       </button>
                     </div>
@@ -269,32 +270,32 @@ export default function PricingSection({
                   <div className="ppanel-body">
                     <div className="svc-tag-grid">
                       <span className="svc-tag">
-                        <i className="fa fa-file-text-o"></i>GST Return Filing
+                        <Icon name="file-text-o" />GST Return Filing
                       </span>
                       <span className="svc-tag">
-                        <i className="fa fa-exchange"></i>ITC Reconciliation
+                        <Icon name="exchange" />ITC Reconciliation
                       </span>
                       <span className="svc-tag">
-                        <i className="fa fa-calculator"></i>Income Tax & TDS
+                        <Icon name="calculator" />Income Tax & TDS
                       </span>
                       <span className="svc-tag">
-                        <i className="fa fa-calendar"></i>Advance Tax Planning
+                        <Icon name="calendar" />Advance Tax Planning
                       </span>
                       <span className="svc-tag">
-                        <i className="fa fa-search"></i>Internal Audit
+                        <Icon name="search" />Internal Audit
                       </span>
                       <span className="svc-tag">
-                        <i className="fa fa-balance-scale"></i>Statutory Audit
+                        <Icon name="balance-scale" />Statutory Audit
                       </span>
                       <span className="svc-tag">
-                        <i className="fa fa-bar-chart"></i>MIS & Financial
+                        <Icon name="bar-chart" />MIS & Financial
                         Reporting
                       </span>
                       <span className="svc-tag">
-                        <i className="fa fa-envelope-o"></i>Notice Management
+                        <Icon name="envelope-o" />Notice Management
                       </span>
                       <span className="svc-tag">
-                        <i className="fa fa-truck"></i>E-Way Bill
+                        <Icon name="truck" />E-Way Bill
                       </span>
                     </div>
 
@@ -303,7 +304,7 @@ export default function PricingSection({
                         className="lead-modal-btn"
                         onClick={(e) => openLead("Tax & Auditing")}
                       >
-                        <i className="fa fa-whatsapp"></i>
+                        <Icon name="whatsapp" />
                         TALK OUR TAX EXPERT
                       </button>
                     </div>
@@ -344,33 +345,33 @@ export default function PricingSection({
                   <div className="ppanel-body">
                     <div className="svc-tag-grid">
                       <span className="svc-tag">
-                        <i className="fa fa-key"></i>DSC Registration & Renewal
+                        <Icon name="key" />DSC Registration & Renewal
                       </span>
                       <span className="svc-tag">
-                        <i className="fa fa-building-o"></i>ROC / Company
+                        <Icon name="building-o" />ROC / Company
                         Formation
                       </span>
                       <span className="svc-tag">
-                        <i className="fa fa-certificate"></i>Shop &
+                        <Icon name="certificate" />Shop &
                         Establishment
                       </span>
                       <span className="svc-tag">
-                        <i className="fa fa-id-badge"></i>Trade License
+                        <Icon name="id-badge" />Trade License
                       </span>
                       <span className="svc-tag">
-                        <i className="fa fa-star-o"></i>MSME / Udyam
+                        <Icon name="star-o" />MSME / Udyam
                       </span>
                       <span className="svc-tag">
-                        <i className="fa fa-industry"></i>Factory License
+                        <Icon name="industry" />Factory License
                       </span>
                       <span className="svc-tag">
-                        <i className="fa fa-cutlery"></i>FSSAI Registration
+                        <Icon name="cutlery" />FSSAI Registration
                       </span>
                       <span className="svc-tag">
-                        <i className="fa fa-globe"></i>Import Export Code
+                        <Icon name="globe" />Import Export Code
                       </span>
                       <span className="svc-tag">
-                        <i className="fa fa-fire-extinguisher"></i>Fire &
+                        <Icon name="fire-extinguisher" />Fire &
                         Pollution NOC
                       </span>
                     </div>
@@ -380,7 +381,7 @@ export default function PricingSection({
                         className="lead-modal-btn"
                         onClick={(e) => openLead("Registration & Licensing")}
                       >
-                        <i className="fa fa-whatsapp"></i>
+                        <Icon name="whatsapp" />
                         TALK OUR COMPLIANCE EXPERT
                       </button>
                     </div>

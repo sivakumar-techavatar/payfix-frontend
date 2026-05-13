@@ -1,3 +1,5 @@
+import { Icon } from "@/components/common/Icon";
+
 const benefits = [
   {
     icon: "fa-check-circle",
@@ -47,7 +49,7 @@ export default function BenefitsSection() {
           {benefits.map((benefit) => (
             <div className="benefit-card" key={benefit.title}>
               <div className="bc-icon">
-                <i className={`fa ${benefit.icon}`}></i>
+                <Icon name={benefit.icon} />
               </div>
 
               <div>

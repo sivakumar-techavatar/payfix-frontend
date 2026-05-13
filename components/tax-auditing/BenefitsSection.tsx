@@ -1,3 +1,5 @@
+import { Icon } from "@/components/common/Icon";
+
 export default function BenefitsSection() {
   return (
     <section className="benefits-section">
@@ -14,7 +16,7 @@ export default function BenefitsSection() {
               className="bc-icon"
               style={{ background: "rgba(14,122,110,.1)", color: "#0e7a6e" }}
             >
-              <i className="fa fa-file-text-o"></i>
+              <Icon name="file-text-o" />
             </div>
             <div>
               <h4>GST Filed. Every Month.</h4>
@@ -30,7 +32,7 @@ export default function BenefitsSection() {
               className="bc-icon"
               style={{ background: "rgba(14,122,110,.1)", color: "#0e7a6e" }}
             >
-              <i className="fa fa-calculator"></i>
+              <Icon name="calculator" />
             </div>
             <div>
               <h4>Structured Tax Planning</h4>
@@ -46,7 +48,7 @@ export default function BenefitsSection() {
               className="bc-icon"
               style={{ background: "rgba(14,122,110,.1)", color: "#0e7a6e" }}
             >
-              <i className="fa fa-bell-o"></i>
+              <Icon name="bell-o" />
             </div>
             <div>
               <h4>Proactive Due Date Alerts</h4>
@@ -62,7 +64,7 @@ export default function BenefitsSection() {
               className="bc-icon"
               style={{ background: "rgba(14,122,110,.1)", color: "#0e7a6e" }}
             >
-              <i className="fa fa-search"></i>
+              <Icon name="search" />
             </div>
             <div>
               <h4>Audit-Ready Books</h4>
@@ -78,7 +80,7 @@ export default function BenefitsSection() {
               className="bc-icon"
               style={{ background: "rgba(14,122,110,.1)", color: "#0e7a6e" }}
             >
-              <i className="fa fa-envelope-o"></i>
+              <Icon name="envelope-o" />
             </div>
             <div>
               <h4>Notice Management</h4>
@@ -94,7 +96,7 @@ export default function BenefitsSection() {
               className="bc-icon"
               style={{ background: "rgba(14,122,110,.1)", color: "#0e7a6e" }}
             >
-              <i className="fa fa-line-chart"></i>
+              <Icon name="line-chart" />
             </div>
             <div>
               <h4>Financial Reporting</h4>

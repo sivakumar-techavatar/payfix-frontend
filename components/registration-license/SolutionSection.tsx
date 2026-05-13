@@ -1,3 +1,5 @@
+import { Icon } from "@/components/common/Icon";
+
 export default function SolutionSection() {
   return (
     <section className="solution-section" id="solutions">
@@ -25,7 +27,7 @@ export default function SolutionSection() {
                 color: "#374151",
               }}
             >
-              <i className="fa fa-building-o"></i>
+              <Icon name="building-o" />
             </div>
 
             <h4>Company Formation</h4>
@@ -47,7 +49,7 @@ export default function SolutionSection() {
                 color: "#374151",
               }}
             >
-              <i className="fa fa-certificate"></i>
+              <Icon name="certificate" />
             </div>
 
             <h4>Commercial Registrations</h4>
@@ -70,7 +72,7 @@ export default function SolutionSection() {
                 color: "#374151",
               }}
             >
-              <i className="fa fa-industry"></i>
+              <Icon name="industry" />
             </div>
 
             <h4>Factory & Industrial Approvals</h4>

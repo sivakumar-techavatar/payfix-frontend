@@ -1,3 +1,5 @@
+import { Icon } from "@/components/common/Icon";
+
 const risks = [
   {
     text: (
@@ -73,7 +75,7 @@ export default function ProblemSection() {
             <div className="problem-risks">
               {risks.map((risk, index) => (
                 <div key={index} className="risk-item">
-                  <i className="fa fa-exclamation-triangle"></i>
+                  <Icon name="exclamation-triangle" />
                   <p>{risk.text}</p>
                 </div>
               ))}
@@ -86,7 +88,7 @@ export default function ProblemSection() {
 
             {assurances.map((item, index) => (
               <div key={index} className="pv-check">
-                <i className="fa fa-check-circle"></i>
+                <Icon name="check-circle" />
                 {item}
               </div>
             ))}

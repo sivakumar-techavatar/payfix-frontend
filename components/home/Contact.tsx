@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { contactSchema } from "@/schemas/leadSchema";
 import { z } from "zod";
+import { Icon } from "@/components/common/Icon";
 
 type FormData = z.infer<typeof contactSchema>;
 
@@ -110,7 +111,7 @@ const Contact = () => {
             {contactItems.map((item, i) => (
               <div key={i} className="contact-info-item">
                 <div className="contact-icon">
-                  <i className={`fa ${item.icon}`}></i>
+                  <Icon name={item.icon} />
                 </div>
 
                 <div className="contact-text">
@@ -137,7 +138,7 @@ const Contact = () => {
                   className="csoc"
                   rel="noopener noreferrer"
                 >
-                  <i className={`fa ${s.icon}`}></i>
+                  <Icon name={s.icon} />
                 </a>
               ))}
             </div>

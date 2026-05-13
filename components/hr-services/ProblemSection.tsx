@@ -1,4 +1,5 @@
 "use client";
+import { Icon } from "@/components/common/Icon";
 
 export default function ProblemSection() {
   return (
@@ -34,7 +35,7 @@ export default function ProblemSection() {
 
             <div className="problem-risks">
               <div className="risk-item">
-                <i className="fa fa-exclamation-triangle"></i>
+                <Icon name="exclamation-triangle" />
 
                 <p>
                   <strong>No written policies</strong> leads to disputes,
@@ -43,7 +44,7 @@ export default function ProblemSection() {
               </div>
 
               <div className="risk-item">
-                <i className="fa fa-exclamation-triangle"></i>
+                <Icon name="exclamation-triangle" />
 
                 <p>
                   <strong>Unstructured hiring</strong> results in wrong hires,
@@ -52,7 +53,7 @@ export default function ProblemSection() {
               </div>
 
               <div className="risk-item">
-                <i className="fa fa-exclamation-triangle"></i>
+                <Icon name="exclamation-triangle" />
 
                 <p>
                   <strong>No KRA/KPI system</strong> means teams have no
@@ -68,32 +69,32 @@ export default function ProblemSection() {
             <h4>What We Build for You</h4>
 
             <div className="pv-check">
-              <i className="fa fa-check-circle"></i>
+              <Icon name="check-circle" />
               Structured hiring process — JD to onboarding
             </div>
 
             <div className="pv-check">
-              <i className="fa fa-check-circle"></i>
+              <Icon name="check-circle" />
               HRMS configured for your organisation
             </div>
 
             <div className="pv-check">
-              <i className="fa fa-check-circle"></i>
+              <Icon name="check-circle" />
               HR policies, SOPs & employee handbook
             </div>
 
             <div className="pv-check">
-              <i className="fa fa-check-circle"></i>
+              <Icon name="check-circle" />
               Compensation benchmarking & CTC design
             </div>
 
             <div className="pv-check">
-              <i className="fa fa-check-circle"></i>
+              <Icon name="check-circle" />
               KRA/KPI framework & appraisal system
             </div>
 
             <div className="pv-check">
-              <i className="fa fa-check-circle"></i>
+              <Icon name="check-circle" />
               Exit interview & full F&F settlement process
             </div>
           </div>

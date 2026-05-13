@@ -1,3 +1,5 @@
+import { Icon } from "@/components/common/Icon";
+
 export default function SolutionSection() {
   return (
     <section className="solution-section">
@@ -29,7 +31,7 @@ export default function SolutionSection() {
                 color: "var(--blue)",
               }}
             >
-              <i className="fa fa-users"></i>
+              <Icon name="users" />
             </div>
 
             <h4>Talent Acquisition</h4>
@@ -53,7 +55,7 @@ export default function SolutionSection() {
                 color: "var(--blue)",
               }}
             >
-              <i className="fa fa-id-card-o"></i>
+              <Icon name="id-card-o" />
             </div>
 
             <h4>Temp / Contract Staffing</h4>
@@ -79,7 +81,7 @@ export default function SolutionSection() {
                 color: "var(--blue)",
               }}
             >
-              <i className="fa fa-sitemap"></i>
+              <Icon name="sitemap" />
             </div>
 
             <h4>HR Governance</h4>
@@ -103,7 +105,7 @@ export default function SolutionSection() {
                 color: "var(--blue)",
               }}
             >
-              <i className="fa fa-bar-chart"></i>
+              <Icon name="bar-chart" />
             </div>
 
             <h4>Compensation & Performance</h4>
@@ -126,7 +128,7 @@ export default function SolutionSection() {
                 color: "var(--blue)",
               }}
             >
-              <i className="fa fa-user-circle-o"></i>
+              <Icon name="user-circle-o" />
             </div>
 
             <h4>Employee Lifecycle</h4>

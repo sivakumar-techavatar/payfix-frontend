@@ -11,6 +11,7 @@ import {
 import { useState, MouseEvent } from "react";
 import Logo from "./Logo";
 import { getPhNo } from "@/helpers";
+import { Icon } from "@/components/common/Icon";
 
 interface IHeader {
   scoreCheckText?: string;
@@ -98,7 +99,7 @@ const Header = ({
         <Container>
           <Box className="top-bar-inner">
             <Typography component="p">
-              <i className="fa fa-map-marker"></i> Onsite: Tamil Nadu ·
+              <Icon name="map-marker" /> Onsite: Tamil Nadu ·
               Puducherry · Bangalore · Hyderabad &nbsp;|&nbsp; All other
               locations served remotely &nbsp;|&nbsp; Onsite visits available on
               request
@@ -108,7 +109,7 @@ const Header = ({
               <span>Talk to Us</span>
 
               <a href={`tel:+${getPhNo()}`}>
-                <i className="fa fa-phone"></i> +91 86809 39401
+                <Icon name="phone" /> +91 86809 39401
               </a>
             </Box>
           </Box>
@@ -166,7 +167,7 @@ const Header = ({
                     <div className="nav-dropdown-menu">
                       <a href="/payroll-compliance" className="ndm-item">
                         <span className="ndm-icon">
-                          <i className="fa fa-money"></i>
+                          <Icon name="money" />
                         </span>
                         <span className="ndm-text">
                           <strong>Payroll Compliance</strong>
@@ -176,7 +177,7 @@ const Header = ({
 
                       <a href="/hr-services" className="ndm-item">
                         <span className="ndm-icon ndm-blue">
-                          <i className="fa fa-users"></i>
+                          <Icon name="users" />
                         </span>
                         <span className="ndm-text">
                           <strong>HR Services</strong>
@@ -186,7 +187,7 @@ const Header = ({
 
                       <a href="/tax-auditing" className="ndm-item">
                         <span className="ndm-icon ndm-teal">
-                          <i className="fa fa-bar-chart"></i>
+                          <Icon name="bar-chart" />
                         </span>
                         <span className="ndm-text">
                           <strong>Tax & Auditing</strong>
@@ -196,7 +197,7 @@ const Header = ({
 
                       <a href="/registration-license" className="ndm-item">
                         <span className="ndm-icon ndm-slate">
-                          <i className="fa fa-building-o"></i>
+                          <Icon name="building-o" />
                         </span>
                         <span className="ndm-text">
                           <strong>Registration & License</strong>
@@ -223,7 +224,7 @@ const Header = ({
                     className="btn btn-blue nav-cta"
                     onClick={scoreCheckTextClick}
                   >
-                    <i className="fa fa-check-square-o"></i> {scoreCheckText}
+                    <Icon name="check-square-o" /> {scoreCheckText}
                   </a>
                 ) : (
                   <a href="/#contact" className="btn nav-cta">

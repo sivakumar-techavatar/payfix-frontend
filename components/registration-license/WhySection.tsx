@@ -1,3 +1,5 @@
+import { Icon } from "@/components/common/Icon";
+
 export default function WhySection() {
   return (
     <section
@@ -30,7 +32,7 @@ export default function WhySection() {
         <div className="why-grid reveal">
           <div className="why-card">
             <div className="why-card-icon">
-              <i className="fa fa-cogs"></i>
+              <Icon name="cogs" />
             </div>
             <strong>Complete Handling</strong>
             <p>
@@ -41,7 +43,7 @@ export default function WhySection() {
 
           <div className="why-card">
             <div className="why-card-icon">
-              <i className="fa fa-calendar-check-o"></i>
+              <Icon name="calendar-check-o" />
             </div>
             <strong>Renewal Tracking</strong>
             <p>
@@ -52,7 +54,7 @@ export default function WhySection() {
 
           <div className="why-card">
             <div className="why-card-icon">
-              <i className="fa fa-map-marker"></i>
+              <Icon name="map-marker" />
             </div>
             <strong>Local Government Liaison</strong>
             <p>
@@ -63,7 +65,7 @@ export default function WhySection() {
 
           <div className="why-card">
             <div className="why-card-icon">
-              <i className="fa fa-file-text-o"></i>
+              <Icon name="file-text-o" />
             </div>
             <strong>Accurate Documentation</strong>
             <p>

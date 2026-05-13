@@ -1,4 +1,5 @@
 import { openWA } from "@/helpers";
+import { Icon } from "@/components/common/Icon";
 
 export default function ConversionSection() {
   return (
@@ -18,7 +19,7 @@ export default function ConversionSection() {
               onClick={() => openWA("HR Operations")}
               style={{ fontSize: 15, padding: "16px 32px" }}
             >
-              <i className="fa fa-whatsapp"></i>
+              <Icon name="whatsapp" />
               Talk to an HR Expert
             </button>
 
@@ -31,7 +32,7 @@ export default function ConversionSection() {
                 padding: "16px 28px",
               }}
             >
-              <i className="fa fa-calendar" style={{ marginRight: 4 }}></i>
+              <Icon name="calendar" style={{ marginRight: 4 }} />
               Schedule a Consultation
             </button>
           </div>

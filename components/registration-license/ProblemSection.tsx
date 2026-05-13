@@ -1,3 +1,5 @@
+import { Icon } from "@/components/common/Icon";
+
 export function ProblemSection() {
   return (
     <section className="problem-section reveal">
@@ -40,7 +42,7 @@ export function ProblemSection() {
 
             <div className="problem-risks">
               <div className="risk-item">
-                <i className="fa fa-exclamation-triangle"></i>
+                <Icon name="exclamation-triangle" />
                 <p>
                   <strong>
                     Operating without Shop & Establishment registration
@@ -51,7 +53,7 @@ export function ProblemSection() {
               </div>
 
               <div className="risk-item">
-                <i className="fa fa-exclamation-triangle"></i>
+                <Icon name="exclamation-triangle" />
                 <p>
                   <strong>Factory without a valid license</strong> violates the
                   Factories Act and can result in criminal prosecution of
@@ -60,7 +62,7 @@ export function ProblemSection() {
               </div>
 
               <div className="risk-item">
-                <i className="fa fa-exclamation-triangle"></i>
+                <Icon name="exclamation-triangle" />
                 <p>
                   <strong>Expired licenses and lapsed renewals</strong> create
                   compliance gaps that appear in due diligence and block large
@@ -74,32 +76,32 @@ export function ProblemSection() {
             <h4>What We Secure for You</h4>
 
             <div className="pv-check">
-              <i className="fa fa-check-circle"></i>
+              <Icon name="check-circle" />
               Company incorporated — ROC, PAN, TAN
             </div>
 
             <div className="pv-check">
-              <i className="fa fa-check-circle"></i>
+              <Icon name="check-circle" />
               DSC obtained and renewed on schedule
             </div>
 
             <div className="pv-check">
-              <i className="fa fa-check-circle"></i>
+              <Icon name="check-circle" />
               Shop & Establishment license obtained
             </div>
 
             <div className="pv-check">
-              <i className="fa fa-check-circle"></i>
+              <Icon name="check-circle" />
               Trade License and MSME registration
             </div>
 
             <div className="pv-check">
-              <i className="fa fa-check-circle"></i>
+              <Icon name="check-circle" />
               Factory License and planning approvals
             </div>
 
             <div className="pv-check">
-              <i className="fa fa-check-circle"></i>
+              <Icon name="check-circle" />
               All renewals tracked and handled proactively
             </div>
           </div>

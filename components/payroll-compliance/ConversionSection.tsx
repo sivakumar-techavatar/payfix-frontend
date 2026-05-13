@@ -43,8 +43,8 @@ export default function ConversionSection() {
                 style={action.style}
                 onClick={() => sendWAMessage(action.message)}
               >
-                <i
-                  className={`fa ${action.icon}`}
+                <Icon
+                  name={action.icon}
                   style={
                     action.icon === "fa-calendar" ? { marginRight: 4 } : {}
                   }

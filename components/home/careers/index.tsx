@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import ApplyModal from "./ApplyModal";
+import { Icon } from "@/components/common/Icon";
 
 const jobs = [
   {
@@ -177,7 +178,7 @@ export default function Careers() {
           </div>
           <div className="culture-card">
             <span className="cicon">
-              <i className="fa fa-handshake-o"></i>
+              <Icon name="handshake-o" />
             </span>
             <h4>Collaborative Culture</h4>
             <p>
@@ -236,15 +237,15 @@ export default function Careers() {
 
                 <div className="job-meta-row">
                   <span className="job-meta">
-                    <i className="fa fa-map-marker" /> {job.location}
+                    <Icon name="map-marker" /> {job.location}
                   </span>
 
                   <span className="job-meta">
-                    <i className="fa fa-clock-o" /> {job.type}
+                    <Icon name="clock-o" /> {job.type}
                   </span>
 
                   <span className="job-meta">
-                    <i className="fa fa-briefcase" /> {job.exp}
+                    <Icon name="briefcase" /> {job.exp}
                   </span>
                 </div>
               </div>

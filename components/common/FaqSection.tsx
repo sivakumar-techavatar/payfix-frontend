@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Collapse from "@mui/material/Collapse";
+import { Icon } from "@/components/common/Icon";
 
 export default function FaqSection({
   title = "",
@@ -35,12 +36,16 @@ export default function FaqSection({
         <div className="faq-list">
           {faqs.map((faq, index) => (
             <div className="faq-item" key={faq.q}>
-              <button className="faq-q" onClick={() => toggleFaq(index)}>
+              <button
+                type="button"
+                className="faq-q"
+                onClick={() => toggleFaq(index)}
+                aria-expanded={openIndex === index}
+              >
                 {faq.q}
-                <i
-                  className={`fa fa-chevron-down ${
-                    openIndex === index ? "rotate" : ""
-                  }`}
+                <Icon
+                  name="chevron-down"
+                  className={openIndex === index ? "rotate" : ""}
                 />
               </button>
 

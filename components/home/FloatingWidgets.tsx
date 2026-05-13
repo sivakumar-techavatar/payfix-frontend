@@ -2,6 +2,7 @@
 
 import { sendWAMessage } from "@/helpers";
 import { useState, useRef, useEffect } from "react";
+import { Icon } from "@/components/common/Icon";
 
 const REPLIES: Record<string, string> = {
   "Payroll Compliance": `Our Payroll Compliance service covers:
@@ -193,7 +194,7 @@ Please choose a topic or type your question below:`,
       <div className={`wa-panel ${open ? "open" : ""}`} id="waPanel">
         <div className="wa-head">
           <div className="wa-av">
-            <i className="fa fa-comments" />
+            <Icon name="comments" />
           </div>
 
           <div className="wa-head-info">
@@ -202,7 +203,7 @@ Please choose a topic or type your question below:`,
           </div>
 
           <button className="wa-x" onClick={() => setOpen(false)}>
-            <i className="fa fa-times" />
+            <Icon name="times" />
           </button>
         </div>
 
@@ -267,7 +268,7 @@ Please choose a topic or type your question below:`,
           />
 
           <button className="wa-send" onClick={sendMessage}>
-            <i className="fa fa-paper-plane" />
+            <Icon name="paper-plane" />
           </button>
         </div>
 
@@ -347,7 +348,7 @@ function ContactForm({ service, onSubmit, onBack }: any) {
           }}
           onClick={() => onSubmit(form)}
         >
-          <i className="fa fa-whatsapp" style={{ marginRight: 4 }} />
+          <Icon name="whatsapp" style={{ marginRight: 4 }} />
           Connect on WhatsApp
         </button>
 

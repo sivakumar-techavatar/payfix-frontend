@@ -2,6 +2,7 @@
 
 import { useState, ChangeEvent, useEffect } from "react";
 import {
+import { Icon } from "@/components/common/Icon";
   Dialog,
   DialogContent,
   IconButton,
@@ -170,7 +171,7 @@ const submit = async () => {
           onClick={onCloseModal}
           sx={{ position: "absolute", right: 12, top: 12 }}
         >
-          <i className="fa fa-times" />
+          <Icon name="times" />
         </IconButton>
 
         {success ? (
@@ -300,9 +301,10 @@ const submit = async () => {
                 cursor: "pointer",
               }}
             >
-              <i
-                className="fa fa-upload"
-                style={{ fontSize: "1.6rem", color: "var(--red)" }}
+              <Icon
+                name="upload"
+                size={26}
+                style={{ color: "var(--red)" }}
               />
 
               <Typography mt={1}>Upload Resume (PDF, DOC, DOCX)</Typography>
@@ -328,12 +330,12 @@ const submit = async () => {
                 }}
               >
                 <Typography fontSize={13}>
-                  <i className="fa fa-file-text-o" style={{ marginRight: 6 }} />
+                  <Icon name="file-text-o" style={{ marginRight: 6 }} />
                   {resume.name}
                 </Typography>
 
                 <IconButton size="small" onClick={removeFile}>
-                  <i className="fa fa-times" />
+                  <Icon name="times" />
                 </IconButton>
               </Box>
             )}

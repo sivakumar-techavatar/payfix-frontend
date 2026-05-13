@@ -1,3 +1,5 @@
+import { Icon } from "@/components/common/Icon";
+
 const services = [
   {
     title: "HR Services",
@@ -32,7 +34,7 @@ export default function LateralServices() {
           {services.map((service) => (
             <a key={service.title} href={service.href} className="lateral-card">
               <div className={`lateral-icon ${service.iconClass}`}>
-                <i className={`fa ${service.icon}`}></i>
+                <Icon name={service.icon} />
               </div>
 
               <div className="lateral-text">
@@ -40,7 +42,7 @@ export default function LateralServices() {
                 <span>{service.desc}</span>
               </div>
 
-              <i className="fa fa-arrow-right lateral-arrow"></i>
+              <Icon name="arrow-right" className="lateral-arrow" />
             </a>
           ))}
         </div>

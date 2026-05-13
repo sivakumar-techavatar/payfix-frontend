@@ -1,3 +1,5 @@
+import { Icon } from "@/components/common/Icon";
+
 export default function BenefitsSection() {
   return (
     <section className="benefits-section">
@@ -22,7 +24,7 @@ export default function BenefitsSection() {
                 color: "var(--blue)",
               }}
             >
-              <i className="fa fa-users"></i>
+              <Icon name="users" />
             </div>
 
             <div>
@@ -43,7 +45,7 @@ export default function BenefitsSection() {
                 color: "var(--blue)",
               }}
             >
-              <i className="fa fa-sitemap"></i>
+              <Icon name="sitemap" />
             </div>
 
             <div>
@@ -64,7 +66,7 @@ export default function BenefitsSection() {
                 color: "var(--blue)",
               }}
             >
-              <i className="fa fa-bar-chart"></i>
+              <Icon name="bar-chart" />
             </div>
 
             <div>
@@ -85,7 +87,7 @@ export default function BenefitsSection() {
                 color: "var(--blue)",
               }}
             >
-              <i className="fa fa-lock"></i>
+              <Icon name="lock" />
             </div>
 
             <div>
@@ -106,7 +108,7 @@ export default function BenefitsSection() {
                 color: "var(--blue)",
               }}
             >
-              <i className="fa fa-inr"></i>
+              <Icon name="inr" />
             </div>
 
             <div>
@@ -127,7 +129,7 @@ export default function BenefitsSection() {
                 color: "var(--blue)",
               }}
             >
-              <i className="fa fa-trophy"></i>
+              <Icon name="trophy" />
             </div>
 
             <div>

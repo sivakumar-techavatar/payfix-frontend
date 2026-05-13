@@ -1,3 +1,5 @@
+import { Icon } from "@/components/common/Icon";
+
 const solutions = [
   {
     icon: "fa-money",
@@ -56,7 +58,7 @@ export default function SolutionSection() {
           {solutions.map((solution) => (
             <div className="sdg-card" key={solution.title}>
               <div className="sdg-icon">
-                <i className={`fa ${solution.icon}`}></i>
+                <Icon name={solution.icon} />
               </div>
 
               <h4>{solution.title}</h4>

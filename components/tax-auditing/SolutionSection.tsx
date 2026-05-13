@@ -1,3 +1,5 @@
+import { Icon } from "@/components/common/Icon";
+
 export default function SolutionSection() {
   return (
     <section className="solution-section">
@@ -21,7 +23,7 @@ export default function SolutionSection() {
               className="sdg-icon"
               style={{ background: "rgba(14,122,110,.1)", color: "#0e7a6e" }}
             >
-              <i className="fa fa-file-text-o"></i>
+              <Icon name="file-text-o" />
             </div>
 
             <h4>GST Services</h4>
@@ -40,7 +42,7 @@ export default function SolutionSection() {
               className="sdg-icon"
               style={{ background: "rgba(14,122,110,.1)", color: "#0e7a6e" }}
             >
-              <i className="fa fa-calculator"></i>
+              <Icon name="calculator" />
             </div>
 
             <h4>Income Tax</h4>
@@ -59,7 +61,7 @@ export default function SolutionSection() {
               className="sdg-icon"
               style={{ background: "rgba(14,122,110,.1)", color: "#0e7a6e" }}
             >
-              <i className="fa fa-search"></i>
+              <Icon name="search" />
             </div>
 
             <h4>Audit & Reporting</h4>

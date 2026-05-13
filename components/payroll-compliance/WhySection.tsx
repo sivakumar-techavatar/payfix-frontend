@@ -1,3 +1,5 @@
+import { Icon } from "@/components/common/Icon";
+
 const reasons = [
   {
     icon: "fa-users",
@@ -49,7 +51,7 @@ export default function WhySection() {
           {reasons.map((item) => (
             <div className="why-card" key={item.title}>
               <div className="why-card-icon">
-                <i className={`fa ${item.icon}`}></i>
+                <Icon name={item.icon} />
               </div>
 
               <strong>{item.title}</strong>

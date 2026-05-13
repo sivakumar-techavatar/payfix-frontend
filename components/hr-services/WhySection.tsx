@@ -1,3 +1,5 @@
+import { Icon } from "@/components/common/Icon";
+
 export default function WhySection() {
   return (
     <section
@@ -36,7 +38,7 @@ export default function WhySection() {
         <div className="why-grid">
           <div className="why-card">
             <div className="why-card-icon">
-              <i className="fa fa-user-circle-o"></i>
+              <Icon name="user-circle-o" />
             </div>
 
             <strong>Dedicated HR Specialist</strong>
@@ -49,7 +51,7 @@ export default function WhySection() {
 
           <div className="why-card">
             <div className="why-card-icon">
-              <i className="fa fa-cogs"></i>
+              <Icon name="cogs" />
             </div>
 
             <strong>Systems, Not Advice</strong>
@@ -62,7 +64,7 @@ export default function WhySection() {
 
           <div className="why-card">
             <div className="why-card-icon">
-              <i className="fa fa-expand"></i>
+              <Icon name="expand" />
             </div>
 
             <strong>Built to Scale</strong>
@@ -75,7 +77,7 @@ export default function WhySection() {
 
           <div className="why-card">
             <div className="why-card-icon">
-              <i className="fa fa-shield"></i>
+              <Icon name="shield" />
             </div>
 
             <strong>Legal Compliance Built-In</strong>

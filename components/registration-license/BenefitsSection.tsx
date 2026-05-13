@@ -1,3 +1,5 @@
+import { Icon } from "@/components/common/Icon";
+
 export default function BenefitsSection() {
   return (
     <section className="benefits-section">
@@ -14,7 +16,7 @@ export default function BenefitsSection() {
               className="bc-icon"
               style={{ background: "rgba(55,65,81,.1)", color: "#374151" }}
             >
-              <i className="fa fa-building-o"></i>
+              <Icon name="building-o" />
             </div>
             <div>
               <h4>Business Legally Incorporated</h4>
@@ -30,7 +32,7 @@ export default function BenefitsSection() {
               className="bc-icon"
               style={{ background: "rgba(55,65,81,.1)", color: "#374151" }}
             >
-              <i className="fa fa-certificate"></i>
+              <Icon name="certificate" />
             </div>
             <div>
               <h4>All Commercial Licenses Secured</h4>
@@ -46,7 +48,7 @@ export default function BenefitsSection() {
               className="bc-icon"
               style={{ background: "rgba(55,65,81,.1)", color: "#374151" }}
             >
-              <i className="fa fa-industry"></i>
+              <Icon name="industry" />
             </div>
             <div>
               <h4>Factory Approvals Managed</h4>
@@ -62,7 +64,7 @@ export default function BenefitsSection() {
               className="bc-icon"
               style={{ background: "rgba(55,65,81,.1)", color: "#374151" }}
             >
-              <i className="fa fa-refresh"></i>
+              <Icon name="refresh" />
             </div>
             <div>
               <h4>Renewal Tracking System</h4>
@@ -78,7 +80,7 @@ export default function BenefitsSection() {
               className="bc-icon"
               style={{ background: "rgba(55,65,81,.1)", color: "#374151" }}
             >
-              <i className="fa fa-shield"></i>
+              <Icon name="shield" />
             </div>
             <div>
               <h4>Inspection-Ready</h4>
@@ -94,7 +96,7 @@ export default function BenefitsSection() {
               className="bc-icon"
               style={{ background: "rgba(55,65,81,.1)", color: "#374151" }}
             >
-              <i className="fa fa-handshake-o"></i>
+              <Icon name="handshake-o" />
             </div>
             <div>
               <h4>Minimal Back-and-Forth</h4>

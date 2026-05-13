@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Icon } from "@/components/common/Icon";
 
 type EnquiryModalProps = {
   open: boolean;
@@ -111,7 +112,7 @@ export default function EnquiryModal({
             onClick={onClose}
             aria-label="Close enquiry form"
           >
-            <i className="fa fa-times" />
+            <Icon name="times" />
           </button>
         </div>
 

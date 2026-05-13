@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { Icon } from "@/components/common/Icon";
 
 const steps = [
   {
@@ -46,9 +47,10 @@ const StepCard = ({
       <span className="step-num">{step.id}</span>
 
       <span className="step-icon">
-        <i
-          className={`fa ${step.icon}`}
-          style={{ fontSize: 36, color: "rgba(255,255,255,.7)" }}
+        <Icon
+          name={step.icon}
+          size={36}
+          style={{ color: "rgba(255,255,255,.7)" }}
         />
       </span>
 
@@ -57,7 +59,7 @@ const StepCard = ({
       <p>{step.text}</p>
 
       <a href={step.link} className="step-link">
-        {step.linkText} <i className="fa fa-arrow-right"></i>
+        {step.linkText} <Icon name="arrow-right" />
       </a>
     </div>
   );

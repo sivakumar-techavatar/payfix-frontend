@@ -1,4 +1,5 @@
 import { Box, Container } from "@mui/material";
+import { Icon } from "@/components/common/Icon";
 
 export default function ServicesOverview() {
   return (
@@ -29,7 +30,7 @@ export default function ServicesOverview() {
             className="svc-icon-card"
           >
             <Box className="svc-icon-circle svc-ic-navy">
-              <i className="fa fa-money"></i>
+              <Icon name="money" />
             </Box>
 
             <h3>Payroll Compliance</h3>
@@ -40,7 +41,7 @@ export default function ServicesOverview() {
             </p>
 
             <span className="svc-icon-link">
-              Explore <i className="fa fa-arrow-right"></i>
+              Explore <Icon name="arrow-right" />
             </span>
           </a>
 
@@ -49,7 +50,7 @@ export default function ServicesOverview() {
             className="svc-icon-card"
           >
             <Box className="svc-icon-circle svc-ic-blue">
-              <i className="fa fa-users"></i>
+              <Icon name="users" />
             </Box>
 
             <h3>HR Services</h3>
@@ -60,7 +61,7 @@ export default function ServicesOverview() {
             </p>
 
             <span className="svc-icon-link">
-              Explore <i className="fa fa-arrow-right"></i>
+              Explore <Icon name="arrow-right" />
             </span>
           </a>
 
@@ -69,7 +70,7 @@ export default function ServicesOverview() {
             className="svc-icon-card"
           >
             <Box className="svc-icon-circle svc-ic-teal">
-              <i className="fa fa-bar-chart"></i>
+              <Icon name="bar-chart" />
             </Box>
 
             <h3>Tax & Auditing</h3>
@@ -80,7 +81,7 @@ export default function ServicesOverview() {
             </p>
 
             <span className="svc-icon-link">
-              Explore <i className="fa fa-arrow-right"></i>
+              Explore <Icon name="arrow-right" />
             </span>
           </a>
 
@@ -89,7 +90,7 @@ export default function ServicesOverview() {
             className="svc-icon-card"
           >
             <Box className="svc-icon-circle svc-ic-slate">
-              <i className="fa fa-building-o"></i>
+              <Icon name="building-o" />
             </Box>
 
             <h3>Registration & Licensing</h3>
@@ -100,7 +101,7 @@ export default function ServicesOverview() {
             </p>
 
             <span className="svc-icon-link">
-              Explore <i className="fa fa-arrow-right"></i>
+              Explore <Icon name="arrow-right" />
             </span>
           </a>
 

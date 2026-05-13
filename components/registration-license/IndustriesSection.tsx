@@ -1,3 +1,5 @@
+import { Icon } from "@/components/common/Icon";
+
 const faIcons = [
   ["fa-industry", "Manufacturing"],
   ["fa-laptop", "IT & Technology"],
@@ -34,7 +36,7 @@ export default function IndustriesSection() {
         >
           {faIcons.map(([icon, label]) => (
             <div className="pf-ind-item" key={label}>
-              <i className={`fa ${icon}`}></i>
+              <Icon name={icon} />
               <span>{label}</span>
             </div>
           ))}

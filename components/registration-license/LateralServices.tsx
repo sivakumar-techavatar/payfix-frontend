@@ -1,4 +1,5 @@
 "use client";
+import { Icon } from "@/components/common/Icon";
 
 export default function LateralServices() {
   return (
@@ -9,7 +10,7 @@ export default function LateralServices() {
         <div className="lateral-grid">
           <a href="/payroll-compliance" className="lateral-card">
             <div className="lateral-icon">
-              <i className="fa fa-money"></i>
+              <Icon name="money" />
             </div>
 
             <div className="lateral-text">
@@ -17,12 +18,12 @@ export default function LateralServices() {
               <span>PF · ESI · TDS · Salary Processing</span>
             </div>
 
-            <i className="fa fa-arrow-right lateral-arrow"></i>
+            <Icon name="arrow-right" className="lateral-arrow" />
           </a>
 
           <a href="/hr-services" className="lateral-card">
             <div className="lateral-icon li-blue">
-              <i className="fa fa-users"></i>
+              <Icon name="users" />
             </div>
 
             <div className="lateral-text">
@@ -30,12 +31,12 @@ export default function LateralServices() {
               <span>Hiring · HRMS · Policy Framework</span>
             </div>
 
-            <i className="fa fa-arrow-right lateral-arrow"></i>
+            <Icon name="arrow-right" className="lateral-arrow" />
           </a>
 
           <a href="/tax-auditing" className="lateral-card">
             <div className="lateral-icon li-teal">
-              <i className="fa fa-bar-chart"></i>
+              <Icon name="bar-chart" />
             </div>
 
             <div className="lateral-text">
@@ -43,7 +44,7 @@ export default function LateralServices() {
               <span>GST · Income Tax · Internal Audit</span>
             </div>
 
-            <i className="fa fa-arrow-right lateral-arrow"></i>
+            <Icon name="arrow-right" className="lateral-arrow" />
           </a>
         </div>
       </div>

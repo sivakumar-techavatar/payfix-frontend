@@ -1,5 +1,6 @@
 import Link from "next/link";
 import React from "react";
+import { Icon } from "@/components/common/Icon";
 
 const stats = [
   { value: "Monthly", label: "PF · ESI · TDS Filing" },
@@ -15,10 +16,10 @@ export default function Hero() {
         {/* Breadcrumb */}
         <div className="svc-hero-breadcrumb">
           <Link href="/">Home</Link>
-          <i className="fa fa-angle-right"></i>
+          <Icon name="angle-right" />
 
           <Link href="/#services">Services</Link>
-          <i className="fa fa-angle-right"></i>
+          <Icon name="angle-right" />
 
           <span className="current">Payroll Compliance</span>
         </div>
@@ -26,7 +27,7 @@ export default function Hero() {
         {/* Eyebrow */}
         <div className="svc-hero-eyebrow">
           <span className="she-icon">
-            <i className="fa fa-money"></i>
+            <Icon name="money" />
           </span>
 
           <span>01 / 04 — Payroll &amp; Compliance</span>

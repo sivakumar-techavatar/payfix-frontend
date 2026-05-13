@@ -1,3 +1,5 @@
+import { Icon } from "@/components/common/Icon";
+
 export function ProblemSection() {
   return (
     <section className="problem-section reveal">
@@ -31,7 +33,7 @@ export function ProblemSection() {
 
             <div className="problem-risks">
               <div className="risk-item">
-                <i className="fa fa-exclamation-triangle"></i>
+                <Icon name="exclamation-triangle" />
                 <p>
                   <strong>Late GST filing</strong> attracts ₹50/day late fee and
                   18% interest on tax due.
@@ -39,7 +41,7 @@ export function ProblemSection() {
               </div>
 
               <div className="risk-item">
-                <i className="fa fa-exclamation-triangle"></i>
+                <Icon name="exclamation-triangle" />
                 <p>
                   <strong>ITC mismatch</strong> in GSTR-2B reconciliation results
                   in demand notices from the department.
@@ -47,7 +49,7 @@ export function ProblemSection() {
               </div>
 
               <div className="risk-item">
-                <i className="fa fa-exclamation-triangle"></i>
+                <Icon name="exclamation-triangle" />
                 <p>
                   <strong>Wrong ITR filing</strong> leads to scrutiny
                   assessment, disallowance of expenses, and penalties.
@@ -60,32 +62,32 @@ export function ProblemSection() {
             <h4>What We Ensure for You</h4>
 
             <div className="pv-check">
-              <i className="fa fa-check-circle"></i>
+              <Icon name="check-circle" />
               GST filed monthly/quarterly — no late fees
             </div>
 
             <div className="pv-check">
-              <i className="fa fa-check-circle"></i>
+              <Icon name="check-circle" />
               ITC reconciled against GSTR-2B every month
             </div>
 
             <div className="pv-check">
-              <i className="fa fa-check-circle"></i>
+              <Icon name="check-circle" />
               Advance tax calculated and paid on schedule
             </div>
 
             <div className="pv-check">
-              <i className="fa fa-check-circle"></i>
+              <Icon name="check-circle" />
               TDS returns filed quarterly, without error
             </div>
 
             <div className="pv-check">
-              <i className="fa fa-check-circle"></i>
+              <Icon name="check-circle" />
               GST notices responded to promptly
             </div>
 
             <div className="pv-check">
-              <i className="fa fa-check-circle"></i>
+              <Icon name="check-circle" />
               Books audit-ready at all times
             </div>
           </div>

@@ -1,3 +1,5 @@
+import { Icon } from "@/components/common/Icon";
+
 export default function Hero() {
   return (
     <section
@@ -9,15 +11,15 @@ export default function Hero() {
       <div className="container">
         <div className="svc-hero-breadcrumb">
           <a href="/">Home</a>
-          <i className="fa fa-angle-right"></i>
+          <Icon name="angle-right" />
           <a href="/#services">Services</a>
-          <i className="fa fa-angle-right"></i>
+          <Icon name="angle-right" />
           <span className="current">Registration &amp; License</span>
         </div>
 
         <div className="svc-hero-eyebrow">
           <span className="she-icon" style={{ background: "#374151" }}>
-            <i className="fa fa-building-o"></i>
+            <Icon name="building-o" />
           </span>
 
           <span>04 / 04 — Registration & License</span>
@@ -67,7 +69,7 @@ export default function Hero() {
 
         <div style={{ marginTop: 20, textAlign: "center" }}>
           <a href="#solutions" className="pf-more-svc-pill">
-            <i className="fa fa-arrow-down" style={{ fontSize: 10 }}></i> More
+            <Icon name="arrow-down" style={{ fontSize: 10 }} /> More
             Services — Explore Below
           </a>
         </div>

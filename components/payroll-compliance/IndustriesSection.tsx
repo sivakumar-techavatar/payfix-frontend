@@ -1,3 +1,5 @@
+import { Icon } from "@/components/common/Icon";
+
 const industries = [
   { icon: "fa-industry", name: "Manufacturing" },
   { icon: "fa-laptop", name: "IT & Technology" },
@@ -39,7 +41,7 @@ export default function IndustriesSection() {
           {industries.map((industry) => (
             <div className="pf-ind-item" key={industry.name}>
 
-              <i className={`fa ${industry.icon}`}></i>
+              <Icon name={industry.icon} />
 
               <span>{industry.name}</span>
 

@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { Icon } from "@/components/common/Icon";
 
 const aboutPoints = [
   "Pan India Service Reach",
@@ -69,7 +70,7 @@ const About = () => {
             <div className="about-list">
               {aboutPoints.map((item, index) => (
                 <div key={index} className="about-list-item">
-                  <i className="fa fa-check-circle"></i>
+                  <Icon name="check-circle" />
                   {item}
                 </div>
               ))}

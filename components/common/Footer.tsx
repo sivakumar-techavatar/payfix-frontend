@@ -2,6 +2,7 @@
 
 import { getMailId, getPhNo, openWA } from "@/helpers";
 import Logo from "./Logo";
+import { Icon } from "@/components/common/Icon";
 
 const services = [
   "Payroll Compliance",
@@ -71,7 +72,7 @@ export default function Footer() {
                     rel="noopener noreferrer"
                     className="fsoc"
                   >
-                    <i className={`fa ${s.icon}`} />
+                    <Icon name={s.icon} />
                   </a>
                 ))}
               </div>
@@ -116,8 +117,8 @@ export default function Footer() {
               <ul>
                 <li>
                   <a href={`tel:+${getPhNo()}`}>
-                    <i
-                      className="fa fa-phone"
+                    <Icon
+                      name="phone"
                       style={{ marginRight: 6, color: "var(--red)" }}
                     />
                     +91 86809 39401
@@ -126,8 +127,8 @@ export default function Footer() {
 
                 <li style={{ textWrap: "nowrap" }}>
                   <a href={`mailto:${getMailId()}`}>
-                    <i
-                      className="fa fa-envelope-o"
+                    <Icon
+                      name="envelope-o"
                       style={{ marginRight: 6, color: "var(--red)" }}
                     />
                     {getMailId()}
@@ -141,8 +142,8 @@ export default function Footer() {
                     fontWeight: 600,
                   }}
                 >
-                  <i
-                    className="fa fa-map-marker"
+                  <Icon
+                    name="map-marker"
                     style={{ marginRight: 6, color: "var(--red)" }}
                   />
                   Centre Point, Chennai
@@ -155,8 +156,8 @@ export default function Footer() {
                     fontWeight: 600,
                   }}
                 >
-                  <i
-                    className="fa fa-map-marker"
+                  <Icon
+                    name="map-marker"
                     style={{ marginRight: 6, color: "var(--red)" }}
                   />
                   AR Plaza, Puducherry

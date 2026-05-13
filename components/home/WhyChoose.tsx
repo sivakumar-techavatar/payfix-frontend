@@ -2,6 +2,7 @@
 
 import React from "react";
 import { BRAND } from "@/constants/brand";
+import { Icon } from "@/components/common/Icon";
 
 const features = [
   {
@@ -84,7 +85,7 @@ const WhyChoose = () => {
               {features.map((f, i) => (
                 <div key={i} className="why-feat">
                   <div className="why-feat-icon">
-                    <i className={`fa ${f.icon}`}></i>
+                    <Icon name={f.icon} />
                   </div>
                   <h4>{f.title}</h4>
                   <p>{f.text}</p>
@@ -123,7 +124,7 @@ const WhyChoose = () => {
               <div className="ind-icon-grid">
                 {industries.map((ind, i) => (
                   <div key={i} className="ind-icon-item">
-                    <i className={`fa ${ind.icon}`}></i>
+                    <Icon name={ind.icon} />
                     <span>{ind.name}</span>
                   </div>
                 ))}
