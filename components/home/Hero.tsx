@@ -3,7 +3,7 @@ import { BRAND } from "@/constants/brand";
 import Button from "@mui/material/Button";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 const images = [
   {
@@ -26,7 +26,7 @@ const images = [
 
 const Hero = () => {
   const trackRef = useRef<HTMLDivElement | null>(null);
-  const [paused, setPaused] = useState(false);
+  const pausedRef = useRef(false);
 
   useEffect(() => {
     const track = trackRef.current;
@@ -46,9 +46,10 @@ const Hero = () => {
     if (reduceMotion) return;
 
     const interval = setInterval(() => {
-      // Skip the rotation if the user is hovering the carousel
-      // or the tab is hidden (saves battery on mobile)
-      if (paused || document.hidden) return;
+      // Skip rotation if the user is hovering OR the tab is hidden.
+      // Use refs (not state) so we don't tear the interval down on
+      // every hover state change.
+      if (pausedRef.current || document.hidden) return;
 
       slides[index].classList.remove("active");
       index = (index + 1) % slides.length;
@@ -57,7 +58,7 @@ const Hero = () => {
     }, 8000);
 
     return () => clearInterval(interval);
-  }, [paused]);
+  }, []);
 
   return (
     <section className="hero" id="home">
@@ -133,10 +134,18 @@ const Hero = () => {
           <div>
             <div
               className="carousel"
-              onMouseEnter={() => setPaused(true)}
-              onMouseLeave={() => setPaused(false)}
-              onFocus={() => setPaused(true)}
-              onBlur={() => setPaused(false)}
+              onMouseEnter={() => {
+                pausedRef.current = true;
+              }}
+              onMouseLeave={() => {
+                pausedRef.current = false;
+              }}
+              onFocus={() => {
+                pausedRef.current = true;
+              }}
+              onBlur={() => {
+                pausedRef.current = false;
+              }}
             >
               <div className="carousel-track" ref={trackRef}>
                 {images.map((src, i) => (
