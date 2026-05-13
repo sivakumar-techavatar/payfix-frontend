@@ -3,36 +3,73 @@ import { BRAND } from "@/constants/brand";
 import Button from "@mui/material/Button";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
-const images = [
+type Slide = { image: string; link: string; alt?: string };
+
+const FALLBACK_IMAGES: Slide[] = [
   {
     image: "/posts/image1.jpg",
     link: "https://www.instagram.com/p/DUsA75zEX6H/?igsh=MTJ1ejIyZTQ1aHV1ZA==",
+    alt: "Payfix Instagram post 1",
   },
   {
     image: "/posts/image2.jpg",
     link: "https://www.instagram.com/p/DU-ADpYEYV2/?igsh=MWg1ZnUzNjhsYjhkdA==",
+    alt: "Payfix Instagram post 2",
   },
   {
     image: "/posts/image3.jpg",
     link: "https://www.instagram.com/p/DUkFdsWAZEj/?igsh=MThhYmtuN21hZ3poaQ==",
+    alt: "Payfix Instagram post 3",
   },
   {
     image: "/posts/image4.jpg",
     link: "https://www.instagram.com/p/DUVtuPrAUr7/?igsh=bWh0YXM1OWxxazlw",
+    alt: "Payfix Instagram post 4",
   },
 ];
 
 const Hero = () => {
   const trackRef = useRef<HTMLDivElement | null>(null);
   const pausedRef = useRef(false);
+  const [slidesData, setSlidesData] = useState<Slide[]>(FALLBACK_IMAGES);
+
+  // Fetch from Sanity if configured; fall back to hardcoded if not.
+  useEffect(() => {
+    let cancelled = false;
+    async function load() {
+      try {
+        const { getFeaturedPosts } = await import("@/lib/sanity");
+        const posts = await getFeaturedPosts();
+        if (!cancelled && posts.length > 0) {
+          setSlidesData(
+            posts.map((p, i) => ({
+              image: p.imageUrl,
+              link: p.link,
+              alt:
+                p.caption ||
+                p.title ||
+                `Payfix ${p.platform || "social"} post ${i + 1}`,
+            })),
+          );
+        }
+      } catch {
+        // Silent — fallback already loaded
+      }
+    }
+    load();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     const track: any = trackRef.current;
     if (!track) return;
 
     const slides: any[] = Array.from(track.children);
+    if (slides.length === 0) return;
     let index = 0;
 
     slides[0].classList.add("active");
@@ -47,7 +84,7 @@ const Hero = () => {
     }, 4000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [slidesData.length]);
 
   return (
     <section className="hero" id="home">
@@ -137,22 +174,23 @@ const Hero = () => {
               }}
             >
               <div className="carousel-track" ref={trackRef}>
-                {images.map((src, i) => (
+                {slidesData.map((src, i) => (
                   <a
-                    key={i}
+                    key={`${src.image}-${i}`}
                     href={src.link}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="slide"
-                    aria-label={`View Payfix Instagram post ${i + 1}`}
+                    aria-label={src.alt || `View Payfix social post ${i + 1}`}
                   >
                     <Image
                       src={src.image}
-                      alt={`Payfix Instagram post ${i + 1}`}
+                      alt={src.alt || `Payfix social post ${i + 1}`}
                       width={800}
                       height={800}
                       sizes="(max-width: 768px) 100vw, 480px"
                       priority={i === 0}
+                      unoptimized={src.image.startsWith("http")}
                       style={{ width: "100%", height: "auto" }}
                     />
                   </a>
