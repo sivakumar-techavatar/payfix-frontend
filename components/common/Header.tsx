@@ -8,7 +8,7 @@ import {
   useTheme,
   useMediaQuery,
 } from "@mui/material";
-import { useState, useEffect, useRef, MouseEvent } from "react";
+import { useState, useEffect, MouseEvent } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Logo from "./Logo";
@@ -76,7 +76,6 @@ const Header = ({
 }: IHeader) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
-  const desktopDropdownRef = useRef<HTMLDivElement>(null);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
@@ -86,27 +85,7 @@ const Header = ({
   useEffect(() => {
     setMobileOpen(false);
     setMobileServicesOpen(false);
-    desktopDropdownRef.current?.classList.remove("open");
   }, [pathname]);
-
-  // Click-outside listener to close the desktop dropdown.
-  // Uses DOM classList directly — no React state, no re-render race.
-  useEffect(() => {
-    const onDocClick = (e: globalThis.MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (!desktopDropdownRef.current) return;
-      if (!desktopDropdownRef.current.contains(target)) {
-        desktopDropdownRef.current.classList.remove("open");
-      }
-    };
-    document.addEventListener("click", onDocClick);
-    return () => document.removeEventListener("click", onDocClick);
-  }, []);
-
-  const toggleDesktopDropdown = (e: MouseEvent) => {
-    e.stopPropagation();
-    desktopDropdownRef.current?.classList.toggle("open");
-  };
 
   const toggleMobileDrawer = () => {
     setMobileOpen((prev) => !prev);
@@ -171,74 +150,9 @@ const Header = ({
               <nav className="nav-links">
                 <a href="/">Home</a>
 
-                <div
-                  ref={desktopDropdownRef}
-                  className="nav-dropdown"
-                  tabIndex={0}
-                >
-                  <button
-                    type="button"
-                    className="nav-dropdown-trigger"
-                    onClick={toggleDesktopDropdown}
-                    aria-haspopup="true"
-                  >
-                    Services
-                    <svg
-                      className="nav-chevron"
-                      width="10"
-                      height="10"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                    >
-                      <polyline points="6 9 12 15 18 9" />
-                    </svg>
-                  </button>
-
-                  <div className="nav-dropdown-menu" role="menu">
-                    <Link href="/payroll-compliance" className="ndm-item" role="menuitem">
-                      <span className="ndm-icon">
-                        <Icon name="money" />
-                      </span>
-                      <span className="ndm-text">
-                        <strong>Payroll Compliance</strong>
-                        <em>PF · ESI · TDS · Labour Law</em>
-                      </span>
-                    </Link>
-
-                    <Link href="/hr-services" className="ndm-item" role="menuitem">
-                      <span className="ndm-icon ndm-blue">
-                        <Icon name="users" />
-                      </span>
-                      <span className="ndm-text">
-                        <strong>HR Services</strong>
-                        <em>Hiring · HRMS · Policy Framework</em>
-                      </span>
-                    </Link>
-
-                    <Link href="/tax-auditing" className="ndm-item" role="menuitem">
-                      <span className="ndm-icon ndm-teal">
-                        <Icon name="bar-chart" />
-                      </span>
-                      <span className="ndm-text">
-                        <strong>Tax &amp; Auditing</strong>
-                        <em>GST · Income Tax · Internal Audit</em>
-                      </span>
-                    </Link>
-
-                    <Link href="/registration-license" className="ndm-item" role="menuitem">
-                      <span className="ndm-icon ndm-slate">
-                        <Icon name="building-o" />
-                      </span>
-                      <span className="ndm-text">
-                        <strong>Registration &amp; License</strong>
-                        <em>ROC · DSC · Factory License</em>
-                      </span>
-                    </Link>
-                  </div>
-                </div>
+                <Link href="/#services" className="nav-flat-link">
+                  Services
+                </Link>
 
                 <a href="/#about">About</a>
                 <a href="/#pricing">Pricing</a>
