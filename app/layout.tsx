@@ -10,6 +10,7 @@ import Providers from "./providers";
 import FloatingWidgets from "@/components/home/FloatingWidgets";
 import Analytics, { AnalyticsNoscript } from "@/components/common/Analytics";
 import CookieBanner from "@/components/common/CookieBanner";
+import MobileStickyCTA from "@/components/common/MobileStickyCTA";
 
 const ORG_SCHEMA = {
   "@context": "https://schema.org",
@@ -155,6 +156,7 @@ export default function RootLayout({
         <Providers>
           {children}
           <FloatingWidgets />
+          <MobileStickyCTA />
           <CookieBanner />
         </Providers>
 
