@@ -8,7 +8,7 @@ import {
   useTheme,
   useMediaQuery,
 } from "@mui/material";
-import { useState, useEffect, MouseEvent } from "react";
+import { useState, useEffect, useRef, MouseEvent } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Logo from "./Logo";
@@ -76,32 +76,37 @@ const Header = ({
 }: IHeader) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
-  const [desktopServicesOpen, setDesktopServicesOpen] = useState(false);
+  const desktopDropdownRef = useRef<HTMLDivElement>(null);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const pathname = usePathname();
 
-  // Reset all menu state when route changes (not on click — that causes
-  // a Link-unmount race that cancels navigation).
+  // Reset mobile state on route change.
   useEffect(() => {
     setMobileOpen(false);
     setMobileServicesOpen(false);
-    setDesktopServicesOpen(false);
+    desktopDropdownRef.current?.classList.remove("open");
   }, [pathname]);
 
-  // Close desktop dropdown when clicking outside it.
+  // Click-outside listener to close the desktop dropdown.
+  // Uses DOM classList directly — no React state, no re-render race.
   useEffect(() => {
-    if (!desktopServicesOpen) return;
     const onDocClick = (e: globalThis.MouseEvent) => {
       const target = e.target as HTMLElement;
-      if (!target.closest(".nav-dropdown")) {
-        setDesktopServicesOpen(false);
+      if (!desktopDropdownRef.current) return;
+      if (!desktopDropdownRef.current.contains(target)) {
+        desktopDropdownRef.current.classList.remove("open");
       }
     };
     document.addEventListener("click", onDocClick);
     return () => document.removeEventListener("click", onDocClick);
-  }, [desktopServicesOpen]);
+  }, []);
+
+  const toggleDesktopDropdown = (e: MouseEvent) => {
+    e.stopPropagation();
+    desktopDropdownRef.current?.classList.toggle("open");
+  };
 
   const toggleMobileDrawer = () => {
     setMobileOpen((prev) => !prev);
@@ -167,18 +172,15 @@ const Header = ({
                 <a href="/">Home</a>
 
                 <div
-                  className={`nav-dropdown${desktopServicesOpen ? " open" : ""}`}
+                  ref={desktopDropdownRef}
+                  className="nav-dropdown"
                   tabIndex={0}
                 >
                   <button
                     type="button"
                     className="nav-dropdown-trigger"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setDesktopServicesOpen((p) => !p);
-                    }}
+                    onClick={toggleDesktopDropdown}
                     aria-haspopup="true"
-                    aria-expanded={desktopServicesOpen}
                   >
                     Services
                     <svg
