@@ -71,12 +71,24 @@ export const viewport: Viewport = {
 };
 
 /* SEO Metadata */
+const metaVerification = process.env.NEXT_PUBLIC_META_DOMAIN_VERIFICATION;
+const googleVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION;
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://payfixadvisors.in"),
 
   title: {
     default: "Payfix Advisors | Payroll, HR & Tax Services",
     template: "%s | Payfix Advisors",
+  },
+
+  verification: {
+    ...(googleVerification && { google: googleVerification }),
+    ...(metaVerification && {
+      other: {
+        "facebook-domain-verification": [metaVerification],
+      },
+    }),
   },
 
   description:
