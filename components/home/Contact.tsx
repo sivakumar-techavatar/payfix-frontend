@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { contactSchema } from "@/schemas/leadSchema";
 import { z } from "zod";
+import { trackLead } from "@/lib/analytics";
 import { Icon } from "@/components/common/Icon";
 
 type FormData = z.infer<typeof contactSchema>;
@@ -90,6 +91,7 @@ const Contact = () => {
 
       if (!res.ok) throw new Error();
 
+      trackLead({ service: data.service || "Unknown", source: "contact-form" });
       toast.success("Inquiry sent successfully");
       reset();
     } catch {

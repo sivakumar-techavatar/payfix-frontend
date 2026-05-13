@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Icon } from "@/components/common/Icon";
+import { trackLead } from "@/lib/analytics";
 
 type EnquiryModalProps = {
   open: boolean;
@@ -80,6 +81,7 @@ export default function EnquiryModal({
         throw new Error(data?.error || "Submission failed");
       }
 
+      trackLead({ service: form.service || "Unknown", source: "enquiry-modal" });
       setSuccess(true);
     } catch (e) {
       setError((e as Error).message || "Something went wrong. Please try again.");

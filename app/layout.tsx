@@ -8,6 +8,7 @@ import "./css/payroll.css";
 
 import Providers from "./providers";
 import FloatingWidgets from "@/components/home/FloatingWidgets";
+import Analytics, { AnalyticsNoscript } from "@/components/common/Analytics";
 
 const ORG_SCHEMA = {
   "@context": "https://schema.org",
@@ -149,6 +150,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${nunito.variable} ${grace.variable} antialiased`}>
+        <AnalyticsNoscript />
         <Providers>
           {children}
           <FloatingWidgets />
@@ -160,6 +162,7 @@ export default function RootLayout({
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(ORG_SCHEMA) }}
         />
+        <Analytics />
       </body>
     </html>
   );
