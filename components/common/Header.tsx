@@ -8,8 +8,9 @@ import {
   useTheme,
   useMediaQuery,
 } from "@mui/material";
-import { useState, MouseEvent } from "react";
+import { useState, useEffect, MouseEvent } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import Logo from "./Logo";
 import { getPhNo } from "@/helpers";
 import { Icon } from "@/components/common/Icon";
@@ -78,6 +79,15 @@ const Header = ({
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const pathname = usePathname();
+
+  // Close dropdown / drawer when the route changes, NOT synchronously
+  // on click. Synchronous close unmounts the <Link> mid-click and
+  // cancels navigation.
+  useEffect(() => {
+    setServicesOpen(false);
+    setMobileOpen(false);
+  }, [pathname]);
 
   const toggleMobileDrawer = () => {
     setMobileOpen((prev) => !prev);
@@ -169,7 +179,6 @@ const Header = ({
                       <Link
                         href="/payroll-compliance"
                         className="ndm-item"
-                        onClick={() => setServicesOpen(false)}
                       >
                         <span className="ndm-icon">
                           <Icon name="money" />
@@ -183,7 +192,6 @@ const Header = ({
                       <Link
                         href="/hr-services"
                         className="ndm-item"
-                        onClick={() => setServicesOpen(false)}
                       >
                         <span className="ndm-icon ndm-blue">
                           <Icon name="users" />
@@ -197,7 +205,6 @@ const Header = ({
                       <Link
                         href="/tax-auditing"
                         className="ndm-item"
-                        onClick={() => setServicesOpen(false)}
                       >
                         <span className="ndm-icon ndm-teal">
                           <Icon name="bar-chart" />
@@ -211,7 +218,6 @@ const Header = ({
                       <Link
                         href="/registration-license"
                         className="ndm-item"
-                        onClick={() => setServicesOpen(false)}
                       >
                         <span className="ndm-icon ndm-slate">
                           <Icon name="building-o" />
