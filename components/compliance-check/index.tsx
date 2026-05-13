@@ -24,7 +24,7 @@ type Question = {
 const GlobalStyles = () => (
   <style>{`
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#001328;--card:#00203f;--card2:#002c54;--border:#0a3461;--accent:#0f6fd5;--accent2:#ee3234;--accent3:#0057b3;--green:#10b981;--yellow:#eab308;--orange:#f97316;--red:#ef4444;--text:#e2e8f0;--muted:#64748b;--font:'DM Sans',sans-serif;--mono:'Space Mono',monospace}
+:root{--bg:#001328;--card:#00203f;--card2:#002c54;--border:#0a3461;--accent:#0f6fd5;--accent2:#ee3234;--accent3:#0057b3;--green:#10b981;--yellow:#eab308;--orange:#f97316;--red:#ef4444;--text:#e2e8f0;--muted:#64748b;--font:'Nunito',sans-serif;--mono:ui-monospace,'SFMono-Regular',monospace}
 body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 .glow{position:fixed;border-radius:50%;filter:blur(120px);pointer-events:none;z-index:0}
 .g1{width:500px;height:500px;background:rgba(15,111,213,.06);top:-100px;left:-100px}

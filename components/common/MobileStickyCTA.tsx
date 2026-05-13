@@ -119,10 +119,13 @@ export default function MobileStickyCTA() {
           body {
             padding-bottom: 68px;
           }
-          /* Push FloatingWidgets FAB up so it doesn't overlap the bar */
-          .floating-widget-wrap,
-          .fw-fab {
-            bottom: 80px !important;
+          /* Hide FloatingWidgets FAB entirely on mobile — the sticky
+             bar already provides Call + WhatsApp, so the FAB is
+             redundant clutter on small screens. Desktop still shows it. */
+          .wa-fab,
+          .wa-panel,
+          .floating-widget-wrap {
+            display: none !important;
           }
         }
       `}</style>

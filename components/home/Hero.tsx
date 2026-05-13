@@ -1,10 +1,9 @@
 "use client";
-import { sendWAMessage } from "@/helpers";
 import { BRAND } from "@/constants/brand";
 import Button from "@mui/material/Button";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const images = [
   {
@@ -26,29 +25,39 @@ const images = [
 ];
 
 const Hero = () => {
-  const trackRef = useRef(null);
+  const trackRef = useRef<HTMLDivElement | null>(null);
+  const [paused, setPaused] = useState(false);
 
   useEffect(() => {
-    const track: any = trackRef.current;
+    const track = trackRef.current;
     if (!track) return;
 
-    const slides: any[] = Array.from(track.children);
-    let index = 0;
+    // Respect reduced-motion preference — no auto-rotation
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
 
+    const slides = Array.from(track.children) as HTMLElement[];
+    if (slides.length === 0) return;
+
+    let index = 0;
     slides[0].classList.add("active");
 
+    if (reduceMotion) return;
+
     const interval = setInterval(() => {
+      // Skip the rotation if the user is hovering the carousel
+      // or the tab is hidden (saves battery on mobile)
+      if (paused || document.hidden) return;
+
       slides[index].classList.remove("active");
-
       index = (index + 1) % slides.length;
-
       track.style.transform = `translateX(-${index * 100}%)`;
-
       slides[index].classList.add("active");
-    }, 4000);
+    }, 8000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [paused]);
 
   return (
     <section className="hero" id="home">
@@ -122,13 +131,22 @@ const Hero = () => {
 
           {/* RIGHT CARDS */}
           <div>
-            <div className="carousel">
+            <div
+              className="carousel"
+              onMouseEnter={() => setPaused(true)}
+              onMouseLeave={() => setPaused(false)}
+              onFocus={() => setPaused(true)}
+              onBlur={() => setPaused(false)}
+            >
               <div className="carousel-track" ref={trackRef}>
                 {images.map((src, i) => (
-                  <div
+                  <a
                     key={i}
+                    href={src.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="slide"
-                    onClick={() => sendWAMessage("", src.link)}
+                    aria-label={`View Payfix Instagram post ${i + 1}`}
                   >
                     <Image
                       src={src.image}
@@ -139,7 +157,7 @@ const Hero = () => {
                       priority={i === 0}
                       style={{ width: "100%", height: "auto" }}
                     />
-                  </div>
+                  </a>
                 ))}
               </div>
             </div>
