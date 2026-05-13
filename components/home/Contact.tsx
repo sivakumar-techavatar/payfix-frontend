@@ -42,10 +42,19 @@ const socialLinks = [
   {
     icon: "fa-linkedin",
     url: "https://www.linkedin.com/company/payfix-advisors",
+    label: "LinkedIn",
   },
-  { icon: "fa-instagram", url: "https://www.instagram.com/payfix_advisors" },
-  { icon: "fa-facebook", url: "https://www.facebook.com/payfixadvisors" },
-  { icon: "fa-whatsapp", url: openWA() },
+  {
+    icon: "fa-instagram",
+    url: "https://www.instagram.com/payfix_advisors",
+    label: "Instagram",
+  },
+  {
+    icon: "fa-facebook",
+    url: "https://www.facebook.com/payfixadvisors",
+    label: "Facebook",
+  },
+  { icon: "fa-whatsapp", url: openWA(), label: "WhatsApp" },
 ];
 
 const services = [
@@ -137,8 +146,9 @@ const Contact = () => {
                   target="_blank"
                   className="csoc"
                   rel="noopener noreferrer"
+                  aria-label={`Payfix Advisors on ${s.label}`}
                 >
-                  <Icon name={s.icon} />
+                  <Icon name={s.icon} aria-label={s.label} />
                 </a>
               ))}
             </div>

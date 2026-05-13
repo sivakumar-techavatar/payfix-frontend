@@ -2,6 +2,7 @@
 import { sendWAMessage } from "@/helpers";
 import { BRAND } from "@/constants/brand";
 import Button from "@mui/material/Button";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 
@@ -129,7 +130,15 @@ const Hero = () => {
                     className="slide"
                     onClick={() => sendWAMessage("", src.link)}
                   >
-                    <img src={src.image} alt={`slide-${i}`} />
+                    <Image
+                      src={src.image}
+                      alt={`Payfix Instagram post ${i + 1}`}
+                      width={800}
+                      height={800}
+                      sizes="(max-width: 768px) 100vw, 480px"
+                      priority={i === 0}
+                      style={{ width: "100%", height: "auto" }}
+                    />
                   </div>
                 ))}
               </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { Icon } from "@/components/common/Icon";
 
 const aboutPoints = [
@@ -20,14 +21,13 @@ const About = () => {
           {/* LEFT IMAGE */}
           <div>
             <div className="about-img-wrap">
-              <div className="about-main-img">
-                <img
-                  loading="lazy"
+              <div className="about-main-img" style={{ position: "relative" }}>
+                <Image
                   src="/team-photo.png"
                   alt="Payfix Advisors team at work"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   style={{
-                    width: "100%",
-                    height: "100%",
                     objectFit: "cover",
                     objectPosition: "center top",
                   }}

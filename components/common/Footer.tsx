@@ -25,18 +25,22 @@ const socials = [
   {
     icon: "fa-linkedin",
     url: "https://www.linkedin.com/company/payfix-advisors",
+    label: "LinkedIn",
   },
   {
     icon: "fa-instagram",
     url: "https://www.instagram.com/payfix_advisors",
+    label: "Instagram",
   },
   {
     icon: "fa-facebook",
     url: "https://www.facebook.com/payfixadvisors",
+    label: "Facebook",
   },
   {
     icon: "fa-whatsapp",
     url: openWA(),
+    label: "WhatsApp",
   },
 ];
 
@@ -71,8 +75,9 @@ export default function Footer() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="fsoc"
+                    aria-label={`Payfix Advisors on ${s.label}`}
                   >
-                    <Icon name={s.icon} />
+                    <Icon name={s.icon} aria-label={s.label} />
                   </a>
                 ))}
               </div>

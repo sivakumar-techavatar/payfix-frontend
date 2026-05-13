@@ -209,7 +209,20 @@ const Header = ({
               }}
             >
               <Logo />
-              <button onClick={closeMobileNav}>✕</button>
+              <button
+                type="button"
+                onClick={closeMobileNav}
+                aria-label="Close navigation menu"
+                style={{
+                  background: "none",
+                  border: "none",
+                  fontSize: 22,
+                  cursor: "pointer",
+                  padding: 4,
+                }}
+              >
+                ✕
+              </button>
             </Box>
 
             {/* NAV LINKS */}
