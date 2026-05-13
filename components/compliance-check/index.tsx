@@ -24,11 +24,11 @@ type Question = {
 const GlobalStyles = () => (
   <style>{`
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#0a0e1a;--card:#111827;--card2:#1a2235;--border:#1e293b;--accent:#22d3ee;--accent2:#6366f1;--accent3:#f472b6;--green:#10b981;--yellow:#eab308;--orange:#f97316;--red:#ef4444;--text:#e2e8f0;--muted:#64748b;--font:'DM Sans',sans-serif;--mono:'Space Mono',monospace}
+:root{--bg:#001328;--card:#00203f;--card2:#002c54;--border:#0a3461;--accent:#0f6fd5;--accent2:#ee3234;--accent3:#0057b3;--green:#10b981;--yellow:#eab308;--orange:#f97316;--red:#ef4444;--text:#e2e8f0;--muted:#64748b;--font:'DM Sans',sans-serif;--mono:'Space Mono',monospace}
 body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 .glow{position:fixed;border-radius:50%;filter:blur(120px);pointer-events:none;z-index:0}
-.g1{width:500px;height:500px;background:rgba(34,211,238,.06);top:-100px;left:-100px}
-.g2{width:400px;height:400px;background:rgba(99,102,241,.06);bottom:-50px;right:-50px}
+.g1{width:500px;height:500px;background:rgba(15,111,213,.06);top:-100px;left:-100px}
+.g2{width:400px;height:400px;background:rgba(238,50,52,.06);bottom:-50px;right:-50px}
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 .scr{position:relative;z-index:1;min-height:100vh;animation:fadeUp .5s ease-out}
 `}</style>
@@ -39,10 +39,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font
 ========================= */
 
 const CCOL = {
-  "PF & ESIC": "#22d3ee",
-  Payroll: "#6366f1",
+  "PF & ESIC": "#0f6fd5",
+  Payroll: "#ee3234",
   "Tax & GST": "#10b981",
-  "HR Compliance": "#f472b6",
+  "HR Compliance": "#0057b3",
   Licensing: "#eab308",
   Documentation: "#f97316",
 };
@@ -1489,7 +1489,7 @@ export default function App() {
             {screen === "paid" && (
               <div
                 style={{
-                  background: "#6366f1",
+                  background: "#ee3234",
                   padding: "6px 14px",
                   borderRadius: 10,
                   marginBottom: 12,
@@ -1524,7 +1524,7 @@ export default function App() {
                 <div
                   style={{
                     fontSize: 10,
-                    color: "#6366f1",
+                    color: "#ee3234",
                     marginBottom: 12,
                   }}
                 >
@@ -1592,7 +1592,7 @@ export default function App() {
       <div className="scr">
         <div className="sw tc">
           {/* HEADER */}
-          <div style={{ fontSize: 10, color: "#22d3ee", fontWeight: 700 }}>
+          <div style={{ fontSize: 10, color: "#0f6fd5", fontWeight: 700 }}>
             Assessment Complete
           </div>
 
@@ -1616,7 +1616,7 @@ export default function App() {
                 cx={100}
                 cy={100}
                 r={90}
-                stroke="#1a2235"
+                stroke="#002c54"
                 strokeWidth={10}
                 fill="none"
               />
@@ -1796,7 +1796,7 @@ export default function App() {
           {/* CTA */}
           <div
             style={{
-              background: "linear-gradient(135deg,#6366f1,#818cf8)",
+              background: "linear-gradient(135deg,#ee3234,#818cf8)",
               borderRadius: 14,
               padding: 24,
               marginBottom: 14,
@@ -1813,7 +1813,7 @@ export default function App() {
             <button
               style={{
                 background: "#fff",
-                color: "#6366f1",
+                color: "#ee3234",
                 fontWeight: 800,
                 padding: "10px 24px",
                 borderRadius: 10,
@@ -1941,7 +1941,7 @@ export default function App() {
 
   .topbar{
     height:6px;
-    background:linear-gradient(90deg,#2563eb,#6366f1,#22d3ee);
+    background:linear-gradient(90deg,#2563eb,#ee3234,#0f6fd5);
     margin:-40px -40px 20px;
   }
 
@@ -2291,7 +2291,7 @@ export default function App() {
             <div
               style={{
                 fontSize: 10,
-                color: "#22d3ee",
+                color: "#0f6fd5",
                 fontWeight: 700,
                 textTransform: "uppercase",
                 letterSpacing: ".06em",
