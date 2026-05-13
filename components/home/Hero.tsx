@@ -29,27 +29,16 @@ const Hero = () => {
   const pausedRef = useRef(false);
 
   useEffect(() => {
-    const track = trackRef.current;
+    const track: any = trackRef.current;
     if (!track) return;
 
-    // Respect reduced-motion preference — no auto-rotation
-    const reduceMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-
-    const slides = Array.from(track.children) as HTMLElement[];
-    if (slides.length === 0) return;
-
+    const slides: any[] = Array.from(track.children);
     let index = 0;
+
     slides[0].classList.add("active");
 
-    if (reduceMotion) return;
-
     const interval = setInterval(() => {
-      // Skip rotation if the user is hovering OR the tab is hidden.
-      // Use refs (not state) so we don't tear the interval down on
-      // every hover state change.
-      if (pausedRef.current || document.hidden) return;
+      if (pausedRef.current) return;
 
       slides[index].classList.remove("active");
       index = (index + 1) % slides.length;
