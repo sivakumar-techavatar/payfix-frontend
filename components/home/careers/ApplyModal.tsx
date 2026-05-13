@@ -2,7 +2,6 @@
 
 import { useState, ChangeEvent, useEffect } from "react";
 import {
-import { Icon } from "@/components/common/Icon";
   Dialog,
   DialogContent,
   IconButton,
@@ -14,6 +13,7 @@ import { Icon } from "@/components/common/Icon";
   Typography,
   Button,
 } from "@mui/material";
+import { Icon } from "@/components/common/Icon";
 
 type Props = {
   role: string;
