@@ -1,16 +1,55 @@
 @import "tailwindcss";
 
+/* ───────────────────────────────────────────────────────────────────────
+   Brand design tokens — the canonical Payfix palette.
+   New code should reference these via var(--token-name) rather than
+   inlining hex values. Token names are semantic, not literal.
+   ─────────────────────────────────────────────────────────────────────── */
 :root {
-  --background: #ffffff;
+  /* Surfaces */
+  --background: #fff;
   --foreground: #171717;
-  --navy: #001328;
-  --blue: #0057b3;
-  --blue2: #0f6fd5;
-  --red: #ee3234;
-  --gray: #f1f7fc;
-  --border: #ccd7e0;
-  --text: #798593;
   --white: #fff;
+
+  /* Brand colors */
+  --navy: #001328;      /* primary dark — backgrounds, headings */
+  --navy-light: #002548;
+  --navy-mid: #283450;
+
+  --blue: #0057b3;      /* primary blue — links, secondary CTAs */
+  --blue2: #0f6fd5;     /* brighter blue — accents, hover states */
+  --blue-soft: #e8f0fb; /* subtle blue tint — info backgrounds */
+
+  --red: #ee3234;       /* primary red — primary CTAs, brand accent */
+  --red-dark: #c0001a;
+  --red-soft: #fff7f7;  /* subtle red tint — danger backgrounds */
+
+  /* Neutrals */
+  --gray: #f1f7fc;      /* page-soft background */
+  --bg-soft: #f8fafc;   /* card backgrounds */
+  --bg-softer: #f4f7fc;
+
+  --border: #ccd7e0;    /* default border */
+  --border-light: #e4eaf2;
+  --border-soft: #edf1f5;
+
+  /* Text */
+  --text: #4a5568;          /* default body */
+  --text-muted: #798593;    /* secondary text, captions */
+  --text-light: #8a97a8;    /* tertiary, hints */
+  --text-mid: #637080;
+  --text-slate: #64748b;
+  --text-strong: #171717;
+
+  /* Status / semantic */
+  --green-wa: #25d366;      /* WhatsApp green */
+  --teal: #0e7a6e;          /* tax-auditing accent */
+  --slate-700: #374151;
+  --success: #10b981;
+  --warning: #eab308;
+  --danger: #ef4444;
+
+  /* Radii, shadows */
   --r: 8px;
   --pill: 30px;
   --sh: 0 8px 30px rgba(0, 19, 40, 0.1);
@@ -34,8 +73,7 @@ body {
   font-family: "Nunito", sans-serif;
   font-size: 15px;
   line-height: 1.7;
-  color: #4a5568;
-  /* background: #fff; */
+  color: var(--text);
   overflow-x: hidden;
 }
 

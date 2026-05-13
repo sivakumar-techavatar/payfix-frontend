@@ -35,17 +35,6 @@ button {
   cursor: pointer;
   font-family: "Nunito", sans-serif;
 }
-:root {
-  --navy: #001328;
-  --blue: #0057b3;
-  --blue2: #0f6fd5;
-  --red: #ee3234;
-  --gray: #f1f7fc;
-  --border: #ccd7e0;
-  --text: #798593;
-  --sh: 0 8px 30px rgba(0, 19, 40, 0.1);
-  --sh-red: 0 10px 30px rgba(238, 50, 52, 0.28);
-}
 .container {
   max-width: 1180px;
   margin: 0 auto;
@@ -119,7 +108,7 @@ button {
     box-shadow 0.3s;
 }
 .site-header.scrolled {
-  border-color: #e4eaf2;
+  border-color: var(--border-light);
   box-shadow: 0 2px 16px rgba(0, 19, 40, 0.08);
 }
 .nav-wrap {
@@ -372,7 +361,7 @@ button {
 .ndm-text em {
   font-size: 11px;
   font-weight: 600;
-  color: #8a97a8;
+  color: var(--text-light);
   font-style: normal;
 }
 .ndm-footer {
@@ -690,7 +679,7 @@ button {
   line-height: 1.55;
 }
 .problem-visual {
-  background: #f8fafc;
+  background: var(--bg-soft);
   border: 1px solid #e4eaf2;
   border-radius: 18px;
   padding: 32px 28px;
@@ -700,7 +689,7 @@ button {
   font-weight: 900;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #8a97a8;
+  color: var(--text-light);
   margin-bottom: 20px;
 }
 .pv-check {
@@ -731,7 +720,7 @@ button {
 
 /* ── Solution / Deliverables ── */
 .solution-section {
-  background: #f8fafc;
+  background: var(--bg-soft);
   padding: 64px 0;
 }
 .svc-deliverables-grid {
@@ -824,7 +813,7 @@ button {
   align-items: flex-start;
   gap: 14px;
   padding: 22px 22px;
-  background: #f8fafc;
+  background: var(--bg-soft);
   border: 1px solid #e8eef6;
   border-radius: 14px;
   transition:
@@ -922,7 +911,7 @@ button {
 
 /* ── Conversion CTA Block ── */
 .conversion-section {
-  background: #f8fafc;
+  background: var(--bg-soft);
   padding: 64px 0;
 }
 .conversion-block {
@@ -1170,7 +1159,7 @@ button {
 .lateral-text span {
   font-size: 11.5px;
   font-weight: 600;
-  color: #8a97a8;
+  color: var(--text-light);
 }
 .lateral-arrow {
   margin-left: auto;
@@ -1217,7 +1206,7 @@ a:focus-visible {
 
 /* 1. VISUAL RHYTHM: alternating bg, spacing, breathing room */
 .sec-alt {
-  background: #f8fafc;
+  background: var(--bg-soft);
 }
 .sec-alt-2 {
   background: #f1f5f9;
@@ -1245,7 +1234,7 @@ body {
   padding: 12px 20px;
   border: 1.5px solid #e4eaf2;
   border-radius: 10px;
-  background: #f8fafc;
+  background: var(--bg-soft);
   transition: all 0.22s ease;
   text-decoration: none;
   cursor: pointer;
@@ -1257,7 +1246,7 @@ body {
 }
 .soft-cta-strip {
   padding: 28px 0;
-  background: #f8fafc;
+  background: var(--bg-soft);
   border-top: 1px solid #e4eaf2;
   border-bottom: 1px solid #e4eaf2;
 }
@@ -1317,7 +1306,7 @@ body {
   text-orientation: mixed;
 }
 .pf-sticky-side a:hover {
-  background: #ee3234;
+  background: var(--red);
   box-shadow: -4px 0 24px rgba(238, 50, 52, 0.3);
 }
 @media (max-width: 900px) {
@@ -1360,7 +1349,7 @@ body {
 /* 5. AUTHORITY LAYER: Who We Serve + Our Process */
 .pf-authority {
   padding: 56px 0;
-  background: #f8fafc;
+  background: var(--bg-soft);
 }
 .pf-authority .container {
   max-width: 1180px;
@@ -1375,7 +1364,7 @@ body {
   width: 40px;
   height: 3px;
   border-radius: 2px;
-  background: #ee3234;
+  background: var(--red);
   margin: 0 auto 14px;
 }
 .pf-authority-title .pf-eyeb {
@@ -1535,7 +1524,7 @@ body {
 .pf-trust-bar p {
   font-size: 14px;
   font-weight: 700;
-  color: #798593;
+  color: var(--text-muted);
   margin: 0;
   max-width: 1180px;
   margin: 0 auto;

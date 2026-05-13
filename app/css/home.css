@@ -2091,7 +2091,7 @@ textarea {
   position: fixed;
   inset: 0;
   z-index: 3000;
-  background: #f8fafc;
+  background: var(--bg-soft);
   display: none;
   flex-direction: column;
 }
@@ -2164,7 +2164,7 @@ textarea {
   font-size: 12px;
   font-weight: 700;
   color: var(--text);
-  background: #f8fafc;
+  background: var(--bg-soft);
   border-bottom: 1px solid #e8ecf0;
 }
 .admin-body {
@@ -2602,7 +2602,7 @@ footer {
   color: #fff;
 }
 .sticky-cta-bar .btn-sticky {
-  background: #ee3234;
+  background: var(--red);
   color: #fff;
   font-size: 12px;
   font-weight: 900;
@@ -2655,13 +2655,13 @@ footer {
 .lead-magnet-text h3 {
   font-size: 1.4rem;
   font-weight: 900;
-  color: #001328;
+  color: var(--navy);
   letter-spacing: -0.03em;
   margin: 0 0 8px;
 }
 .lead-magnet-text p {
   font-size: 14px;
-  color: #798593;
+  color: var(--text-muted);
   font-weight: 600;
   margin: 0;
   line-height: 1.7;
@@ -2674,7 +2674,7 @@ footer {
   flex-wrap: wrap;
 }
 .lead-magnet-badge {
-  background: #0057b3;
+  background: var(--blue);
   color: #fff;
   border-radius: 8px;
   padding: 10px 18px;
@@ -2697,7 +2697,7 @@ footer {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  background: #ee3234;
+  background: var(--red);
   color: #fff;
   font-size: 13px;
   font-weight: 900;
@@ -2710,7 +2710,7 @@ footer {
   box-shadow: 0 8px 24px rgba(238, 50, 52, 0.3);
 }
 .btn-download:hover {
-  background: #001328;
+  background: var(--navy);
   transform: translateY(-2px);
 }
 @media (max-width: 700px) {
@@ -2998,7 +2998,7 @@ footer {
 .ndm-text em {
   font-size: 11px;
   font-weight: 600;
-  color: #8a97a8;
+  color: var(--text-light);
   font-style: normal;
 }
 .ndm-footer {
@@ -3078,7 +3078,7 @@ footer {
    SERVICES OVERVIEW — 4-card grid (index.html)
    ═══════════════════════════════════════════════════════════════════════════ */
 .svc-overview-section {
-  background: #f8fafc;
+  background: var(--bg-soft);
 }
 
 /* Decision support bar */
@@ -3287,7 +3287,7 @@ footer {
 .svo-pricing-hint {
   font-size: 12px;
   font-weight: 700;
-  color: #8a97a8;
+  color: var(--text-light);
   background: #f4f7fc;
   border-radius: 8px;
   padding: 8px 14px;
@@ -3467,12 +3467,12 @@ footer {
 .enq-head h3 {
   font-size: 18px;
   font-weight: 900;
-  color: #001328;
+  color: var(--navy);
   margin: 0 0 4px;
 }
 .enq-head p {
   font-size: 13px;
-  color: #798593;
+  color: var(--text-muted);
   margin: 0;
   font-weight: 600;
 }
@@ -3485,7 +3485,7 @@ footer {
   padding: 4px;
 }
 .enq-close:hover {
-  color: #001328;
+  color: var(--navy);
 }
 .enq-body {
   padding: 20px 28px 24px;
@@ -3504,10 +3504,10 @@ footer {
 .enq-field label {
   font-size: 12px;
   font-weight: 800;
-  color: #001328;
+  color: var(--navy);
 }
 .enq-field label span {
-  color: #ee3234;
+  color: var(--red);
 }
 .enq-field input,
 .enq-field select,
@@ -3523,7 +3523,7 @@ footer {
 .enq-field input:focus,
 .enq-field select:focus,
 .enq-field textarea:focus {
-  border-color: #0057b3;
+  border-color: var(--blue);
 }
 @media (max-width: 600px) {
   .enq-row {
@@ -3761,7 +3761,7 @@ footer {
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #8a97a8;
+  color: var(--text-light);
   min-height: 15px;
   transition: opacity 0.25s ease;
 }
@@ -3874,7 +3874,7 @@ footer {
 
 /* ── Pricing card: elevated with gradient header ── */
 .ppanel-inner {
-  background: #001328; /* solid navy */
+  background: var(--navy); /* solid navy */
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 16px;
   box-shadow:
@@ -4073,7 +4073,7 @@ footer {
   padding: 14px 28px;
   border: 2px solid transparent;
   transition: all 0.3s ease;
-  background: #0057b3;
+  background: var(--blue);
   color: #fff;
   cursor: pointer;
   box-shadow: 0 8px 24px rgba(0, 87, 179, 0.25);
@@ -4173,7 +4173,7 @@ footer {
 #leadModalBody .lm-service-badge {
   display: inline-block;
   background: #e8f0fb;
-  color: #0057b3;
+  color: var(--blue);
   font-size: 11px;
   font-weight: 900;
   letter-spacing: 0.1em;
@@ -4189,7 +4189,7 @@ footer {
   display: block;
   font-size: 12px;
   font-weight: 800;
-  color: #001328;
+  color: var(--navy);
   letter-spacing: 0.06em;
   text-transform: uppercase;
   margin-bottom: 5px;
@@ -4201,14 +4201,14 @@ footer {
   padding: 11px 16px;
   font-size: 14px;
   font-weight: 600;
-  color: #001328;
+  color: var(--navy);
   font-family: "Nunito", sans-serif;
   outline: none;
   transition: 0.2s;
   box-sizing: border-box;
 }
 .lm-field input:focus {
-  border-color: #0057b3;
+  border-color: var(--blue);
   box-shadow: 0 0 0 3px rgba(0, 87, 179, 0.1);
 }
 .lm-grid-2 {
@@ -4246,7 +4246,7 @@ footer {
 }
 .lm-privacy {
   font-size: 11px;
-  color: #798593;
+  color: var(--text-muted);
   text-align: center;
   margin-top: 10px;
   font-weight: 600;
@@ -4355,7 +4355,7 @@ footer {
 
 /* 1. VISUAL RHYTHM: alternating bg, spacing, breathing room */
 .sec-alt {
-  background: #f8fafc;
+  background: var(--bg-soft);
 }
 .sec-alt-2 {
   background: #f1f5f9;
@@ -4383,7 +4383,7 @@ body {
   padding: 12px 20px;
   border: 1.5px solid #e4eaf2;
   border-radius: 10px;
-  background: #f8fafc;
+  background: var(--bg-soft);
   transition: all 0.22s ease;
   text-decoration: none;
   cursor: pointer;
@@ -4395,7 +4395,7 @@ body {
 }
 .soft-cta-strip {
   padding: 28px 0;
-  background: #f8fafc;
+  background: var(--bg-soft);
   border-top: 1px solid #e4eaf2;
   border-bottom: 1px solid #e4eaf2;
 }
@@ -4455,7 +4455,7 @@ body {
   text-orientation: mixed;
 }
 .pf-sticky-side a:hover {
-  background: #ee3234;
+  background: var(--red);
   box-shadow: -4px 0 24px rgba(238, 50, 52, 0.3);
 }
 @media (max-width: 900px) {
@@ -4498,7 +4498,7 @@ body {
 /* 5. AUTHORITY LAYER: Who We Serve + Our Process */
 .pf-authority {
   padding: 72px 0;
-  background: #f8fafc;
+  background: var(--bg-soft);
 }
 .pf-authority .container {
   max-width: 1180px;
@@ -4513,7 +4513,7 @@ body {
   width: 40px;
   height: 3px;
   border-radius: 2px;
-  background: #ee3234;
+  background: var(--red);
   margin: 0 auto 14px;
 }
 .pf-authority-title .pf-eyeb {
@@ -4673,7 +4673,7 @@ body {
 .pf-trust-bar p {
   font-size: 14px;
   font-weight: 700;
-  color: #798593;
+  color: var(--text-muted);
   margin: 0;
   max-width: 1180px;
   margin: 0 auto;
@@ -5020,7 +5020,7 @@ body {
   letter-spacing: -0.02em;
 }
 .mob-hero h1 span {
-  color: #ee3234;
+  color: var(--red);
 }
 .mob-hero .mob-sub {
   font-size: 12.5px;
@@ -5034,7 +5034,7 @@ body {
   align-items: center;
   justify-content: center;
   width: 100%;
-  background: #ee3234;
+  background: var(--red);
   color: #fff;
   font-size: 15px;
   font-weight: 800;
@@ -5113,13 +5113,13 @@ body {
     transform 0.15s;
 }
 .mob-svc-card:active {
-  border-color: #0057b3;
+  border-color: var(--blue);
   box-shadow: 0 0 0 2px rgba(0, 87, 179, 0.2);
   transform: scale(0.97);
 }
 .mob-svc-card:focus {
   outline: none;
-  border-color: #0057b3;
+  border-color: var(--blue);
   box-shadow: 0 0 0 3px rgba(0, 87, 179, 0.15);
 }
 .mob-svc-icon {
@@ -5162,7 +5162,7 @@ body {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: #ee3234;
+  background: var(--red);
   color: #fff;
   display: flex;
   align-items: center;
@@ -5236,7 +5236,7 @@ body {
   width: 42px;
   height: 42px;
   border-radius: 50%;
-  background: #ee3234;
+  background: var(--red);
   color: #fff;
   display: flex;
   align-items: center;
@@ -5311,7 +5311,7 @@ body {
   color: rgba(255, 255, 255, 0.45);
 }
 .mob-form select option {
-  color: #001328;
+  color: var(--navy);
   background: #fff;
 }
 .mob-form input::placeholder {
@@ -5319,11 +5319,11 @@ body {
 }
 .mob-form input:focus,
 .mob-form select:focus {
-  border-color: #ee3234;
+  border-color: var(--red);
 }
 .mob-form-btn {
   width: 100%;
-  background: #ee3234;
+  background: var(--red);
   color: #fff;
   border: none;
   border-radius: 12px;
@@ -5407,7 +5407,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: #ee3234;
+  background: var(--red);
   color: #fff;
   font-size: 12px;
   font-weight: 800;
@@ -5460,7 +5460,7 @@ body {
   color: #fff;
 }
 .mob-fab-mail {
-  background: #0057b3;
+  background: var(--blue);
   color: #fff;
 }
 
