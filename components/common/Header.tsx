@@ -75,18 +75,17 @@ const Header = ({
   scoreCheckTextClick = () => {},
 }: IHeader) => {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [servicesOpen, setServicesOpen] = useState(false);
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const pathname = usePathname();
 
-  // Close dropdown / drawer when the route changes, NOT synchronously
-  // on click. Synchronous close unmounts the <Link> mid-click and
-  // cancels navigation.
+  // Close the mobile drawer + accordion when the route changes.
+  // (Desktop dropdown is pure-CSS hover, no JS state needed.)
   useEffect(() => {
-    setServicesOpen(false);
     setMobileOpen(false);
+    setMobileServicesOpen(false);
   }, [pathname]);
 
   const toggleMobileDrawer = () => {
@@ -95,12 +94,12 @@ const Header = ({
 
   const closeMobileNav = () => {
     setMobileOpen(false);
-    setServicesOpen(false);
+    setMobileServicesOpen(false);
   };
 
-  const toggleServicesMenu = (e: MouseEvent) => {
+  const toggleMobileServices = (e: MouseEvent) => {
     e.stopPropagation();
-    setServicesOpen((prev) => !prev);
+    setMobileServicesOpen((prev) => !prev);
   };
 
   return (
@@ -152,13 +151,8 @@ const Header = ({
               <nav className="nav-links">
                 <a href="/">Home</a>
 
-                <div className="nav-dropdown">
-                  <button
-                    className="nav-dropdown-trigger"
-                    onClick={toggleServicesMenu}
-                    aria-haspopup="true"
-                    aria-expanded={servicesOpen}
-                  >
+                <div className="nav-dropdown" tabIndex={0}>
+                  <Link href="/#services" className="nav-dropdown-trigger">
                     Services
                     <svg
                       className="nav-chevron"
@@ -172,63 +166,49 @@ const Header = ({
                     >
                       <polyline points="6 9 12 15 18 9" />
                     </svg>
-                  </button>
+                  </Link>
 
-                  {servicesOpen && (
-                    <div className="nav-dropdown-menu">
-                      <Link
-                        href="/payroll-compliance"
-                        className="ndm-item"
-                      >
-                        <span className="ndm-icon">
-                          <Icon name="money" />
-                        </span>
-                        <span className="ndm-text">
-                          <strong>Payroll Compliance</strong>
-                          <em>PF · ESI · TDS · Labour Law</em>
-                        </span>
-                      </Link>
+                  <div className="nav-dropdown-menu" role="menu">
+                    <Link href="/payroll-compliance" className="ndm-item" role="menuitem">
+                      <span className="ndm-icon">
+                        <Icon name="money" />
+                      </span>
+                      <span className="ndm-text">
+                        <strong>Payroll Compliance</strong>
+                        <em>PF · ESI · TDS · Labour Law</em>
+                      </span>
+                    </Link>
 
-                      <Link
-                        href="/hr-services"
-                        className="ndm-item"
-                      >
-                        <span className="ndm-icon ndm-blue">
-                          <Icon name="users" />
-                        </span>
-                        <span className="ndm-text">
-                          <strong>HR Services</strong>
-                          <em>Hiring · HRMS · Policy Framework</em>
-                        </span>
-                      </Link>
+                    <Link href="/hr-services" className="ndm-item" role="menuitem">
+                      <span className="ndm-icon ndm-blue">
+                        <Icon name="users" />
+                      </span>
+                      <span className="ndm-text">
+                        <strong>HR Services</strong>
+                        <em>Hiring · HRMS · Policy Framework</em>
+                      </span>
+                    </Link>
 
-                      <Link
-                        href="/tax-auditing"
-                        className="ndm-item"
-                      >
-                        <span className="ndm-icon ndm-teal">
-                          <Icon name="bar-chart" />
-                        </span>
-                        <span className="ndm-text">
-                          <strong>Tax &amp; Auditing</strong>
-                          <em>GST · Income Tax · Internal Audit</em>
-                        </span>
-                      </Link>
+                    <Link href="/tax-auditing" className="ndm-item" role="menuitem">
+                      <span className="ndm-icon ndm-teal">
+                        <Icon name="bar-chart" />
+                      </span>
+                      <span className="ndm-text">
+                        <strong>Tax &amp; Auditing</strong>
+                        <em>GST · Income Tax · Internal Audit</em>
+                      </span>
+                    </Link>
 
-                      <Link
-                        href="/registration-license"
-                        className="ndm-item"
-                      >
-                        <span className="ndm-icon ndm-slate">
-                          <Icon name="building-o" />
-                        </span>
-                        <span className="ndm-text">
-                          <strong>Registration &amp; License</strong>
-                          <em>ROC · DSC · Factory License</em>
-                        </span>
-                      </Link>
-                    </div>
-                  )}
+                    <Link href="/registration-license" className="ndm-item" role="menuitem">
+                      <span className="ndm-icon ndm-slate">
+                        <Icon name="building-o" />
+                      </span>
+                      <span className="ndm-text">
+                        <strong>Registration &amp; License</strong>
+                        <em>ROC · DSC · Factory License</em>
+                      </span>
+                    </Link>
+                  </div>
                 </div>
 
                 <a href="/#about">About</a>
@@ -297,7 +277,7 @@ const Header = ({
               {/* SERVICES */}
               <Box>
                 <button
-                  onClick={toggleServicesMenu}
+                  onClick={toggleMobileServices}
                   style={{
                     width: "100%",
                     textAlign: "left",
@@ -312,10 +292,10 @@ const Header = ({
                   }}
                 >
                   Services
-                  <span>{servicesOpen ? "−" : "+"}</span>
+                  <span>{mobileServicesOpen ? "−" : "+"}</span>
                 </button>
 
-                {servicesOpen && (
+                {mobileServicesOpen && (
                   <Box sx={{ pl: 1 }}>
                     <SubNavItem
                       href="/payroll-compliance"

@@ -2918,6 +2918,16 @@ footer {
   z-index: 999;
   animation: dropIn 0.18s ease;
 }
+/* Bridge hover gap between trigger and menu so the dropdown
+   doesn't disappear when moving the cursor between them */
+.nav-dropdown::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 14px;
+}
 @keyframes dropIn {
   from {
     opacity: 0;
@@ -2928,8 +2938,14 @@ footer {
     transform: translateX(-50%) translateY(0);
   }
 }
+.nav-dropdown:hover .nav-dropdown-menu,
+.nav-dropdown:focus-within .nav-dropdown-menu,
 .nav-dropdown.open .nav-dropdown-menu {
   display: block;
+}
+.nav-dropdown:hover .nav-chevron,
+.nav-dropdown:focus-within .nav-chevron {
+  transform: rotate(180deg);
 }
 
 .ndm-item {
