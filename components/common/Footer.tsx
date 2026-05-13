@@ -184,8 +184,36 @@ export default function Footer() {
             <span aria-hidden="true"> · </span>
             <a href="/refund">Refund Policy</a>
           </p>
+          <BusinessIdentifiers />
         </div>
       </div>
     </footer>
+  );
+}
+
+function BusinessIdentifiers() {
+  const gst = process.env.NEXT_PUBLIC_GST_NUMBER;
+  const cin = process.env.NEXT_PUBLIC_CIN_NUMBER;
+  const msme = process.env.NEXT_PUBLIC_MSME_NUMBER;
+
+  if (!gst && !cin && !msme) return null;
+
+  const parts: string[] = [];
+  if (gst) parts.push(`GSTIN: ${gst}`);
+  if (cin) parts.push(`CIN: ${cin}`);
+  if (msme) parts.push(`UDYAM: ${msme}`);
+
+  return (
+    <p
+      className="footer-business-ids"
+      style={{
+        fontSize: 12,
+        opacity: 0.6,
+        marginTop: 6,
+      }}
+    >
+      {parts.join(" · ")}
+    </p>
+  );
   );
 }
