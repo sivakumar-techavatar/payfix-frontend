@@ -9,6 +9,7 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { useState, MouseEvent } from "react";
+import Link from "next/link";
 import Logo from "./Logo";
 import { getPhNo } from "@/helpers";
 import { Icon } from "@/components/common/Icon";
@@ -165,7 +166,11 @@ const Header = ({
 
                   {servicesOpen && (
                     <div className="nav-dropdown-menu">
-                      <a href="/payroll-compliance" className="ndm-item">
+                      <Link
+                        href="/payroll-compliance"
+                        className="ndm-item"
+                        onClick={() => setServicesOpen(false)}
+                      >
                         <span className="ndm-icon">
                           <Icon name="money" />
                         </span>
@@ -173,9 +178,13 @@ const Header = ({
                           <strong>Payroll Compliance</strong>
                           <em>PF · ESI · TDS · Labour Law</em>
                         </span>
-                      </a>
+                      </Link>
 
-                      <a href="/hr-services" className="ndm-item">
+                      <Link
+                        href="/hr-services"
+                        className="ndm-item"
+                        onClick={() => setServicesOpen(false)}
+                      >
                         <span className="ndm-icon ndm-blue">
                           <Icon name="users" />
                         </span>
@@ -183,27 +192,35 @@ const Header = ({
                           <strong>HR Services</strong>
                           <em>Hiring · HRMS · Policy Framework</em>
                         </span>
-                      </a>
+                      </Link>
 
-                      <a href="/tax-auditing" className="ndm-item">
+                      <Link
+                        href="/tax-auditing"
+                        className="ndm-item"
+                        onClick={() => setServicesOpen(false)}
+                      >
                         <span className="ndm-icon ndm-teal">
                           <Icon name="bar-chart" />
                         </span>
                         <span className="ndm-text">
-                          <strong>Tax & Auditing</strong>
+                          <strong>Tax &amp; Auditing</strong>
                           <em>GST · Income Tax · Internal Audit</em>
                         </span>
-                      </a>
+                      </Link>
 
-                      <a href="/registration-license" className="ndm-item">
+                      <Link
+                        href="/registration-license"
+                        className="ndm-item"
+                        onClick={() => setServicesOpen(false)}
+                      >
                         <span className="ndm-icon ndm-slate">
                           <Icon name="building-o" />
                         </span>
                         <span className="ndm-text">
-                          <strong>Registration & License</strong>
+                          <strong>Registration &amp; License</strong>
                           <em>ROC · DSC · Factory License</em>
                         </span>
-                      </a>
+                      </Link>
                     </div>
                   )}
                 </div>

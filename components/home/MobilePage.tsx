@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import FaqSection from "../common/FaqSection";
 import { HomePageMobileFAQs } from "@/constants";
 import { BRAND } from "@/constants/brand";
@@ -180,9 +181,9 @@ export default function MobilePage() {
           Expert Payroll & HR compliance — PF, ESIC, TDS, payslips & staffing.
         </p>
 
-        <a href="compliance-check" target="_blank" className="mob-cta">
+        <Link href="/compliance-check" className="mob-cta">
           Check Your Business Score →
-        </a>
+        </Link>
 
         <div className="mob-stats">
           {stats.map((s, i) => (
@@ -200,14 +201,14 @@ export default function MobilePage() {
 
         <div className="mob-svc-grid">
           {services.map((s, i) => (
-            <a key={i} href={s.link} className="mob-svc-card">
+            <Link key={i} href={s.link} className="mob-svc-card">
               <div className="mob-svc-icon" style={{ background: s.gradient }}>
                 {s.icon}
               </div>
 
               <h3>{s.title}</h3>
               <p>{s.desc}</p>
-            </a>
+            </Link>
           ))}
         </div>
       </div>
