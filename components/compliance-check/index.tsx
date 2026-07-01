@@ -2,6 +2,52 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import toastInfotoast from "react-hot-toast";
+import {
+  Factory,
+  MapPin,
+  FileBarChart2,
+  BookOpenText,
+  Zap,
+  ShieldCheck,
+  FileText,
+  Target,
+  CheckCircle2,
+  AlertTriangle,
+  XCircle,
+  HelpCircle,
+  Minus,
+  Settings2,
+  BookOpen,
+  BarChart3,
+  Building2,
+  AlertOctagon,
+  MessageCircle,
+  Check,
+  X,
+  Download,
+  PartyPopper,
+  Flame,
+  Rocket,
+  Unlock,
+  ArrowRight,
+} from "lucide-react";
+
+type LucideIcon = React.ComponentType<{ size?: number; color?: string; className?: string; strokeWidth?: number }>;
+
+function OptIcon({ ic, size = 16 }: { ic: string; size?: number }) {
+  const map: Record<string, { Ic: LucideIcon; color: string }> = {
+    "✅": { Ic: CheckCircle2, color: "#10b981" },
+    "⚠️": { Ic: AlertTriangle, color: "#eab308" },
+    "❌": { Ic: XCircle, color: "#ef4444" },
+    "❓": { Ic: HelpCircle, color: "#94a3b8" },
+    "➖": { Ic: Minus, color: "#94a3b8" },
+    "⚙️": { Ic: Settings2, color: "#0f6fd5" },
+  };
+  const hit = map[ic];
+  if (!hit) return null;
+  const { Ic, color } = hit;
+  return <Ic size={size} color={color} strokeWidth={2} />;
+}
 
 type Option = {
   l: string;
@@ -347,18 +393,185 @@ function getRisk(s: number) {
   return { lv: "Critical Risk", cl: "#ef4444", em: "🔴", gr: "D" };
 }
 
-function getFlags(a: any) {
-  const f: any[] = [];
-  const ck: any[] = [
-    ["epfo", 1, "🚨", "EPFO issue", "critical"],
-    ["esic", 0, "🚨", "ESIC issue", "critical"],
-    ["tds", 0.5, "⚠️", "TDS issue", "high"],
-  ];
-  ck.forEach((c) => {
-    if (a[c[0]] && a[c[0]].v <= c[1]) {
-      f.push({ i: c[2], t: c[3], s: c[4] });
+type FlagSeverity = "critical" | "high" | "medium";
+type Flag = {
+  id: string;
+  s: FlagSeverity;
+  t: string;
+  ref: string;
+  rem: string;
+  pen: string;
+};
+
+const FLAG_CHECKS: {
+  id: string;
+  threshold: number;
+  severity: FlagSeverity;
+  title: string;
+  ref: string;
+  remediation: string;
+  penalty: string;
+}[] = [
+  {
+    id: "epfo",
+    threshold: 0.5,
+    severity: "critical",
+    title: "EPFO registration gap or delayed contribution",
+    ref: "EPF & MP Act 1952, Sec 6, 7Q & 14B",
+    remediation:
+      "Register within 15 days of crossing 20 employees. Regularise any missed months with damages (5–25% p.a.) and interest under Sec 7Q. Enable UAN linkage for every joiner.",
+    penalty: "₹5L – ₹25L + 12% interest + damages",
+  },
+  {
+    id: "esic",
+    threshold: 0.5,
+    severity: "critical",
+    title: "ESIC compliance not established",
+    ref: "ESI Act 1948, Sec 2A & Reg. 10",
+    remediation:
+      "Register within 15 days of applicability (10+ employees ≤ ₹21,000 wage). File monthly return + contribution by 15th of following month. Communicate ESIC benefits card to workers.",
+    penalty: "₹5L – ₹15L + 12% interest",
+  },
+  {
+    id: "tds",
+    threshold: 0.5,
+    severity: "high",
+    title: "TDS deduction / remittance risk",
+    ref: "Income Tax Act 1961, Sec 192, 200 & 201",
+    remediation:
+      "Reconcile Form 24Q filings against payroll. Remit pending TDS with interest under Sec 201(1A) (1%/mo deduction delay, 1.5%/mo remittance delay). Issue Form 16 within statutory window.",
+    penalty: "1–1.5%/mo interest + prosecution risk",
+  },
+  {
+    id: "gst",
+    threshold: 0.5,
+    severity: "high",
+    title: "GST filing gap",
+    ref: "CGST Act, Sec 39 & 47",
+    remediation:
+      "File all pending GSTR-1 / 3B with late fee (₹50/day, max ₹5,000/return) + 18% interest. Set a monthly compliance calendar with two-person review.",
+    penalty: "₹50/day per return + 18% interest",
+  },
+  {
+    id: "gstPayment",
+    threshold: 0.5,
+    severity: "high",
+    title: "GST payment accuracy weak",
+    ref: "CGST Rule 36(4) — ITC matching",
+    remediation:
+      "Reconcile GSTR-2B vs purchase register monthly. Freeze ITC on unreconciled invoices. Adopt tax engine or CA-managed workflow.",
+    penalty: "Wrong ITC → 100% penalty + interest",
+  },
+  {
+    id: "salaryDelay",
+    threshold: 0.5,
+    severity: "high",
+    title: "Salary payment delay pattern",
+    ref: "Payment of Wages Act 1936, Sec 5",
+    remediation:
+      "Fix wage cut-off (7th of month for ≤1000 employees, 10th for >1000). Direct bank transfer with pay-stub. Delays > 2 days invite Sec 15 complaints.",
+    penalty: "₹200 – ₹1000 per default + damages",
+  },
+  {
+    id: "payroll",
+    threshold: 0.5,
+    severity: "medium",
+    title: "Payroll process is ad-hoc or manual",
+    ref: "Code on Wages 2019, Sec 17",
+    remediation:
+      "Move to an automated payroll with a statutory engine (PF/ESI/PT/TDS baked-in). Adopt digital payslips with signed audit trail.",
+    penalty: "Indirect — cascades into every statutory error",
+  },
+  {
+    id: "posh",
+    threshold: 0.5,
+    severity: "medium",
+    title: "POSH policy or IC not fully implemented",
+    ref: "PoSH Act 2013, Sec 19(c)",
+    remediation:
+      "Constitute an Internal Committee (with an external member). Run annual awareness training with signed attendance. File Annual Report to District Officer by 31 Dec.",
+    penalty: "₹50k – ₹1L + licence risk on repeat",
+  },
+  {
+    id: "hrPolicy",
+    threshold: 0.5,
+    severity: "medium",
+    title: "HR policy documentation weak",
+    ref: "Industrial Employment (Standing Orders) Act 1946",
+    remediation:
+      "Draft handbook covering conduct, leave, discipline, IT / DPDP, exit. Certify Standing Orders where headcount threshold applies. Acknowledgement signature at joining.",
+    penalty: "Discretionary, up to ₹5L on inspection",
+  },
+  {
+    id: "leavePolicy",
+    threshold: 0.5,
+    severity: "medium",
+    title: "Leave policy gap",
+    ref: "State Shops & Establishment Act",
+    remediation:
+      "Codify EL / CL / SL entitlements per state law. Track balances centrally. Grant statutory leave with wages; encash lapsed EL at exit.",
+    penalty: "Notice + penalty by Labour Commissioner",
+  },
+  {
+    id: "tradelicense",
+    threshold: 0.5,
+    severity: "medium",
+    title: "Trade license lapsed or missing",
+    ref: "State ULB / Municipal Rules",
+    remediation:
+      "Renew via the ULB portal before the annual due date. Keep display copy at premises. Non-renewal invites sealing notice.",
+    penalty: "₹5k – ₹50k + sealing risk",
+  },
+  {
+    id: "professionalTax",
+    threshold: 0.5,
+    severity: "medium",
+    title: "Professional Tax non-compliance",
+    ref: "State PT Act",
+    remediation:
+      "Register employer + employee PT for every state you operate in. File monthly / half-yearly returns; annual return by 30 Apr where applicable.",
+    penalty: "₹2 – ₹5 per employee per day + interest",
+  },
+  {
+    id: "documents",
+    threshold: 0.5,
+    severity: "medium",
+    title: "Employee records incomplete",
+    ref: "Labour Codes / IT Act 44AA record retention",
+    remediation:
+      "Maintain digital + physical files: appointment letter, KYC, PF/ESI declarations, nominations. Retain for 7 years minimum. Central register in payroll system.",
+    penalty: "Discretionary on inspection",
+  },
+  {
+    id: "auditTrail",
+    threshold: 0.5,
+    severity: "medium",
+    title: "Compliance audit trail insufficient",
+    ref: "Companies Act 2013, MCA Notification 24 Mar 2021",
+    remediation:
+      "Enable audit-trail feature in accounting software (mandatory for Pvt Ltd since Apr 2023). Maintain challan register + filing acknowledgements.",
+    penalty: "₹10k – ₹5L on statutory audit qualification",
+  },
+];
+
+function getFlags(a: any): Flag[] {
+  const f: Flag[] = [];
+  const sevRank: Record<FlagSeverity, number> = { critical: 0, high: 1, medium: 2 };
+
+  FLAG_CHECKS.forEach((c) => {
+    if (a[c.id] && a[c.id].v <= c.threshold) {
+      f.push({
+        id: c.id,
+        s: c.severity,
+        t: c.title,
+        ref: c.ref,
+        rem: c.remediation,
+        pen: c.penalty,
+      });
     }
   });
+
+  f.sort((x, y) => sevRank[x.s] - sevRank[y.s]);
   return f;
 }
 
@@ -1258,7 +1471,7 @@ export default function App() {
     // phoneV: false,
   });
 
-  const [toast, setToast] = useState<{ e: string; t: string } | null>(null);
+  const [toast, setToast] = useState<{ Icon?: LucideIcon; color?: string; t: string } | null>(null);
 
   /* =========================
      HELPERS (EXACT)
@@ -1268,8 +1481,8 @@ export default function App() {
     setInfo((p) => ({ ...p, [k]: v }));
   };
 
-  const showToast = (e: string, t: string) => {
-    setToast({ e, t });
+  const showToast = (Icon: LucideIcon | null, color: string, t: string) => {
+    setToast({ Icon: Icon || undefined, color, t });
     setTimeout(() => setToast(null), 2500);
   };
 
@@ -1387,11 +1600,11 @@ export default function App() {
 
     // milestone toasts
     if (count === Math.ceil(total * 0.25)) {
-      showToast("🔥", "25% completed");
+      showToast(Flame, "#f97316", "25% completed");
     } else if (count === Math.ceil(total * 0.5)) {
-      showToast("⚡", "Halfway");
+      showToast(Zap, "#eab308", "Halfway");
     } else if (count === Math.ceil(total * 0.75)) {
-      showToast("🚀", "Almost done");
+      showToast(Rocket, "#0f6fd5", "Almost done");
     }
 
     const isLast = Object.keys(newAnswers).length >= activeQs.length;
@@ -1412,7 +1625,7 @@ export default function App() {
       const finalScore = calcScore(newAnswers, activeQs);
       setScoreData(finalScore);
 
-      showToast("🎉", "Completed");
+      showToast(PartyPopper, "#10b981", "Completed");
 
       setTimeout(() => {
         setScreen("score");
@@ -1479,7 +1692,11 @@ export default function App() {
           {/* toast */}
           {toast && (
             <div className="toast">
-              <span className="te">{toast.e}</span>
+              {toast.Icon && (
+                <span className="te" style={{ color: toast.color || "#eab308", display: "inline-flex" }}>
+                  <toast.Icon size={20} strokeWidth={2.2} />
+                </span>
+              )}
               <span>{toast.t}</span>
             </div>
           )}
@@ -1494,9 +1711,14 @@ export default function App() {
                   borderRadius: 10,
                   marginBottom: 12,
                   textAlign: "center",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 8,
                 }}
               >
-                🔓 {paid === "premium" ? "Premium" : "Detailed"}
+                <Unlock size={14} strokeWidth={2.4} />
+                {paid === "premium" ? "Premium" : "Detailed"}
               </div>
             )}
 
@@ -1526,9 +1748,13 @@ export default function App() {
                     fontSize: 10,
                     color: "#ee3234",
                     marginBottom: 12,
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 6,
                   }}
                 >
-                  📖 {question.ref}
+                  <BookOpen size={12} strokeWidth={2} />
+                  {question.ref}
                 </div>
               )}
 
@@ -1539,7 +1765,9 @@ export default function App() {
                     className="qo"
                     onClick={() => handleAnswer(question.id, o.v, o.l)}
                   >
-                    <div className="oic">{o.ic}</div>
+                    <div className="oic">
+                      <OptIcon ic={o.ic} size={16} />
+                    </div>
                     <div>
                       <div className="olbl">{o.l}</div>
                     </div>
@@ -1676,14 +1904,24 @@ export default function App() {
                 toastInfotoast.error("Failed to send report");
               }
             }}
-            style={{ marginBottom: 20 }}
+            style={{ marginBottom: 20, display: "inline-flex", alignItems: "center", gap: 8, justifyContent: "center" }}
           >
-            📄 Download & Send Free PDF Report to My Mail
+            <Download size={16} strokeWidth={2.2} />
+            Download & Send Free PDF Report to My Mail
           </button>
 
           {/* RISK */}
           <div className="rc tc" style={{ width: "100%" }}>
-            <div style={{ fontSize: 32 }}>{risk.em}</div>
+            <div
+              style={{
+                width: 44,
+                height: 44,
+                borderRadius: "50%",
+                background: risk.cl,
+                margin: "0 auto 6px",
+                boxShadow: `0 0 0 6px ${risk.cl}22`,
+              }}
+            />
             <div
               style={{
                 fontSize: 18,
@@ -1724,7 +1962,10 @@ export default function App() {
 
           {/* CATEGORY BARS (FIXED COLORS + STRUCTURE) */}
           <div className="rc">
-            <h3>📊 Categories</h3>
+            <h3>
+              <BarChart3 size={16} strokeWidth={2} color="#0f6fd5" />
+              Categories
+            </h3>
 
             <div className="cbars">
               {Object.keys(scoreData.bd).map((c) => {
@@ -1761,7 +2002,10 @@ export default function App() {
 
           {/* BUSINESS MATURITY (FULL ITEMS FIX) */}
           <div className="rc">
-            <h3>🏢 Business Maturity: {bm?.score ?? 0}%</h3>
+            <h3>
+              <Building2 size={16} strokeWidth={2} color="#0f6fd5" />
+              Business Maturity: {bm?.score ?? 0}%
+            </h3>
 
             {(bm?.items || []).map((it: any, i: number) => (
               <div
@@ -1769,29 +2013,63 @@ export default function App() {
                 style={{
                   display: "flex",
                   justifyContent: "space-between",
+                  alignItems: "center",
                   padding: "4px 0",
                   fontSize: 11,
                 }}
               >
                 <span>{it.n}</span>
-                <span style={{ color: it.v ? "#10b981" : "#f97316" }}>
-                  {it.v ? "✅" : "❌"}
+                <span
+                  style={{
+                    color: it.v ? "#10b981" : "#f97316",
+                    display: "inline-flex",
+                    alignItems: "center",
+                  }}
+                >
+                  {it.v ? (
+                    <Check size={14} strokeWidth={3} />
+                  ) : (
+                    <X size={14} strokeWidth={3} />
+                  )}
                 </span>
               </div>
             ))}
           </div>
 
           {/* FLAGS */}
-          <div className="rc">
-            <h3>🚨 Top Risk Flags</h3>
+          {flags.length > 0 && (
+            <div className="rc">
+              <h3>
+                <AlertOctagon size={16} strokeWidth={2} color="#ef4444" />
+                Top Risk Flags
+              </h3>
 
-            {flags.slice(0, 3).map((f, i) => (
-              <div className="fl" key={i}>
-                <span className="fi">{f.i}</span>
-                <span>{f.t}</span>
-              </div>
-            ))}
-          </div>
+              {flags.slice(0, 3).map((f, i) => {
+                const sevCl =
+                  f.s === "critical"
+                    ? "#ef4444"
+                    : f.s === "high"
+                      ? "#f97316"
+                      : "#eab308";
+                return (
+                  <div className="fl" key={i}>
+                    <span
+                      className="fi"
+                      style={{
+                        display: "inline-block",
+                        width: 6,
+                        height: 6,
+                        borderRadius: "50%",
+                        background: sevCl,
+                        marginTop: 6,
+                      }}
+                    />
+                    <span>{f.t}</span>
+                  </div>
+                );
+              })}
+            </div>
+          )}
 
           {/* CTA */}
           <div
@@ -1828,7 +2106,26 @@ export default function App() {
 
           {/* ACTIONS */}
           <div className="rc tc">
-            <button className="wabtn">💬 Talk to Expert</button>
+            <button
+              className="wabtn"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
+              }}
+              onClick={() =>
+                window.open(
+                  "https://wa.me/918680939401?text=" +
+                    encodeURIComponent(
+                      `Hi Payfix — I just completed the compliance check for ${info.companyName} (score ${scoreData.score}%). Would like to discuss next steps.`
+                    ),
+                  "_blank"
+                )
+              }
+            >
+              <MessageCircle size={16} strokeWidth={2.2} />
+              Talk to Expert
+            </button>
           </div>
 
           <button className="bk" onClick={resetApp}>
@@ -1903,13 +2200,13 @@ export default function App() {
   }
 
   /* =========================
-   PDF GENERATOR (FULL FLOW)
+   PDF GENERATOR (PREMIUM 4-PAGE)
 ========================= */
 
   function generatePDF(
     info: any,
     sd: { score: number; bd: any },
-    flags: any[],
+    flags: Flag[],
     tier: "basic" | "premium" | null,
     bm: any,
   ) {
@@ -1921,7 +2218,7 @@ export default function App() {
       year: "numeric",
     });
 
-    const reportId = "RPT-" + Math.floor(1000 + Math.random() * 9000);
+    const reportId = "PFX-" + new Date().getFullYear() + "-" + Math.floor(1000 + Math.random() * 9000);
 
     const penalty =
       sd.score < 50
@@ -1930,273 +2227,691 @@ export default function App() {
           ? "₹5L – ₹15L"
           : sd.score < 80
             ? "₹1L – ₹5L"
-            : "< ₹1L";
+            : "Under ₹1L";
+
+    const critCount = flags.filter((f) => f.s === "critical").length;
+    const highCount = flags.filter((f) => f.s === "high").length;
+    const medCount = flags.filter((f) => f.s === "medium").length;
+
+    const catColor = (v: number) =>
+      v >= 80 ? "#10b981" : v >= 65 ? "#eab308" : v >= 50 ? "#f97316" : "#ef4444";
+
+    const esc = (s: any) =>
+      String(s ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+
+    const logoMark = `
+<svg width="26" height="26" viewBox="0 0 375 375" xmlns="http://www.w3.org/2000/svg">
+  <path fill="#0f6fd5" d="M 206.05 69.36 L 149.95 69.36 C 147.55 69.36 145.28 71.63 145.28 74.03 L 145.28 75.02 C 145.32 76.22 145.42 77.41 145.57 78.61 C 146.86 88.66 150.87 98.14 157.15 106.33 C 163.42 114.51 171.7 120.68 181.14 124.16 C 184.32 125.33 187.62 126.19 190.98 126.72 C 190.98 126.72 191.69 121.53 191.69 109.81 L 191.69 98.73 C 191.69 97.5 192.9 96.66 194 97.34 L 227.69 124.64 C 228.09 124.97 228.09 125.5 227.69 125.83 L 194 152.68 C 192.9 153.55 191.69 152.42 191.69 141.29 L 191.69 141.29 C 191.69 140.06 190.98 139.88 190.3 139.88 L 183.17 139.88 C 175.6 139.88 168.19 138.61 161.29 136.16 C 155.51 134.14 150.16 131.4 145.23 128.05 L 145.23 234.45 C 148.75 234.45 152.13 234.15 155.34 233.55 C 165.98 231.44 175.36 226.15 182.64 218.14 C 189.92 210.13 194.44 200.05 195.51 189.09 C 195.79 185.86 195.9 184.42 195.9 182.25 L 206.05 182.25 C 237.09 182.25 262.48 156.85 262.48 125.82 C 262.49 94.76 237.07 69.36 206.05 69.36 Z"/>
+</svg>`;
+
+    const brandHeader = `
+<div class="mh">
+  <div class="mh-brand">
+    ${logoMark}
+    <span class="wm">PAYFIX ADVISORS</span>
+    <span class="tag">Compliance Health Report</span>
+  </div>
+  <div class="mh-meta">
+    <div>Report · ${esc(reportId)}</div>
+    <div>${esc(dt)} · Confidential</div>
+  </div>
+</div>`;
+
+    const footerRow = (pageNo: string) => `
+<div class="foot">
+  <span>PAYFIX ADVISORS · payfixadvisors.in · +91 86809 39401</span>
+  <span class="pg">${pageNo}</span>
+</div>`;
 
     const styles = `
-  <style>
-  @page{size:A4;margin:0}
-  body{font-family:'DM Sans',Arial;background:#f8fafc;margin:0;color:#0f172a}
-
-  .page{padding:40px}
-
-  .topbar{
-    height:6px;
-    background:linear-gradient(90deg,#2563eb,#ee3234,#0f6fd5);
-    margin:-40px -40px 20px;
+<style>
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #0f172a;
+    background: #ffffff;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    font-size: 10.5px;
+    line-height: 1.55;
   }
 
-  h1{font-size:22px;color:#2563eb;margin:0}
-  h2{font-size:14px;color:#2563eb;margin:20px 0 10px}
+  .p {
+    width: 210mm;
+    min-height: 297mm;
+    padding: 16mm 16mm 22mm;
+    position: relative;
+    page-break-after: always;
+    overflow: hidden;
+  }
+  .p:last-child { page-break-after: auto; }
 
-  .meta{
-    position:absolute;
-    right:40px;
-    top:40px;
-    font-size:11px;
-    color:#64748b;
-    text-align:right;
+  /* Cover ribbon */
+  .rib {
+    position: absolute; top: 0; left: 0; right: 0; height: 6mm;
+    background: linear-gradient(90deg, #0a1a3a 0%, #0f6fd5 55%, #ee3234 55%, #ee3234 100%);
   }
 
-  .grid{
-    display:grid;
-    grid-template-columns:1fr 1fr 1fr;
-    gap:12px;
-    margin-top:10px;
+  /* Master header */
+  .mh {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    padding: 8mm 0 4mm;
+    border-bottom: 1px solid #0f172a;
+    margin-bottom: 6mm;
+  }
+  .mh-brand { display: flex; align-items: center; gap: 8px; }
+  .mh-brand .wm {
+    font-weight: 800; font-size: 13px; letter-spacing: 0.02em;
+    color: #0a1a3a; font-family: 'DM Sans', sans-serif;
+  }
+  .mh-brand .tag {
+    font-size: 8px; text-transform: uppercase; letter-spacing: 0.14em;
+    color: #64748b; margin-left: 6px; padding-left: 8px;
+    border-left: 1px solid #cbd5e1;
+  }
+  .mh-meta {
+    text-align: right; font-size: 8.5px; color: #64748b;
+    letter-spacing: 0.06em; text-transform: uppercase; line-height: 1.7;
+  }
+  .mh-meta div { white-space: nowrap; }
+
+  /* Cover title */
+  .cover-eyebrow {
+    display: inline-block; font-size: 9px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.16em; color: #ee3234;
+    padding: 3px 10px; border: 1px solid #ee3234; border-radius: 2px;
+    margin-top: 10mm; margin-bottom: 6mm;
+  }
+  .cover-title {
+    font-family: Georgia, 'Playfair Display', serif;
+    font-size: 40px; font-weight: 700; line-height: 1.06;
+    color: #0a1a3a; margin: 0 0 5mm;
+  }
+  .cover-sub {
+    font-size: 12px; line-height: 1.7; color: #334155;
+    max-width: 165mm;
+  }
+  .cover-sub b { color: #0a1a3a; }
+
+  /* Company info card */
+  .who {
+    margin-top: 9mm;
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+    border: 1px solid #0a1a3a;
+  }
+  .who > div {
+    padding: 4mm 5mm;
+    border-right: 1px solid #cbd5e1;
+    border-bottom: 1px solid #cbd5e1;
+  }
+  .who > div:nth-child(3n) { border-right: none; }
+  .who > div:nth-child(n+4) { border-bottom: none; }
+  .who .k {
+    font-size: 7.5px; color: #64748b; text-transform: uppercase;
+    letter-spacing: 0.12em; font-weight: 700; margin-bottom: 1.5mm;
+  }
+  .who .v {
+    font-size: 11px; color: #0f172a; font-weight: 600; line-height: 1.4;
   }
 
-  .cell{
-    background:#f1f5f9;
-    padding:10px;
-    border-radius:8px;
-    font-size:11px;
+  /* Hero score */
+  .hero {
+    margin-top: 8mm;
+    display: grid; grid-template-columns: 78mm 1fr;
+    gap: 6mm; align-items: stretch;
+  }
+  .hero-score {
+    background: #0a1a3a; color: #fff;
+    padding: 9mm 5mm; text-align: center; border-radius: 2px;
+    position: relative;
+  }
+  .hero-score::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: ${risk.cl};
+  }
+  .hero-num {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 68px; font-weight: 800; line-height: 0.95;
+    color: ${risk.cl};
+  }
+  .hero-slash { font-size: 22px; color: #64748b; font-weight: 400; }
+  .hero-outof {
+    font-size: 10px; color: #94a3b8; margin-top: 2mm;
+    letter-spacing: 0.14em; text-transform: uppercase;
+  }
+  .hero-grade {
+    display: inline-block; margin-top: 4mm;
+    padding: 2mm 6mm; background: ${risk.cl}; color: #fff;
+    border-radius: 999px; font-size: 10px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+  }
+  .hero-detail {
+    font-size: 11px; line-height: 1.75; color: #334155;
+    padding: 3mm 0; display: flex; flex-direction: column; justify-content: center;
+  }
+  .hero-detail p { margin: 0 0 4mm; }
+  .hero-detail p:last-child { margin-bottom: 0; }
+  .hero-detail b { color: #0a1a3a; }
+  .hero-callout {
+    background: #fef2f2; border-left: 3px solid #ee3234;
+    padding: 3mm 4mm; margin-top: 3mm;
+    font-size: 10.5px;
+  }
+  .hero-callout .lbl {
+    font-size: 7.5px; text-transform: uppercase; letter-spacing: 0.14em;
+    color: #ee3234; font-weight: 700; margin-bottom: 1mm;
+  }
+  .hero-callout .val { font-size: 13px; font-weight: 700; color: #0a1a3a; }
+
+  /* Severity strip */
+  .sev-strip {
+    margin-top: 6mm;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 3mm;
+  }
+  .sev-cell {
+    border: 1px solid #cbd5e1; padding: 4mm 4mm;
+    border-radius: 2px; text-align: center;
+  }
+  .sev-cell .n {
+    font-family: 'DM Sans', sans-serif; font-size: 22px;
+    font-weight: 800; color: #0a1a3a; line-height: 1;
+  }
+  .sev-cell .l {
+    font-size: 8.5px; text-transform: uppercase; letter-spacing: 0.12em;
+    color: #64748b; margin-top: 2mm; font-weight: 600;
+  }
+  .sev-cell.crit .n { color: #ef4444; }
+  .sev-cell.hi .n { color: #f97316; }
+  .sev-cell.med .n { color: #eab308; }
+
+  /* Section heading */
+  .h {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px; font-weight: 800;
+    color: #0a1a3a; letter-spacing: 0.06em; text-transform: uppercase;
+    margin-top: 8mm; padding-bottom: 2mm;
+    border-bottom: 1.5px solid #0a1a3a;
+    display: flex; justify-content: space-between; align-items: flex-end;
+  }
+  .h .num {
+    font-size: 8px; color: #64748b; letter-spacing: 0.14em;
+    font-weight: 700;
+  }
+  .h-note {
+    font-size: 9.5px; color: #64748b; margin-top: 2.5mm; line-height: 1.6;
   }
 
-  .scoreCard{
-    border:2px solid ${risk.cl};
-    border-radius:14px;
-    text-align:center;
-    padding:30px;
-    margin:20px 0;
-    background:#fff;
+  /* Category table */
+  .cat { width: 100%; border-collapse: collapse; margin-top: 4mm; }
+  .cat th {
+    text-align: left; padding: 2.5mm 3mm;
+    background: #0a1a3a; color: #fff;
+    font-size: 8px; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700;
+  }
+  .cat th.r { text-align: right; }
+  .cat td {
+    padding: 3mm 3mm; border-bottom: 1px solid #e2e8f0;
+    font-size: 10.5px; vertical-align: middle;
+  }
+  .cat td.r { text-align: right; }
+  .cat tr:last-child td { border-bottom: 1px solid #0a1a3a; }
+  .cat .bar {
+    height: 6px; background: #eef2f7; border-radius: 3px; overflow: hidden;
+  }
+  .cat .fill { height: 100%; }
+  .cat .pill {
+    display: inline-block; padding: 1mm 3mm; border-radius: 999px;
+    font-size: 8px; font-weight: 700; letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .cat .pill.g { background: #dcfce7; color: #166534; }
+  .cat .pill.a { background: #fef3c7; color: #92400e; }
+  .cat .pill.r { background: #fee2e2; color: #991b1b; }
+  .cat .val { font-weight: 800; font-family: 'DM Sans', sans-serif; }
+
+  /* Maturity grid */
+  .mat {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2mm; margin-top: 4mm;
+  }
+  .mat .row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 3mm 3.5mm; font-size: 10px; border-radius: 2px;
+    border: 1px solid #e2e8f0;
+  }
+  .mat .row .name { font-weight: 500; color: #0f172a; }
+  .mat .row .st {
+    font-weight: 800; letter-spacing: 0.1em; font-size: 8.5px;
+    padding: 1mm 3mm; border-radius: 999px;
+  }
+  .mat .row.y { background: #f0fdf4; border-color: #bbf7d0; }
+  .mat .row.y .st { background: #10b981; color: #fff; }
+  .mat .row.n { background: #fff7ed; border-color: #fdba74; }
+  .mat .row.n .st { background: #f97316; color: #fff; }
+
+  /* Flag advisory card */
+  .flag {
+    margin-top: 4mm; display: grid;
+    grid-template-columns: 8mm 1fr;
+    border: 1px solid #e2e8f0; border-radius: 2px;
+    overflow: hidden;
+  }
+  .flag .sev {
+    padding: 3mm 0; display: flex; align-items: center; justify-content: center;
+    text-align: center; color: #fff; font-weight: 800;
+  }
+  .flag .sev.critical { background: #ef4444; }
+  .flag .sev.high { background: #f97316; }
+  .flag .sev.medium { background: #eab308; color: #422006; }
+  .flag .sev .sev-lbl {
+    writing-mode: vertical-rl; transform: rotate(180deg);
+    font-size: 7.5px; text-transform: uppercase; letter-spacing: 0.24em;
+  }
+  .flag .body { padding: 4mm 5mm; }
+  .flag .idx {
+    font-size: 7.5px; text-transform: uppercase; letter-spacing: 0.12em;
+    color: #64748b; font-weight: 700; margin-bottom: 1mm;
+  }
+  .flag .t {
+    font-size: 12px; font-weight: 700; color: #0a1a3a; margin-bottom: 2mm;
+    line-height: 1.35;
+  }
+  .flag .meta {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4mm;
+    margin-bottom: 2.5mm;
+  }
+  .flag .meta .k {
+    font-size: 7.5px; text-transform: uppercase; letter-spacing: 0.12em;
+    color: #64748b; font-weight: 700; margin-bottom: 0.5mm;
+  }
+  .flag .meta .v { font-size: 9.5px; color: #0f172a; font-weight: 500; }
+  .flag .rem {
+    margin-top: 2mm; padding-top: 2.5mm;
+    border-top: 1px dashed #cbd5e1;
+    font-size: 10px; color: #334155; line-height: 1.6;
+  }
+  .flag .rem .k {
+    font-size: 7.5px; text-transform: uppercase; letter-spacing: 0.12em;
+    color: #0f6fd5; font-weight: 700; margin-bottom: 1mm;
+    display: block;
   }
 
-  .score{
-    font-size:52px;
-    font-weight:800;
-    color:${risk.cl};
+  .clean {
+    margin-top: 6mm; padding: 10mm 8mm; border: 1px solid #10b981;
+    background: #f0fdf4; border-radius: 2px; text-align: center;
+  }
+  .clean .k {
+    font-size: 8px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: #166534; font-weight: 700;
+  }
+  .clean .t {
+    font-family: Georgia, serif; font-size: 20px;
+    color: #14532d; margin-top: 2mm; font-weight: 700;
+  }
+  .clean .n {
+    font-size: 10px; color: #166534; margin-top: 2mm; line-height: 1.6;
   }
 
-  table{
-    width:100%;
-    border-collapse:collapse;
-    margin-top:10px;
+  /* Roadmap */
+  .rm {
+    display: grid; grid-template-columns: 24mm 1fr;
+    gap: 5mm; align-items: stretch;
+    padding: 4mm 4mm 4mm 0;
+    border-left: 3px solid #0f6fd5;
+    margin-top: 4mm; padding-left: 5mm;
+  }
+  .rm .step { text-align: left; }
+  .rm .step-lbl {
+    font-size: 7.5px; color: #64748b; text-transform: uppercase;
+    letter-spacing: 0.16em; font-weight: 700;
+  }
+  .rm .step-num {
+    font-family: 'DM Sans', sans-serif; font-size: 32px;
+    font-weight: 800; color: #0f6fd5; line-height: 1; margin-top: 1mm;
+  }
+  .rm .step-when {
+    font-size: 8.5px; color: #64748b; margin-top: 1mm; font-weight: 600;
+  }
+  .rm .head {
+    font-size: 11px; font-weight: 800; color: #0a1a3a;
+    text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 2mm;
+  }
+  .rm ul {
+    margin: 0; padding-left: 4mm; font-size: 10px; line-height: 1.7;
+    color: #334155;
+  }
+  .rm ul li { margin-bottom: 1mm; }
+  .rm ul li b { color: #0f172a; }
+
+  /* CTA block */
+  .cta {
+    margin-top: 9mm; padding: 9mm 8mm;
+    background: linear-gradient(135deg, #0a1a3a 0%, #0f6fd5 100%);
+    color: #fff; text-align: center; border-radius: 2px;
+    position: relative; overflow: hidden;
+  }
+  .cta::before {
+    content: ''; position: absolute; right: -30mm; top: -30mm;
+    width: 70mm; height: 70mm; border-radius: 50%;
+    background: rgba(238, 50, 52, 0.16);
+  }
+  .cta-eye {
+    font-size: 8.5px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.7); margin-bottom: 3mm; position: relative;
+  }
+  .cta-title {
+    font-family: Georgia, serif; font-size: 22px; font-weight: 700;
+    margin-bottom: 4mm; line-height: 1.25; position: relative;
+  }
+  .cta-sub {
+    font-size: 11px; opacity: 0.9; margin-bottom: 5mm;
+    max-width: 140mm; margin-left: auto; margin-right: auto;
+    line-height: 1.6; position: relative;
+  }
+  .cta-row {
+    display: inline-flex; align-items: center; gap: 8mm;
+    font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 700;
+    letter-spacing: 0.02em; position: relative;
+  }
+  .cta-row .sep {
+    display: inline-block; width: 4px; height: 4px; border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
   }
 
-  th{
-    text-align:left;
-    font-size:11px;
-    color:#64748b;
-    padding:6px;
+  /* Signature block */
+  .sig {
+    margin-top: 8mm; padding-top: 4mm; border-top: 1px solid #cbd5e1;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 6mm;
+  }
+  .sig h4 {
+    font-size: 8px; color: #64748b; text-transform: uppercase;
+    letter-spacing: 0.14em; margin: 0 0 2mm; font-weight: 700;
+  }
+  .sig p {
+    font-size: 9px; line-height: 1.6; color: #475569; margin: 0;
   }
 
-  td{
-    padding:8px 6px;
-    border-bottom:1px solid #e2e8f0;
-    font-size:11px;
+  /* Footer */
+  .foot {
+    position: absolute; left: 16mm; right: 16mm; bottom: 10mm;
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 3mm; border-top: 1px solid #cbd5e1;
+    font-size: 8px; color: #64748b; letter-spacing: 0.08em;
   }
-
-  .bar{
-    height:6px;
-    border-radius:6px;
-    background:#e2e8f0;
-    overflow:hidden;
+  .foot .pg {
+    font-family: 'DM Sans', sans-serif; font-weight: 800;
+    color: #0a1a3a; letter-spacing: 0; font-size: 10px;
   }
-
-  .fill{
-    height:100%;
-    background:#10b981;
-  }
-
-  .status{
-    font-weight:600;
-    color:#10b981;
-  }
-
-  .maturity{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:8px;
-  }
-
-  .mitem{
-    padding:8px;
-    border-radius:8px;
-    font-size:11px;
-    display:flex;
-    justify-content:space-between;
-  }
-
-  .yes{background:#ecfdf5;color:#065f46}
-  .no{background:#fef2f2;color:#7f1d1d}
-
-  .flag{
-    border-left:4px solid;
-    padding:10px;
-    margin:8px 0;
-    border-radius:6px;
-    font-size:11px;
-  }
-
-  .critical{border-color:#ef4444;background:#fef2f2}
-  .high{border-color:#f97316;background:#fff7ed}
-  .medium{border-color:#eab308;background:#fefce8}
-
-  .footer{
-    margin-top:20px;
-    font-size:10px;
-    color:#64748b;
-    text-align:center;
-  }
-  </style>
-  `;
+</style>`;
 
     /* =========================
-     PAGE 1
-  ========================= */
-
+       PAGE 1 · COVER
+    ========================= */
     let html = `
-  <div class="page">
-    <div class="topbar"></div>
+<div class="p cover">
+  <div class="rib"></div>
+  ${brandHeader}
 
-    <div class="meta">
-      Report Date: ${dt}<br/>
-      Report ID: ${reportId}<br/>
-      Classification: Confidential
+  <div class="cover-eyebrow">Confidential · Prepared for ${esc(info.companyName)}</div>
+  <h1 class="cover-title">Compliance Health<br/>Assessment Report</h1>
+  <p class="cover-sub">
+    A structured audit of your organization's statutory, payroll and HR compliance posture &mdash;
+    benchmarked against <b>${esc(info.industry)}</b> industry norms in <b>${esc(info.state)}</b>,
+    with prioritized remediation and estimated penalty exposure.
+  </p>
+
+  <div class="who">
+    <div><div class="k">Company</div><div class="v">${esc(info.companyName)}</div></div>
+    <div><div class="k">Industry</div><div class="v">${esc(info.industry)}</div></div>
+    <div><div class="k">Structure</div><div class="v">${esc(info.companyType)}</div></div>
+    <div><div class="k">Headcount</div><div class="v">${esc(info.employeeRange)} employees</div></div>
+    <div><div class="k">Registered State</div><div class="v">${esc(info.state)}</div></div>
+    <div><div class="k">Assessment Contact</div><div class="v">${esc(info.contactName)}${info.designation ? " · " + esc(info.designation) : ""}</div></div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-score">
+      <div class="hero-num">${sd.score}<span class="hero-slash">/100</span></div>
+      <div class="hero-outof">Compliance Health Score</div>
+      <div class="hero-grade">Grade ${risk.gr} &middot; ${risk.lv}</div>
     </div>
-
-    <h1>PAYFIX ADVISORS</h1>
-    <div style="font-size:12px;color:#64748b">
-      Business Compliance Health Check — ${tier ? tier.toUpperCase() : "FREE"} Report
-    </div>
-
-    <!-- COMPANY GRID -->
-    <div class="grid">
-      <div class="cell"><b>Company</b><br/>${info.companyName}</div>
-      <div class="cell"><b>Industry</b><br/>${info.industry}</div>
-      <div class="cell"><b>Type</b><br/>${info.companyType}</div>
-
-      <div class="cell"><b>Contact</b><br/>${info.contactName} — ${info.designation}</div>
-      <div class="cell"><b>Employees</b><br/>${info.employeeRange}</div>
-      <div class="cell"><b>Location</b><br/>${info.state}</div>
-    </div>
-
-    <!-- SCORE -->
-    <div class="scoreCard">
-      <div class="score">${sd.score}%</div>
-      <div>Grade ${risk.gr} — ${risk.lv}</div>
-      <div style="margin-top:6px">
-        Estimated Annual Penalty Exposure: <b>${penalty}</b>
+    <div class="hero-detail">
+      <p>Your organization scored <b>${sd.score}%</b> across ${Object.keys(sd.bd).length} statutory dimensions on the <b>${tier === "premium" ? "40-question Premium" : tier === "basic" ? "27-question Detailed" : "14-question Free"}</b> assessment.</p>
+      <p>Based on the specific gaps identified, we estimate the following annual exposure if left unaddressed:</p>
+      <div class="hero-callout">
+        <div class="lbl">Estimated Annual Penalty Exposure</div>
+        <div class="val">${penalty}</div>
       </div>
     </div>
+  </div>
 
-    <!-- CATEGORY -->
-    <h2>Category-wise Compliance Score</h2>
+  <div class="sev-strip">
+    <div class="sev-cell crit"><div class="n">${critCount}</div><div class="l">Critical</div></div>
+    <div class="sev-cell hi"><div class="n">${highCount}</div><div class="l">High</div></div>
+    <div class="sev-cell med"><div class="n">${medCount}</div><div class="l">Medium</div></div>
+    <div class="sev-cell"><div class="n">${bm.score}%</div><div class="l">Maturity</div></div>
+  </div>
 
-    <table>
+  ${footerRow("01")}
+</div>`;
+
+    /* =========================
+       PAGE 2 · BREAKDOWN
+    ========================= */
+    html += `
+<div class="p">
+  ${brandHeader}
+
+  <div class="h"><span>Category-wise Compliance Score</span><span class="num">02 · BREAKDOWN</span></div>
+  <div class="h-note">
+    Score by statutory domain. Domains at or above 80% are treated as broadly compliant; anything below warrants remediation on the timeline outlined in the Advisory section.
+  </div>
+
+  <table class="cat">
+    <thead>
       <tr>
-        <th>Category</th>
-        <th>Score</th>
-        <th>Performance</th>
-        <th>Status</th>
+        <th style="width:34%">Category</th>
+        <th class="r" style="width:12%">Score</th>
+        <th style="width:34%">Performance</th>
+        <th class="r" style="width:20%">Status</th>
       </tr>
-
+    </thead>
+    <tbody>
       ${Object.keys(sd.bd)
         .map((c) => {
           const v = sd.bd[c];
+          const cl = catColor(v);
+          const pillCls = v >= 80 ? "g" : v >= 65 ? "a" : "r";
+          const pillTxt = v >= 80 ? "Compliant" : v >= 65 ? "Watchlist" : "Attention";
           return `
-        <tr>
-          <td>${c}</td>
-          <td>${v}%</td>
-          <td>
-            <div class="bar">
-              <div class="fill" style="width:${v}%"></div>
-            </div>
-          </td>
-          <td class="status">${v >= 80 ? "Compliant" : "Risk"}</td>
-        </tr>`;
+      <tr>
+        <td><b>${esc(c)}</b></td>
+        <td class="r"><span class="val" style="color:${cl}">${v}%</span></td>
+        <td><div class="bar"><div class="fill" style="width:${v}%;background:${cl}"></div></div></td>
+        <td class="r"><span class="pill ${pillCls}">${pillTxt}</span></td>
+      </tr>`;
         })
         .join("")}
-    </table>
+    </tbody>
+  </table>
 
-    <!-- MATURITY -->
-    <h2>Business Maturity Score: ${bm.score}%</h2>
-
-    <div class="maturity">
-      ${bm.items
-        .map(
-          (i: any) => `
-        <div class="mitem ${i.v ? "yes" : "no"}">
-          <span>${i.n}</span>
-          <span>${i.v ? "Yes" : "No"}</span>
-        </div>
-      `,
-        )
-        .join("")}
-    </div>
-
-    <div class="footer">
-      Page 1 — Payfix Advisors | +91 86809 39401
-    </div>
+  <div class="h" style="margin-top:12mm"><span>Business Maturity Signals</span><span class="num">SCORE ${bm.score}%</span></div>
+  <div class="h-note">
+    Governance signals observed at the organization level &mdash; independent of statutory scores.
   </div>
-  `;
-
-    /* =========================
-     PAGE 2
-  ========================= */
-
-    html += `
-  <div class="page" style="page-break-before:always">
-    <div class="topbar"></div>
-
-    <h2>Risk Analysis & Compliance Advisory</h2>
-
-    ${flags
+  <div class="mat">
+    ${bm.items
       .map(
-        (f, i) => `
-      <div class="flag ${f.s}">
-        <b>#${i + 1}</b> ${f.t}<br/>
-        <small>${f.s} priority</small>
-      </div>
-    `,
+        (i: any) => `
+    <div class="row ${i.v ? "y" : "n"}">
+      <span class="name">${esc(i.n)}</span>
+      <span class="st">${i.v ? "YES" : "NO"}</span>
+    </div>`,
       )
       .join("")}
+  </div>
 
-    <div style="margin-top:30px">
-      <h2>Need Expert Assistance?</h2>
-      <p style="font-size:12px">
-        Our compliance specialists can implement every recommendation.
-      </p>
+  ${footerRow("02")}
+</div>`;
 
-      <b>+91 86809 39401</b>
+    /* =========================
+       PAGE 3 · RISK ANALYSIS
+    ========================= */
+    html += `
+<div class="p">
+  ${brandHeader}
+
+  <div class="h"><span>Risk Analysis &amp; Compliance Advisory</span><span class="num">03 · FINDINGS</span></div>
+  <div class="h-note">
+    Each finding below cites the statutory basis and a specific remediation. Penalty ranges are indicative, based on 2024&ndash;25 enforcement patterns and depend on actual inspection scope.
+  </div>
+
+  ${
+    flags.length === 0
+      ? `
+  <div class="clean">
+    <div class="k">No Major Flags Identified</div>
+    <div class="t">Your compliance posture is broadly healthy.</div>
+    <div class="n">Continue your monthly filing cadence, maintain the audit trail, and re-run this assessment quarterly to catch drift early.</div>
+  </div>`
+      : flags
+          .map(
+            (f, i) => `
+  <div class="flag">
+    <div class="sev ${f.s}"><span class="sev-lbl">${f.s}</span></div>
+    <div class="body">
+      <div class="idx">Finding ${String(i + 1).padStart(2, "0")}</div>
+      <div class="t">${esc(f.t)}</div>
+      <div class="meta">
+        <div><div class="k">Statutory Basis</div><div class="v">${esc(f.ref)}</div></div>
+        <div><div class="k">Estimated Exposure</div><div class="v">${esc(f.pen)}</div></div>
+      </div>
+      <div class="rem">
+        <span class="k">Recommended Remediation</span>
+        ${esc(f.rem)}
+      </div>
     </div>
+  </div>`,
+          )
+          .join("")
+  }
 
-    <div class="footer">
-      Page 2 — Payfix Advisors
+  ${footerRow("03")}
+</div>`;
+
+    /* =========================
+       PAGE 4 · ROADMAP + CTA
+    ========================= */
+    html += `
+<div class="p">
+  ${brandHeader}
+
+  <div class="h"><span>30 &middot; 60 &middot; 90 Day Compliance Roadmap</span><span class="num">04 · ADVISORY</span></div>
+  <div class="h-note">
+    A sequenced plan to move from the current score to audit-ready. Sprint priorities are tuned to the flags on the previous page.
+  </div>
+
+  <div class="rm">
+    <div class="step">
+      <div class="step-lbl">Weeks 1&ndash;4</div>
+      <div class="step-num">30</div>
+      <div class="step-when">Day Sprint</div>
+    </div>
+    <div>
+      <div class="head">Stabilize Critical Exposure</div>
+      <ul>
+        <li>Close every <b>Critical</b> and <b>High</b> flag from the Findings page; obtain any missing registrations (EPFO / ESIC / PT).</li>
+        <li>File all overdue statutory returns to <b>stop the interest clock</b> before the next inspection window.</li>
+        <li>Reconcile the last 3 months of PF, ESI and TDS challans against payroll; correct any TAN / UAN mismatches.</li>
+      </ul>
     </div>
   </div>
-  `;
+
+  <div class="rm">
+    <div class="step">
+      <div class="step-lbl">Months 2&ndash;3</div>
+      <div class="step-num">60</div>
+      <div class="step-when">Day Sprint</div>
+    </div>
+    <div>
+      <div class="head">Close Medium-Severity Gaps</div>
+      <ul>
+        <li>Codify HR handbook, POSH IC constitution and training records; run one live POSH session with signed attendance.</li>
+        <li>Renew all licenses (Trade, S&amp;E, Fire); align state-wise Professional Tax filings.</li>
+        <li>Set up a digital employee records vault (appointment letter, KYC, PF/ESI declarations, nominations).</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="rm">
+    <div class="step">
+      <div class="step-lbl">Month 3+</div>
+      <div class="step-num">90</div>
+      <div class="step-when">Day Sprint</div>
+    </div>
+    <div>
+      <div class="head">Build an Audit-Ready System</div>
+      <ul>
+        <li>Migrate to automated payroll with a built-in statutory engine (PF, ESI, PT, TDS &mdash; state-aware).</li>
+        <li>Monthly reconciliation cadence: challan register, filing acknowledgements, audit-trail enabled in accounting software.</li>
+        <li>Quarterly Labour Code readiness review; annual POSH filing by 31 Dec; re-run this Compliance Health Check every 90 days.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="cta">
+    <div class="cta-eye">Ready to move from risk to compliance?</div>
+    <div class="cta-title">Payfix Advisors implements<br/>every recommendation in this report.</div>
+    <div class="cta-sub">
+      One partner. One retainer. Structured deadline monitoring, a dedicated account manager,
+      and payroll built for Indian statutory rigor &mdash; end to end.
+    </div>
+    <div class="cta-row">
+      <span>+91 86809 39401</span>
+      <span class="sep"></span>
+      <span>info@payfixadvisors.in</span>
+      <span class="sep"></span>
+      <span>payfixadvisors.in</span>
+    </div>
+  </div>
+
+  <div class="sig">
+    <div>
+      <h4>About Payfix Advisors</h4>
+      <p>Founder-led compliance &amp; payroll practice serving growing Indian businesses across ${esc(info.state)} and Pan-India. Structured deadline monitoring, dedicated account manager, and a statutory engine built in-house for PF, ESI, PT, TDS and state labour compliance.</p>
+    </div>
+    <div>
+      <h4>Disclaimer</h4>
+      <p>This assessment is derived from client-declared inputs on ${esc(dt)}. Penalty ranges are indicative and depend on actual enforcement action, inspection scope and cure period granted. This report does not constitute legal advice; engage Payfix Advisors for a paid on-site audit before relying on any recommendation herein.</p>
+    </div>
+  </div>
+
+  ${footerRow("04")}
+</div>`;
 
     const win = window.open("", "_blank");
 
     if (win) {
-      win.document.write(`
-      <html>
-        <head>${styles}</head>
-        <body>${html}</body>
-      </html>
-    `);
+      win.document.write(`<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Compliance Health Report · ${esc(info.companyName)}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+${styles}
+</head>
+<body>${html}</body>
+</html>`);
       win.document.close();
-      setTimeout(() => win.print(), 500);
+      setTimeout(() => win.print(), 700);
     }
   }
 
@@ -2213,16 +2928,32 @@ export default function App() {
         ? SVC_LABELS[serviceParam]
         : null;
 
+    const trustItems: { Ic: LucideIcon; t: string }[] = [
+      { Ic: Zap, t: "Under 5 mins" },
+      { Ic: ShieldCheck, t: "Secure & Private" },
+      { Ic: FileText, t: "Multi-page PDF" },
+      { Ic: Target, t: "Industry-specific" },
+    ];
+
+    const featItems: { Ic: LucideIcon; t: string; d: string }[] = [
+      { Ic: Factory, t: "Industry-Aware", d: "Tailored to your sector" },
+      { Ic: MapPin, t: "State-Specific", d: "Uses your state laws" },
+      { Ic: FileBarChart2, t: "PDF Report", d: "3–5 page download" },
+      { Ic: BookOpenText, t: "Statutory Refs", d: "Latest GOs cited" },
+    ];
+
     return (
       <div className="scr">
-        <div className="land">
+        <div className="topbar">
           <div className="logor">
-            <img width={80} src="/payfix-logo.svg" />
-            <span style={{ paddingLeft: 20, fontSize: 14 }}>
+            <img className="logoimg" src="/payfix-logo.svg" alt="Payfix Advisors" />
+            <span className="lotag">
               {svcName ? `${svcName} Check` : "Compliance Check"}
             </span>
           </div>
+        </div>
 
+        <div className="land">
           <div className="badge">
             {svcName
               ? `${svcName} Quick Assessment — Free`
@@ -2252,25 +2983,25 @@ export default function App() {
           </p>
 
           <button className="sbtn" onClick={() => setScreen("info")}>
-            {svcName ? `Start ${svcName} Check →` : "Start Free Assessment →"}
+            {svcName ? `Start ${svcName} Check` : "Start Free Assessment"}
+            <ArrowRight size={18} strokeWidth={2.4} />
           </button>
 
           <div className="trust">
-            <span>⚡ Under 5 mins</span>
-            <span>🔒 Secure & Private</span>
-            <span>📄 Multi-page PDF</span>
-            <span>🎯 Industry-specific</span>
+            {trustItems.map((t, i) => (
+              <span key={i}>
+                <t.Ic size={14} strokeWidth={1.9} />
+                {t.t}
+              </span>
+            ))}
           </div>
 
           <div className="feats">
-            {[
-              { ic: "🏭", t: "Industry-Aware", d: "Tailored to your sector" },
-              { ic: "📍", t: "State-Specific", d: "Uses your state laws" },
-              { ic: "📊", t: "PDF Report", d: "3-5 page download" },
-              { ic: "📖", t: "Statutory Refs", d: "Latest GOs cited" },
-            ].map((f, i) => (
+            {featItems.map((f, i) => (
               <div className="ft" key={i}>
-                <div className="ic">{f.ic}</div>
+                <div className="ic">
+                  <f.Ic size={22} strokeWidth={1.7} />
+                </div>
                 <h3>{f.t}</h3>
                 <p>{f.d}</p>
               </div>
