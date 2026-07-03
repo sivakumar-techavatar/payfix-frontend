@@ -123,6 +123,10 @@ export async function POST(req: Request) {
 
   const html = `<!DOCTYPE html>
 <html>
+<head>
+<meta name="x-apple-disable-message-reformatting"/>
+<meta name="format-detection" content="telephone=no,address=no,email=no,date=no,url=no"/>
+</head>
 <body style="margin:0;padding:0;background:#f1f5f9;font-family:'Inter','DM Sans',Arial,sans-serif;color:#0f172a">
   <div style="max-width:640px;margin:0 auto;background:#ffffff">
 
@@ -221,11 +225,45 @@ export async function POST(req: Request) {
     </div>
 
     <!-- CTA -->
-    <div style="margin:24px 32px 0;padding:28px 24px;background:linear-gradient(135deg,#0a1a3a 0%,#0f6fd5 100%);color:#ffffff;text-align:center;border-radius:2px">
+    <div style="margin:24px 32px 0;padding:26px 24px;background:linear-gradient(135deg,#0a1a3a 0%,#0f6fd5 100%);color:#ffffff;text-align:center;border-radius:2px">
       <div style="font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.75);margin-bottom:8px">Ready to move from risk to compliance?</div>
-      <div style="font-family:Georgia,serif;font-size:20px;font-weight:700;line-height:1.3;margin-bottom:12px">Payfix Advisors implements<br/>every recommendation in this report.</div>
-      <div style="font-size:12px;color:rgba(255,255,255,0.9);margin-bottom:16px;line-height:1.6">One partner. One retainer. Structured deadline monitoring, a dedicated account manager,<br/>and payroll built for Indian statutory rigor &mdash; end to end.</div>
-      <div style="font-family:'DM Sans',Arial,sans-serif;font-size:13px;font-weight:700;letter-spacing:0.02em">+91 86809 39401 &nbsp;&middot;&nbsp; ${escapeHtml(CC_ADDRESS())} &nbsp;&middot;&nbsp; payfixadvisors.in</div>
+      <div style="font-family:Georgia,serif;font-size:20px;font-weight:700;line-height:1.3;margin-bottom:12px;color:#ffffff">Payfix Advisors implements<br/>every recommendation in this report.</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.9);margin-bottom:18px;line-height:1.6">One partner. One retainer. Structured deadline monitoring, a dedicated account manager,<br/>and payroll built for Indian statutory rigor &mdash; end to end.</div>
+
+      <!-- Contact row (compact, force-white to defeat Gmail auto-link colouring) -->
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:0 auto">
+        <tr>
+          <td style="font-family:'DM Sans',Arial,sans-serif;font-size:12px;font-weight:600;letter-spacing:0.02em;color:#ffffff;padding:0 8px">
+            <a href="tel:+918680939401" style="color:#ffffff !important;text-decoration:none;font-weight:600" target="_blank">+91 86809 39401</a>
+          </td>
+          <td style="color:rgba(255,255,255,0.5);font-size:10px;padding:0 4px">&middot;</td>
+          <td style="font-family:'DM Sans',Arial,sans-serif;font-size:12px;font-weight:600;letter-spacing:0.02em;padding:0 8px">
+            <a href="mailto:${escapeHtml(CC_ADDRESS())}" style="color:#ffffff !important;text-decoration:none;font-weight:600" target="_blank">${escapeHtml(CC_ADDRESS())}</a>
+          </td>
+          <td style="color:rgba(255,255,255,0.5);font-size:10px;padding:0 4px">&middot;</td>
+          <td style="font-family:'DM Sans',Arial,sans-serif;font-size:12px;font-weight:600;letter-spacing:0.02em;padding:0 8px">
+            <a href="https://payfixadvisors.in" style="color:#ffffff !important;text-decoration:none;font-weight:600" target="_blank">payfixadvisors.in</a>
+          </td>
+        </tr>
+      </table>
+
+      <!-- Social row (text chips — universally rendered by every email client) -->
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:18px auto 0">
+        <tr>
+          <td style="padding:0 5px">
+            <a href="https://www.linkedin.com/company/payfix-advisors" target="_blank" style="display:inline-block;padding:6px 12px;background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.25);border-radius:99px;color:#ffffff !important;text-decoration:none;font-family:'DM Sans',Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase">in &middot; LinkedIn</a>
+          </td>
+          <td style="padding:0 5px">
+            <a href="https://www.instagram.com/payfix_advisors" target="_blank" style="display:inline-block;padding:6px 12px;background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.25);border-radius:99px;color:#ffffff !important;text-decoration:none;font-family:'DM Sans',Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase">ig &middot; Instagram</a>
+          </td>
+          <td style="padding:0 5px">
+            <a href="https://www.facebook.com/payfixadvisors" target="_blank" style="display:inline-block;padding:6px 12px;background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.25);border-radius:99px;color:#ffffff !important;text-decoration:none;font-family:'DM Sans',Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase">fb &middot; Facebook</a>
+          </td>
+          <td style="padding:0 5px">
+            <a href="https://wa.me/918680939401" target="_blank" style="display:inline-block;padding:6px 12px;background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.25);border-radius:99px;color:#ffffff !important;text-decoration:none;font-family:'DM Sans',Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase">wa &middot; WhatsApp</a>
+          </td>
+        </tr>
+      </table>
     </div>
 
     <!-- Attached PDF note -->

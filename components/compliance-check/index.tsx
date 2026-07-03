@@ -1880,19 +1880,34 @@ export default function App() {
           <button
             className="pdf-btn"
             onClick={async () => {
+              const payload = {
+                info,
+                scoreData,
+                flags,
+                bm,
+                tier: paid,
+                utm:
+                  typeof window !== "undefined"
+                    ? Object.fromEntries(new URLSearchParams(window.location.search))
+                    : null,
+              };
+
+              // Fire the CRM forward in parallel — don't block the PDF flow if
+              // the CRM is slow or unreachable. Success/failure is logged
+              // server-side; the client always sees the report open.
+              void fetch("/api/compliance-lead", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload),
+              }).catch(() => {});
+
               try {
                 await fetch("/api/send-report", {
                   method: "POST",
                   headers: {
                     "Content-Type": "application/json",
                   },
-                  body: JSON.stringify({
-                    info,
-                    scoreData,
-                    flags,
-                    bm,
-                    tier: paid,
-                  }),
+                  body: JSON.stringify(payload),
                 });
 
                 toastInfotoast.success("Report sent to your email");
@@ -2591,7 +2606,7 @@ export default function App() {
 
   /* CTA block */
   .cta {
-    margin-top: 9mm; padding: 9mm 8mm;
+    margin-top: 9mm; padding: 8mm 8mm 7mm;
     background: linear-gradient(135deg, #0a1a3a 0%, #0f6fd5 100%);
     color: #fff; text-align: center; border-radius: 2px;
     position: relative; overflow: hidden;
@@ -2614,15 +2629,27 @@ export default function App() {
     max-width: 140mm; margin-left: auto; margin-right: auto;
     line-height: 1.6; position: relative;
   }
+  .cta a { color: #fff !important; text-decoration: none; }
   .cta-row {
-    display: inline-flex; align-items: center; gap: 8mm;
-    font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 700;
+    display: inline-flex; align-items: center; gap: 5mm;
+    font-family: 'DM Sans', sans-serif; font-size: 10.5px; font-weight: 600;
     letter-spacing: 0.02em; position: relative;
+    color: #fff;
   }
   .cta-row .sep {
-    display: inline-block; width: 4px; height: 4px; border-radius: 50%;
+    display: inline-block; width: 3px; height: 3px; border-radius: 50%;
     background: rgba(255, 255, 255, 0.4);
   }
+  .cta-social {
+    margin-top: 5mm; display: inline-flex; gap: 3mm; position: relative;
+  }
+  .cta-social a {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 9mm; height: 9mm; border-radius: 50%;
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+  }
+  .cta-social a svg { width: 4mm; height: 4mm; fill: #fff; }
 
   /* Signature block */
   .sig {
@@ -2873,11 +2900,17 @@ export default function App() {
       and payroll built for Indian statutory rigor &mdash; end to end.
     </div>
     <div class="cta-row">
-      <span>+91 86809 39401</span>
+      <a href="tel:+918680939401">+91 86809 39401</a>
       <span class="sep"></span>
-      <span>info@payfixadvisors.in</span>
+      <a href="mailto:info@payfixadvisors.in">info@payfixadvisors.in</a>
       <span class="sep"></span>
-      <span>payfixadvisors.in</span>
+      <a href="https://payfixadvisors.in">payfixadvisors.in</a>
+    </div>
+    <div class="cta-social">
+      <a href="https://www.linkedin.com/company/payfix-advisors" title="LinkedIn"><svg viewBox="0 0 24 24"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.95v5.66H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.62 0 4.29 2.38 4.29 5.48v6.26zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.11 20.45H3.56V9h3.55v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg></a>
+      <a href="https://www.instagram.com/payfix_advisors" title="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23a3.7 3.7 0 0 1-.9 1.38 3.7 3.7 0 0 1-1.38.9c-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16zM12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.34 4.14.63a5.87 5.87 0 0 0-2.13 1.38A5.87 5.87 0 0 0 .63 4.14C.34 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.27 2.15.56 2.91.3.79.7 1.46 1.38 2.13a5.87 5.87 0 0 0 2.13 1.38c.76.29 1.64.5 2.91.56 1.28.06 1.69.07 4.95.07s3.67-.01 4.95-.07c1.27-.06 2.15-.27 2.91-.56a5.87 5.87 0 0 0 2.13-1.38 5.87 5.87 0 0 0 1.38-2.13c.29-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.27-2.15-.56-2.91a5.87 5.87 0 0 0-1.38-2.13A5.87 5.87 0 0 0 19.86.63C19.1.34 18.22.13 16.95.07 15.67.01 15.26 0 12 0zm0 5.84a6.16 6.16 0 1 0 0 12.32 6.16 6.16 0 0 0 0-12.32zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.4-11.85a1.44 1.44 0 1 0 0 2.88 1.44 1.44 0 0 0 0-2.88z"/></svg></a>
+      <a href="https://www.facebook.com/payfixadvisors" title="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.09 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.26h3.33l-.53 3.49h-2.8V24C19.61 23.09 24 18.1 24 12.07z"/></svg></a>
+      <a href="https://wa.me/918680939401" title="WhatsApp"><svg viewBox="0 0 24 24"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.96-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.6.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51-.17-.01-.37-.01-.57-.01s-.52.07-.79.37c-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.06 2.87 1.21 3.07.15.2 2.09 3.19 5.06 4.48.71.31 1.26.49 1.69.63.71.23 1.35.19 1.86.12.57-.08 1.76-.72 2-1.42.25-.7.25-1.29.17-1.42-.07-.13-.27-.2-.57-.35zM12 21.55c-1.72 0-3.4-.46-4.87-1.34l-.35-.21-3.62.95.97-3.53-.23-.36a9.44 9.44 0 0 1-1.44-5.03c0-5.24 4.28-9.52 9.54-9.52 2.55 0 4.94.99 6.74 2.79a9.44 9.44 0 0 1 2.79 6.74c-.01 5.24-4.29 9.51-9.53 9.51zm8.11-17.62A11.76 11.76 0 0 0 12 .5C5.46.5.18 5.78.18 12.31c0 2.07.55 4.09 1.58 5.87L0 24l5.98-1.56a11.72 11.72 0 0 0 5.99 1.58h.01c6.53 0 11.82-5.28 11.82-11.82 0-3.16-1.23-6.13-3.47-8.37z"/></svg></a>
     </div>
   </div>
 
