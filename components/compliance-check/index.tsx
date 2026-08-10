@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import toastInfotoast from "react-hot-toast";
+import { trackHC } from "@/lib/analytics";
 import {
   Factory,
   MapPin,
@@ -1555,6 +1556,21 @@ export default function App() {
 
   const savedRef = useRef(false);
 
+  // Funnel telemetry — fire the pure page-view events on screen change.
+  // User-action events (clicks, plan selection, submit) are inlined at
+  // their call sites so we capture intent even if the screen state
+  // races the click.
+  useEffect(() => {
+    if (screen === "landing") {
+      trackHC("hc_landing_view");
+    } else if (screen === "quiz") {
+      trackHC("hc_quiz_started", { tier: paid || "free" });
+    } else if (screen === "score") {
+      trackHC("hc_score_viewed", { score: scoreData.score, tier: paid || "free" });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [screen]);
+
   /* =========================
    QUESTION RESOLUTION
 ========================= */
@@ -1598,6 +1614,12 @@ export default function App() {
     const count = Object.keys(newAnswers).length;
     const total = activeQs.length;
 
+    trackHC("hc_quiz_progress", {
+      answered: count,
+      total,
+      tier: paid || "free",
+    });
+
     // milestone toasts
     if (count === Math.ceil(total * 0.25)) {
       showToast(Flame, "#f97316", "25% completed");
@@ -1625,6 +1647,10 @@ export default function App() {
       const finalScore = calcScore(newAnswers, activeQs);
       setScoreData(finalScore);
 
+      if (!paid) {
+        trackHC("hc_quiz_completed_free", { score: finalScore.score });
+      }
+
       showToast(PartyPopper, "#10b981", "Completed");
 
       setTimeout(() => {
@@ -1639,6 +1665,8 @@ export default function App() {
 
   const openPayment = (plan: "basic" | "premium") => {
     const skipIndex = QB.free.length;
+
+    trackHC("hc_plan_selected", { plan });
 
     if (TEST_MODE) {
       setPaid(plan);
@@ -1880,6 +1908,13 @@ export default function App() {
           <button
             className="pdf-btn"
             onClick={async () => {
+              const tierLabel = paid || "free";
+
+              trackHC("hc_submit_clicked", {
+                tier: tierLabel,
+                score: scoreData.score,
+              });
+
               const payload = {
                 info,
                 scoreData,
@@ -1895,14 +1930,32 @@ export default function App() {
               // Fire the CRM forward in parallel — don't block the PDF flow if
               // the CRM is slow or unreachable. Success/failure is logged
               // server-side; the client always sees the report open.
-              void fetch("/api/compliance-lead", {
+              fetch("/api/compliance-lead", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload),
-              }).catch(() => {});
+              })
+                .then((res) => {
+                  if (res.ok) {
+                    trackHC("hc_crm_forward_ok", { tier: tierLabel });
+                  } else {
+                    trackHC("hc_crm_forward_error", {
+                      tier: tierLabel,
+                      kind: "http",
+                      status: res.status,
+                    });
+                  }
+                })
+                .catch((err) => {
+                  trackHC("hc_crm_forward_error", {
+                    tier: tierLabel,
+                    kind: "network",
+                    message: (err as Error)?.message?.slice(0, 100),
+                  });
+                });
 
               try {
-                await fetch("/api/send-report", {
+                const rep = await fetch("/api/send-report", {
                   method: "POST",
                   headers: {
                     "Content-Type": "application/json",
@@ -1910,12 +1963,28 @@ export default function App() {
                   body: JSON.stringify(payload),
                 });
 
+                if (rep.ok) {
+                  trackHC("hc_submit_success", { tier: tierLabel });
+                } else {
+                  trackHC("hc_submit_error", {
+                    tier: tierLabel,
+                    kind: "http",
+                    status: rep.status,
+                  });
+                }
+
                 toastInfotoast.success("Report sent to your email");
 
                 setTimeout(() => {
                   generatePDF(info, scoreData, flags, paid, bm);
+                  trackHC("hc_pdf_generated", { tier: tierLabel });
                 }, 1200);
-              } catch {
+              } catch (err) {
+                trackHC("hc_submit_error", {
+                  tier: tierLabel,
+                  kind: "network",
+                  message: (err as Error)?.message?.slice(0, 100),
+                });
                 toastInfotoast.error("Failed to send report");
               }
             }}
@@ -3015,7 +3084,16 @@ ${styles}
               : "Industry-specific questions. State-aware compliance checks."}
           </p>
 
-          <button className="sbtn" onClick={() => setScreen("info")}>
+          <button
+            className="sbtn"
+            onClick={() => {
+              trackHC("hc_start_click", {
+                variant: svcName ? "service" : "general",
+                service: serviceParam || null,
+              });
+              setScreen("info");
+            }}
+          >
             {svcName ? `Start ${svcName} Check` : "Start Free Assessment"}
             <ArrowRight size={18} strokeWidth={2.4} />
           </button>
@@ -3106,7 +3184,7 @@ ${styles}
 
           <div className="pw">
             Powered by Payfix Advisors ·
-            <a href="/privacy-policy.html"> Privacy Policy</a>
+            <a href="/privacy"> Privacy Policy</a>
           </div>
         </div>
       </div>
@@ -3219,7 +3297,16 @@ ${styles}
           <button
             className="ibtn"
             disabled={!step1Valid}
-            onClick={() => setFormStep(2)}
+            onClick={() => {
+              trackHC("hc_info_step1_complete", {
+                industry: info.industry || null,
+                headcount_band: info.employeeRange || null,
+                state: info.state || null,
+                company_type: info.companyType || null,
+                has_gst: !!info.gstNumber,
+              });
+              setFormStep(2);
+            }}
           >
             Continue → Contact Details
           </button>
@@ -3340,7 +3427,13 @@ ${styles}
             <button
               className="ibtn"
               disabled={!step2Valid}
-              onClick={() => setScreen("quiz")}
+              onClick={() => {
+                trackHC("hc_info_step2_complete", {
+                  has_designation: !!info.designation,
+                  has_linkedin: !!info.linkedIn,
+                });
+                setScreen("quiz");
+              }}
             >
               Begin Assessment →
             </button>

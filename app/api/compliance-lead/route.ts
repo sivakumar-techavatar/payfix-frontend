@@ -44,19 +44,26 @@ export async function POST(req: Request) {
   try {
     body = await req.json();
   } catch {
+    console.warn("[compliance-lead] bad request: invalid JSON body");
     return Response.json({ ok: false, error: "Invalid JSON" }, { status: 400 });
   }
 
   const { info, scoreData, flags, bm, tier, utm } = body || {};
 
   if (!info?.companyName || !info?.contactName) {
+    console.warn("[compliance-lead] bad request: missing required fields");
     return Response.json({ ok: false, error: "Missing required fields" }, { status: 400 });
   }
 
   const score = Number(scoreData?.score);
   if (!Number.isFinite(score)) {
+    console.warn("[compliance-lead] bad request: missing/invalid score");
     return Response.json({ ok: false, error: "Missing score" }, { status: 400 });
   }
+
+  console.log(
+    `[compliance-lead] received tier=${tier || "free"} score=${score} industry=${info.industry || "?"} state=${info.state || "?"} band=${info.employeeRange || "?"}`,
+  );
 
   const risk = riskFromScore(score);
   const penalty = penaltyFromScore(score);
@@ -122,6 +129,7 @@ export async function POST(req: Request) {
       return Response.json({ ok: false, forwarded: false });
     }
 
+    console.log(`[compliance-lead] forwarded to CRM ok tier=${tier || "free"} score=${score}`);
     return Response.json({ ok: true, forwarded: true });
   } catch (err) {
     console.error("[compliance-lead] forward failed:", (err as Error).message);

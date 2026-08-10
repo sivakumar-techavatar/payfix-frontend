@@ -64,3 +64,48 @@ export function trackLead(payload: LeadPayload = {}) {
     window.lintrk("track", { conversion_id: Number(liConvId) });
   }
 }
+
+/**
+ * Fire a Business Health Check funnel event.
+ *
+ * Pushes to dataLayer + gtag under a stable event name so a GA4
+ * Explore report can chart the funnel: hc_landing_view → hc_start_click
+ * → hc_info_step1_complete → hc_info_step2_complete → hc_quiz_started
+ * → hc_quiz_progress → hc_quiz_completed_free → hc_score_viewed
+ * → hc_plan_selected → hc_submit_clicked → hc_submit_success | hc_submit_error
+ * → hc_crm_forward_ok | hc_crm_forward_error → hc_pdf_generated.
+ *
+ * PII-free: never accepts name, email, phone, or company_name. Only
+ * anonymised dimensions (tier, question index, error kind, industry,
+ * headcount_band, state, score).
+ */
+export type HCEvent =
+  | "hc_landing_view"
+  | "hc_start_click"
+  | "hc_info_step1_complete"
+  | "hc_info_step2_complete"
+  | "hc_quiz_started"
+  | "hc_quiz_progress"
+  | "hc_quiz_completed_free"
+  | "hc_score_viewed"
+  | "hc_plan_selected"
+  | "hc_submit_clicked"
+  | "hc_submit_success"
+  | "hc_submit_error"
+  | "hc_crm_forward_ok"
+  | "hc_crm_forward_error"
+  | "hc_pdf_generated";
+
+export function trackHC(event: HCEvent, params: Record<string, unknown> = {}) {
+  if (typeof window === "undefined") return;
+
+  const payload = { event, ...params };
+
+  if (window.dataLayer) {
+    window.dataLayer.push(payload);
+  }
+
+  if (window.gtag) {
+    window.gtag("event", event, params);
+  }
+}
